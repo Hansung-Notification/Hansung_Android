@@ -23,7 +23,7 @@ class NoticeRepositoryImpl @Inject constructor(
             if (response.isSuccessful && responseBody != null) {
                 Result.success(NoticeMapper(responseBody))
             } else {
-                val errorMessage = response.message().toString()
+                val errorMessage = response.message()
                 Result.failure(Exception(errorMessage))
             }
         } catch (e: Exception) {
