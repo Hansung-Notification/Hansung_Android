@@ -32,7 +32,11 @@ class NoticeAdapter: RecyclerView.Adapter<NoticeAdapter.ViewHolder>() {
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun setContent(position: Int) {
-            binding.textView.text = items[position].title
+            binding.apply {
+                val item = items[position]
+                title.text = item.title
+                subtitle.text = item.writer + " · " + item.date
+            }
         }
     }
 }
