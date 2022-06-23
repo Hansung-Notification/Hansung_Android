@@ -1,18 +1,15 @@
 package com.foundy.presentation
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.foundy.presentation.databinding.ActivityMainBinding
-import com.foundy.presentation.notice.ErrorFragment
-import com.foundy.presentation.notice.NoticeFragment
-import com.foundy.presentation.notice.NoticeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val viewModel: NoticeViewModel by viewModels()
+
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding get() = requireNotNull(_binding)
 
@@ -21,17 +18,12 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.isError.observe(this) { isError ->
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                val fragmentClass = if (isError) {
-                    ErrorFragment::class.java
-                } else {
-                    NoticeFragment::class.java
-                }
-                replace(R.id.fragmentContainer, fragmentClass, null)
-                addToBackStack(null)
-            }
-        }
+        initBottomNavigationView()
+    }
+
+    private fun initBottomNavigationView() {
+        val nhf = supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
+        val navController = nhf.navController
+        binding.bottomNav.setupWithNavController(navController)
     }
 }
