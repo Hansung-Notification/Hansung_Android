@@ -23,7 +23,7 @@ class NoticeAdapter: RecyclerView.Adapter<NoticeAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = notices.size
 
-    fun updateList(noticeList: List<Notice>) {
+    fun addAll(noticeList: List<Notice>) {
         notices.addAll(noticeList)
         notifyDataSetChanged()
     }

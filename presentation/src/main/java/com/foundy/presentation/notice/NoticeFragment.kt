@@ -22,7 +22,7 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
         }
 
         viewModel.noticeList.observe(viewLifecycleOwner) {
-            (binding.recyclerView.adapter as NoticeAdapter).updateList(it)
+            (binding.recyclerView.adapter as NoticeAdapter).addAll(it)
         }
     }
 }
