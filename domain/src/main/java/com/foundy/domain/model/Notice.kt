@@ -1,12 +1,17 @@
 package com.foundy.domain.model
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+const val NOTICE_TABLE_NAME = "favorite"
+
+@Entity(tableName = NOTICE_TABLE_NAME)
 data class Notice(
-    @SerializedName("isHeader") val isHeader: Boolean,
-    @SerializedName("isNew") val isNew: Boolean,
-    @SerializedName("title") val title: String,
-    @SerializedName("date") val date: String,
-    @SerializedName("writer") val writer: String,
-    @SerializedName("url") val url: String
+    @ColumnInfo(name = "is_header") val isHeader: Boolean,
+    @ColumnInfo(name = "is_new") val isNew: Boolean,
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "date") val date: String,
+    @ColumnInfo(name = "writer") val writer: String,
+    @PrimaryKey val url: String
 )

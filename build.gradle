@@ -3,6 +3,7 @@ buildscript {
         retrofit_version = "2.9.0"
         gson_version = "2.9.0"
         coroutine_version = "1.6.0"
+        room_version = "2.4.2"
     }
     dependencies {
         // hilt
