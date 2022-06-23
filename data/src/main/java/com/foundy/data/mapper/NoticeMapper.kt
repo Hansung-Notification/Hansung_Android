@@ -1,5 +1,6 @@
 package com.foundy.data.mapper
 
+import com.foundy.data.di.NetworkModule
 import com.foundy.domain.model.Notice
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
@@ -29,7 +30,7 @@ object NoticeMapper {
                     title = title,
                     date = date,
                     writer = writer,
-                    href = href
+                    url = NetworkModule.BASE_URL + href
                 )
             )
         }

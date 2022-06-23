@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.foundy.domain.model.Notice
 import com.foundy.presentation.databinding.ItemNoticeBinding
+import com.foundy.presentation.webview.WebViewActivity
 
 class NoticeAdapter: RecyclerView.Adapter<NoticeAdapter.ViewHolder>() {
 
-    private val items = ArrayList<Notice>()
+    private val notices = ArrayList<Notice>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -20,10 +21,10 @@ class NoticeAdapter: RecyclerView.Adapter<NoticeAdapter.ViewHolder>() {
         holder.setContent(position)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = notices.size
 
     fun updateList(noticeList: List<Notice>) {
-        items.addAll(noticeList)
+        notices.addAll(noticeList)
         notifyDataSetChanged()
     }
 
@@ -33,12 +34,13 @@ class NoticeAdapter: RecyclerView.Adapter<NoticeAdapter.ViewHolder>() {
 
         fun setContent(position: Int) {
             binding.apply {
-                val item = items[position]
-                title.text = item.title
-                subtitle.text = item.writer + " · " + item.date
+                val notice = notices[position]
+                title.text = notice.title
+                subtitle.text = notice.writer + " · " + notice.date
 
                 noticeItem.setOnClickListener {
-                    // TODO 웹뷰 띄우기
+                    val intent = WebViewActivity.getIntent(root.context, notice)
+                    root.context.startActivity(intent)
                 }
             }
         }

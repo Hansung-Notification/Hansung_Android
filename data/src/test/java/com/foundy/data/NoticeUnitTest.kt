@@ -9,7 +9,7 @@ import org.junit.Test
 
 class NoticeUnitTest {
     private val mockNoticeApiService = with(NetworkModule()) {
-        provideNoticeApiService(provideNoticeRetrofit(provideHttpClient()))
+        provideNoticeApiService(provideRetrofit(provideHttpClient()))
     }
 
     @Test

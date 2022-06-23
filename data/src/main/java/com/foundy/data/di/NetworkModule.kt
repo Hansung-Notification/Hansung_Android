@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class NetworkModule {
 
     companion object {
-        const val NOTICE_BASE_URL = "https://www.hansung.ac.kr/hansung/8385/"
+        const val BASE_URL = "https://www.hansung.ac.kr/"
     }
 
     @Provides
@@ -33,10 +33,10 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    @Named("Notice")
-    fun provideNoticeRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    @Named("retrofit")
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(NOTICE_BASE_URL)
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .client(provideHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
@@ -45,7 +45,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNoticeApiService(@Named("Notice") retrofit: Retrofit): NoticeApi {
+    fun provideNoticeApiService(@Named("retrofit") retrofit: Retrofit): NoticeApi {
         return retrofit.create(NoticeApi::class.java)
     }
 }
