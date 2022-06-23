@@ -14,7 +14,7 @@ object NoticeMapper {
 
         noticeList.forEach {
             val subject = it.select(".td-subject")
-            val href = subject.attr("href")
+            val href = it.select("a[href]").attr("href")
             val number = it.select(".td-num").text()
             val isHeader = !isNumeric(number)
             val isNew = subject.select(".new").isNotEmpty()
