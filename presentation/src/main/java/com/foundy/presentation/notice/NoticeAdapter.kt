@@ -12,7 +12,7 @@ class NoticeAdapter: RecyclerView.Adapter<NoticeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemNoticeBinding.inflate(layoutInflater)
+        val binding = ItemNoticeBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 
@@ -36,6 +36,10 @@ class NoticeAdapter: RecyclerView.Adapter<NoticeAdapter.ViewHolder>() {
                 val item = items[position]
                 title.text = item.title
                 subtitle.text = item.writer + " · " + item.date
+
+                noticeItem.setOnClickListener {
+                    // TODO 웹뷰 띄우기
+                }
             }
         }
     }
