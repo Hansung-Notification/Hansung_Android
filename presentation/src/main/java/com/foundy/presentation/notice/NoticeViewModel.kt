@@ -18,14 +18,22 @@ class NoticeViewModel @Inject constructor(
     private val _noticeList = MutableLiveData<List<Notice>>()
     val noticeList: LiveData<List<Notice>> get() = _noticeList
 
+    private val _isError = MutableLiveData(false)
+    val isError : LiveData<Boolean> get() = _isError
+
     init {
-        getNoticeList()
+        updateNoticeList()
     }
 
-    private fun getNoticeList() {
+    fun updateNoticeList() {
         viewModelScope.launch {
             val result = getNoticeListUseCase()
-            _noticeList.postValue(result.getOrNull())
+            if (result.isSuccess) {
+                _noticeList.postValue(result.getOrNull())
+                _isError.postValue(false)
+            } else {
+                _isError.postValue(true)
+            }
         }
     }
 }

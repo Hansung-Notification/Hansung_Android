@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Presentation</string>
+    <string name="retry">재시도</string>
 </resources>

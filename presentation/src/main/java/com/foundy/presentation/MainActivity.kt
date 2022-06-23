@@ -3,9 +3,10 @@ package com.foundy.presentation
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.foundy.presentation.notice.NoticeAdapter
+import androidx.fragment.app.commit
 import com.foundy.presentation.databinding.ActivityMainBinding
+import com.foundy.presentation.notice.ErrorFragment
+import com.foundy.presentation.notice.NoticeFragment
 import com.foundy.presentation.notice.NoticeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,20 +21,17 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initView()
-        initEvent()
-    }
-
-    private fun initView() {
-        binding.apply {
-            recyclerView.adapter = NoticeAdapter()
-            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-        }
-    }
-
-    private fun initEvent() {
-        viewModel.noticeList.observe(this) {
-            (binding.recyclerView.adapter as NoticeAdapter).updateList(it)
+        viewModel.isError.observe(this) { isError ->
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                val fragmentClass = if (isError) {
+                    ErrorFragment::class.java
+                } else {
+                    NoticeFragment::class.java
+                }
+                replace(R.id.fragmentContainer, fragmentClass, null)
+                addToBackStack(null)
+            }
         }
     }
 }
