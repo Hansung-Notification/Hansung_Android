@@ -21,8 +21,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            style="@style/contentTitleText"
             android:id="@+id/title"
+            style="@style/contentTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -38,25 +38,25 @@
             android:layout_height="wrap_content">
 
             <TextView
-                style="@style/contentSubtitleText"
                 android:id="@+id/subtitle"
+                style="@style/contentSubtitleText"
                 android:layout_width="wrap_content"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
+                android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
                 tools:text="학생장학팀 · 2022.06.21" />
 
             <ImageView
                 android:id="@+id/newIcon"
-                android:src="@drawable/ic_baseline_fiber_new_24"
-                android:layout_gravity="center"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
+                android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
-                app:tint="@color/purple_100"
-                android:contentDescription="@string/new_notice" />
+                android:contentDescription="@string/new_notice"
+                android:src="@drawable/ic_baseline_fiber_new_24"
+                app:tint="@color/purple_100" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
