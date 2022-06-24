@@ -3,18 +3,20 @@ package com.foundy.presentation.view.webview
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebSettings.FORCE_DARK_OFF
 import android.webkit.WebSettings.FORCE_DARK_ON
 import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import com.foundy.domain.model.Notice
 import com.foundy.presentation.databinding.ActivityWebViewBinding
 import com.google.gson.Gson
 
+
 class WebViewActivity : AppCompatActivity() {
+
     private var _binding: ActivityWebViewBinding? = null
     private val binding: ActivityWebViewBinding get() = requireNotNull(_binding)
 
@@ -36,10 +38,27 @@ class WebViewActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val notice = getNoticeFromIntent()
+        initToolBar(notice)
+        initWebView(notice)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    private fun initToolBar(notice: Notice) {
+        binding.webViewToolBar.apply {
+            title = notice.title
+            setSupportActionBar(this)
+        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun initWebView(notice: Notice) {
         binding.webView.apply {
             webViewClient = WebViewClient()
         }.loadUrl(notice.url)
-
         setWebViewThemeMode()
     }
 
