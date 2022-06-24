@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.MainViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentFavoriteBinding
+import com.foundy.presentation.extension.addDivider
 import com.foundy.presentation.notice.NoticeAdapter
 
 class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
@@ -21,6 +22,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         binding.apply {
             val noticeAdapter = NoticeAdapter.favoriteOnly(viewModel)
             recyclerView.adapter = noticeAdapter
+            recyclerView.addDivider(view.context)
             recyclerView.layoutManager = LinearLayoutManager(context)
 
             viewModel.favoriteList.value?.let { noticeAdapter.addAll(it) }
