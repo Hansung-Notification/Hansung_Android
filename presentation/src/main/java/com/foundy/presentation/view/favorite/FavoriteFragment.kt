@@ -25,7 +25,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             recyclerView.addDividerDecoration(view.context)
             recyclerView.layoutManager = LinearLayoutManager(context)
 
-            viewModel.favoriteList.value?.let { noticeAdapter.addAll(it) }
+            noticeAdapter.addAll(viewModel.favoriteList)
         }
     }
 }

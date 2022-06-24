@@ -27,8 +27,8 @@ class MainViewModel @Inject constructor(
     private val _isNetworkError = MutableLiveData(false)
     val isNetworkError: LiveData<Boolean> get() = _isNetworkError
 
-    private val _favoriteList = MutableLiveData<List<Notice>>(emptyList())
-    val favoriteList: LiveData<List<Notice>> get() = _favoriteList
+    private val _favoriteList = mutableListOf<Notice>()
+    val favoriteList: List<Notice> get() = _favoriteList
 
     init {
         updateNoticeList()
@@ -51,34 +51,26 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val result = readFavoriteListUseCase()
             if (result.isSuccess) {
-                _favoriteList.postValue(result.getOrNull())
+                result.getOrNull()?.let { _favoriteList.addAll(it) }
             }
         }
     }
 
-    private fun getCloneOfFavoriteList(): ArrayList<Notice> {
-        return _favoriteList.value?.let { ArrayList(it) } ?: arrayListOf()
-    }
-
     fun addFavoriteItem(notice: Notice) {
-        val temp = getCloneOfFavoriteList()
-        temp.add(notice)
-        _favoriteList.value = temp
+        _favoriteList.add(notice)
         viewModelScope.launch {
             addFavoriteNoticeUseCase(notice)
         }
     }
 
     fun removeFavoriteItem(notice: Notice) {
-        val temp = getCloneOfFavoriteList()
-        temp.remove(notice)
-        _favoriteList.value = temp
+        _favoriteList.remove(notice)
         viewModelScope.launch {
             removeFavoriteNoticeUseCase(notice)
         }
     }
 
     fun isFavorite(notice: Notice): Boolean {
-        return _favoriteList.value?.firstOrNull { it.url == notice.url } != null
+        return _favoriteList.firstOrNull { it.url == notice.url } != null
     }
 }
