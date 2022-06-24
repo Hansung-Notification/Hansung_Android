@@ -15,7 +15,7 @@ fun View.addRipple() = with(TypedValue()) {
     setBackgroundResource(resourceId)
 }
 
-fun RecyclerView.addDivider(context: Context) {
+fun RecyclerView.addDividerDecoration(context: Context) {
     val decoration = DividerItemDecoration(context, LinearLayout.VERTICAL)
     addItemDecoration(decoration)
 }

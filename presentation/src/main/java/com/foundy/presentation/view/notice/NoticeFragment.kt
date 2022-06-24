@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentNoticeBinding
-import com.foundy.presentation.extension.addDivider
+import com.foundy.presentation.extension.addDividerDecoration
 
 class NoticeFragment : Fragment(R.layout.fragment_notice) {
 
@@ -19,7 +19,7 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
         val binding = FragmentNoticeBinding.bind(view)
 
         binding.apply {
-            recyclerView.addDivider(view.context)
+            recyclerView.addDividerDecoration(view.context)
             recyclerView.adapter = NoticeAdapter.normal(viewModel)
             recyclerView.layoutManager = LinearLayoutManager(context)
         }
