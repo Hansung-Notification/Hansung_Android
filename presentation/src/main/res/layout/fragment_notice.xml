@@ -5,9 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".notice.NoticeFragment">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/notice_fragment_container_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/error_fragment"
+        android:name="com.foundy.presentation.notice.ErrorFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

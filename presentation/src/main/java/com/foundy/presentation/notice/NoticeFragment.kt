@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.R
+import com.foundy.presentation.databinding.FragmentNoticeBinding
 
 class NoticeFragment : Fragment(R.layout.fragment_notice) {
 
@@ -13,18 +14,18 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentNoticeBinding.bind(view)
 
+        binding.apply {
+            recyclerView.adapter = NoticeAdapter()
+            recyclerView.layoutManager = LinearLayoutManager(context)
+        }
+
+        viewModel.noticeList.observe(viewLifecycleOwner) {
+            (binding.recyclerView.adapter as NoticeAdapter).addAll(it)
+        }
         viewModel.isError.observe(viewLifecycleOwner) { isError ->
-            parentFragmentManager.commit {
-                setReorderingAllowed(false)
-                val fragmentClass = if (isError) {
-                    ErrorFragment::class.java
-                } else {
-                    NoticeRecyclerFragment::class.java
-                }
-                replace(R.id.notice_fragment_container_view, fragmentClass, null)
-                addToBackStack(null)
-            }
+            binding.errorFragment.visibility = if (isError) View.VISIBLE else View.GONE
         }
     }
 }

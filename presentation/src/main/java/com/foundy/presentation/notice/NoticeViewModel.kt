@@ -13,13 +13,13 @@ import javax.inject.Inject
 @HiltViewModel
 class NoticeViewModel @Inject constructor(
     private val getNoticeListUseCase: GetNoticeListUseCase,
-): ViewModel() {
+) : ViewModel() {
 
     private val _noticeList = MutableLiveData<List<Notice>>()
     val noticeList: LiveData<List<Notice>> get() = _noticeList
 
     private val _isError = MutableLiveData(false)
-    val isError : LiveData<Boolean> get() = _isError
+    val isError: LiveData<Boolean> get() = _isError
 
     init {
         updateNoticeList()
