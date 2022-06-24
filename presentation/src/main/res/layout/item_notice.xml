@@ -51,6 +51,7 @@
             <ImageView
                 android:id="@+id/newIcon"
                 android:src="@drawable/ic_baseline_fiber_new_24"
+                android:layout_gravity="center"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginEnd="8dp"
