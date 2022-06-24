@@ -18,7 +18,7 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
         val binding = FragmentNoticeBinding.bind(view)
 
         binding.apply {
-            recyclerView.adapter = NoticeAdapter()
+            recyclerView.adapter = NoticeAdapter.normal(viewModel)
             recyclerView.layoutManager = LinearLayoutManager(context)
         }
 

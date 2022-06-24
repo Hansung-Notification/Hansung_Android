@@ -8,7 +8,15 @@ class FavoriteLocalDataSourceImpl @Inject constructor(
     private val favoriteDao: FavoriteDao
 ): FavoriteLocalDataSource {
 
-    override fun getAll(): List<Notice> {
+    override suspend fun getAll(): List<Notice> {
         return favoriteDao.getAll()
+    }
+
+    override suspend fun add(notice: Notice) {
+        favoriteDao.insert(notice)
+    }
+
+    override suspend fun remove(notice: Notice) {
+        favoriteDao.delete(notice)
     }
 }

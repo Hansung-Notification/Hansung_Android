@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foundy.domain.model.Notice
+import com.foundy.domain.usecase.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.GetNoticeListUseCase
 import com.foundy.domain.usecase.ReadFavoriteListUseCase
+import com.foundy.domain.usecase.RemoveFavoriteNoticeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,7 +16,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getNoticeListUseCase: GetNoticeListUseCase,
-    private val readFavoriteListUseCase: ReadFavoriteListUseCase
+    private val readFavoriteListUseCase: ReadFavoriteListUseCase,
+    private val addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
+    private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase
 ) : ViewModel() {
 
     private val _noticeList = MutableLiveData<List<Notice>>()
@@ -25,9 +29,6 @@ class MainViewModel @Inject constructor(
 
     private val _favoriteList = MutableLiveData<List<Notice>>(emptyList())
     val favoriteList: LiveData<List<Notice>> get() = _favoriteList
-
-    private val _isLocalDbError = MutableLiveData(false)
-    val isLocalDbError: LiveData<Boolean> get() = _isLocalDbError
 
     init {
         updateNoticeList()
@@ -47,12 +48,37 @@ class MainViewModel @Inject constructor(
     }
 
     private fun readFavoriteList() {
-        val result = readFavoriteListUseCase()
-        if (result.isSuccess) {
-            _favoriteList.value = result.getOrNull()
-            _isLocalDbError.value = false
-        } else {
-            _isLocalDbError.value = true
+        viewModelScope.launch {
+            val result = readFavoriteListUseCase()
+            if (result.isSuccess) {
+                _favoriteList.postValue(result.getOrNull())
+            }
         }
+    }
+
+    private fun getCloneOfFavoriteList(): ArrayList<Notice> {
+        return _favoriteList.value?.let { ArrayList(it) } ?: arrayListOf()
+    }
+
+    fun addFavoriteItem(notice: Notice) {
+        val temp = getCloneOfFavoriteList()
+        temp.add(notice)
+        _favoriteList.value = temp
+        viewModelScope.launch {
+            addFavoriteNoticeUseCase(notice)
+        }
+    }
+
+    fun removeFavoriteItem(notice: Notice) {
+        val temp = getCloneOfFavoriteList()
+        temp.remove(notice)
+        _favoriteList.value = temp
+        viewModelScope.launch {
+            removeFavoriteNoticeUseCase(notice)
+        }
+    }
+
+    fun isFavorite(notice: Notice): Boolean {
+        return _favoriteList.value?.firstOrNull { it.url == notice.url } != null
     }
 }

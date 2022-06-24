@@ -19,12 +19,11 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         val binding = FragmentFavoriteBinding.bind(view)
 
         binding.apply {
-            recyclerView.adapter = NoticeAdapter()
+            val noticeAdapter = NoticeAdapter.favoriteOnly(viewModel)
+            recyclerView.adapter = noticeAdapter
             recyclerView.layoutManager = LinearLayoutManager(context)
-        }
 
-        viewModel.favoriteList.observe(viewLifecycleOwner) {
-            (binding.recyclerView.adapter as NoticeAdapter).addAll(it)
+            viewModel.favoriteList.value?.let { noticeAdapter.addAll(it) }
         }
     }
 }

@@ -7,5 +7,5 @@ import javax.inject.Inject
 class ReadFavoriteListUseCase @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ) {
-    operator fun invoke(): Result<List<Notice>> = favoriteRepository.getAll()
+    suspend operator fun invoke(): Result<List<Notice>> = favoriteRepository.getAll()
 }

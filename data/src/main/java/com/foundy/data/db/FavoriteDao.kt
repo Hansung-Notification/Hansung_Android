@@ -10,11 +10,11 @@ import com.foundy.domain.model.Notice
 @Dao
 interface FavoriteDao {
     @Query("SELECT * FROM $NOTICE_TABLE_NAME")
-    fun getAll(): List<Notice>
+    suspend fun getAll(): List<Notice>
 
     @Insert
-    fun insert(notice: Notice)
+    suspend fun insert(notice: Notice)
 
     @Delete
-    fun delete(notice: Notice)
+    suspend fun delete(notice: Notice)
 }
