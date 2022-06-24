@@ -3,4 +3,5 @@
     <string name="retry">재시도</string>
     <string name="notice">공지사항</string>
     <string name="favorite">즐겨찾기</string>
+    <string name="new_notice">새로운 공지사항</string>
 </resources>

@@ -32,10 +32,13 @@ class NoticeAdapter internal constructor(
         /**
          * 즐겨찾기가 이닌 공지사항은 리스트에서 제거하는 리사이클러 뷰 어뎁터를 생성한다.
          */
-        fun favoriteOnly(viewModel: MainViewModel) = NoticeAdapter(viewModel, NoticeAdapterStyle.FAVORITE_ONLY)
+        fun favoriteOnly(viewModel: MainViewModel) =
+            NoticeAdapter(viewModel, NoticeAdapterStyle.FAVORITE_ONLY)
     }
 
     private val notices = ArrayList<Notice>()
+
+    private val isFavoriteOnly get() = style == NoticeAdapterStyle.FAVORITE_ONLY
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -71,6 +74,11 @@ class NoticeAdapter internal constructor(
 
                 title.text = notice.title
                 subtitle.text = notice.writer + " · " + notice.date
+                newIcon.visibility = if (notice.isNew && !isFavoriteOnly) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
                 if (notice.isHeader) {
                     noticeItem.setBackgroundColor(R.color.purple_200, 30)
                     favButton.visibility = View.GONE
@@ -91,7 +99,7 @@ class NoticeAdapter internal constructor(
                         viewModel.addFavoriteItem(notice)
                     } else {
                         viewModel.removeFavoriteItem(notice)
-                        if (style == NoticeAdapterStyle.FAVORITE_ONLY) remove(notice)
+                        if (isFavoriteOnly) remove(notice)
                     }
                 }
             }
