@@ -1,4 +1,4 @@
-package com.foundy.presentation.webview
+package com.foundy.presentation.view.webview
 
 import android.content.Context
 import android.content.Intent

@@ -1,10 +1,10 @@
-package com.foundy.presentation.notice
+package com.foundy.presentation.view.notice
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.foundy.presentation.MainViewModel
+import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentErrorBinding
 

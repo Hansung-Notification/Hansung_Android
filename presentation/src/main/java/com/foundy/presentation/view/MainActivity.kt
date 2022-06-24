@@ -1,9 +1,10 @@
-package com.foundy.presentation
+package com.foundy.presentation.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

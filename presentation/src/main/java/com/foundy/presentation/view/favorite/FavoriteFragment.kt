@@ -1,15 +1,15 @@
-package com.foundy.presentation.favorite
+package com.foundy.presentation.view.favorite
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.foundy.presentation.MainViewModel
+import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentFavoriteBinding
 import com.foundy.presentation.extension.addDivider
-import com.foundy.presentation.notice.NoticeAdapter
+import com.foundy.presentation.view.notice.NoticeAdapter
 
 class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 

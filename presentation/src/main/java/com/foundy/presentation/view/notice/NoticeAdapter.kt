@@ -1,4 +1,4 @@
-package com.foundy.presentation.notice
+package com.foundy.presentation.view.notice
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 import com.foundy.domain.model.Notice
-import com.foundy.presentation.MainViewModel
+import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.databinding.ItemNoticeBinding
-import com.foundy.presentation.webview.WebViewActivity
+import com.foundy.presentation.view.webview.WebViewActivity
 import com.foundy.presentation.extension.addRipple
 
 enum class NoticeAdapterStyle {

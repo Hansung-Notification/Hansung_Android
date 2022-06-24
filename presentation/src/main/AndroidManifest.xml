@@ -4,10 +4,10 @@
 
     <application>
         <activity
-            android:name=".webview.WebViewActivity"
+            android:name="com.foundy.presentation.view.webview.WebViewActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

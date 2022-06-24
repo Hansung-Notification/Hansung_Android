@@ -1,4 +1,4 @@
-package com.foundy.presentation
+package com.foundy.presentation.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
