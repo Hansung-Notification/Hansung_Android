@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.foundy.presentation.MainViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentErrorBinding
 
 class ErrorFragment : Fragment(R.layout.fragment_error) {
 
-    private val viewModel: NoticeViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

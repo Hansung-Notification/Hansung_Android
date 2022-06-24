@@ -5,12 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.foundy.presentation.MainViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentNoticeBinding
 
 class NoticeFragment : Fragment(R.layout.fragment_notice) {
 
-    private val viewModel: NoticeViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -24,7 +25,7 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
         viewModel.noticeList.observe(viewLifecycleOwner) {
             (binding.recyclerView.adapter as NoticeAdapter).addAll(it)
         }
-        viewModel.isError.observe(viewLifecycleOwner) { isError ->
+        viewModel.isNetworkError.observe(viewLifecycleOwner) { isError ->
             binding.errorFragment.visibility = if (isError) View.VISIBLE else View.GONE
         }
     }
