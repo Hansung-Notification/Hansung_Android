@@ -8,11 +8,11 @@
     <fragment
         android:id="@+id/noticeFragment"
         android:name="com.foundy.presentation.view.notice.NoticeFragment"
-        android:label="fragment_notice"
+        android:label="@string/notice"
         tools:layout="@layout/fragment_notice"/>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.foundy.presentation.view.favorite.FavoriteFragment"
-        android:label="fragment_favorite"
+        android:label="@string/favorite"
         tools:layout="@layout/fragment_favorite" />
 </navigation>
