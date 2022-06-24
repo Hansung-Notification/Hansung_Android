@@ -1,16 +1,16 @@
 package com.foundy.presentation.view.notice
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 import com.foundy.domain.model.Notice
+import com.foundy.presentation.R
 import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.databinding.ItemNoticeBinding
 import com.foundy.presentation.view.webview.WebViewActivity
-import com.foundy.presentation.extension.addRipple
+import com.foundy.presentation.extension.*
 
 enum class NoticeAdapterStyle {
     NORMAL,
@@ -72,7 +72,7 @@ class NoticeAdapter internal constructor(
                 title.text = notice.title
                 subtitle.text = notice.writer + " · " + notice.date
                 if (notice.isHeader) {
-                    noticeItem.setBackgroundColor(Color.LTGRAY)
+                    noticeItem.setBackgroundColor(R.color.purple_200, 30)
                     favButton.visibility = View.GONE
                 } else {
                     noticeItem.addRipple()
