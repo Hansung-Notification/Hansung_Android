@@ -73,7 +73,7 @@ class NoticeAdapter internal constructor(
                 val notice = notices[position]
 
                 title.text = notice.title
-                subtitle.text = notice.writer + " · " + notice.date
+                subtitle.text = notice.date + " · " + notice.writer
                 newIcon.visibility = if (notice.isNew && !isFavoriteOnly) {
                     View.VISIBLE
                 } else {

@@ -46,7 +46,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                tools:text="학생장학팀 · 2022.06.21" />
+                tools:text="2022.06.21 · 학생장학팀" />
 
             <ImageView
                 android:id="@+id/newIcon"
