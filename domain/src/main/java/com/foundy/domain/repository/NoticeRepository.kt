@@ -1,7 +1,9 @@
 package com.foundy.domain.repository
 
+import androidx.paging.PagingData
 import com.foundy.domain.model.Notice
+import kotlinx.coroutines.flow.Flow
 
 interface NoticeRepository {
-    suspend fun getNoticeList(): Result<List<Notice>>
+    fun getNoticeList(): Flow<PagingData<Notice>>
 }

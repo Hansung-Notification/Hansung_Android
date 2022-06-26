@@ -30,6 +30,10 @@ dependencies {
     // webView
     implementation 'androidx.webkit:webkit:1.4.0'
 
+    // paging
+    implementation "androidx.paging:paging-common-ktx:$paging"
+    implementation "androidx.paging:paging-runtime-ktx:$paging"
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'

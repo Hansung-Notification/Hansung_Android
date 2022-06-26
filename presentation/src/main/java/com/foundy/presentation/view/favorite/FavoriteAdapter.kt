@@ -1,21 +1,20 @@
-package com.foundy.presentation.view.notice
+package com.foundy.presentation.view.favorite
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ToggleButton
-import androidx.core.view.isVisible
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.foundy.domain.model.Notice
-import com.foundy.presentation.R
 import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.databinding.ItemNoticeBinding
 import com.foundy.presentation.view.webview.WebViewActivity
 
-class NoticeAdapter(
+class FavoriteAdapter(
     private val viewModel: MainViewModel,
-) : PagingDataAdapter<Notice, NoticeAdapter.ViewHolder>(diffCallback) {
+) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
+
+    private val notices = ArrayList<Notice>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -24,22 +23,32 @@ class NoticeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(notices[position])
+    }
+
+    override fun getItemCount(): Int = notices.size
+
+    fun addAll(noticeList: List<Notice>) {
+        val startIndex = notices.size
+        notices.addAll(noticeList)
+        notifyItemRangeInserted(startIndex, noticeList.size)
+    }
+
+    private fun remove(notice: Notice) {
+        val index = notices.indexOf(notice)
+        notices.removeAt(index)
+        notifyItemRemoved(index)
     }
 
     inner class ViewHolder(
         private val binding: ItemNoticeBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(notice: Notice?) {
+        fun bind(notice: Notice) {
             binding.apply {
-                if (notice == null) {
-                    title.text = binding.root.context.getString(R.string.invalid_data)
-                    return@apply
-                }
                 title.text = notice.title
                 subtitle.text = notice.date + " · " + notice.writer
-                newIcon.isVisible = notice.isNew
+                newIcon.visibility = View.GONE
                 favButton.isChecked = viewModel.isFavorite(notice)
 
                 noticeItem.setOnClickListener {
@@ -51,20 +60,9 @@ class NoticeAdapter(
                         viewModel.addFavoriteItem(notice)
                     } else {
                         viewModel.removeFavoriteItem(notice)
+                        remove(notice)
                     }
                 }
-            }
-        }
-    }
-
-    companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Notice>() {
-            override fun areItemsTheSame(oldItem: Notice, newItem: Notice): Boolean {
-                return oldItem.url == newItem.url
-            }
-
-            override fun areContentsTheSame(oldItem: Notice, newItem: Notice): Boolean {
-                return oldItem.url == newItem.url
             }
         }
     }

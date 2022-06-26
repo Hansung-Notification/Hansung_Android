@@ -9,7 +9,6 @@ import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentFavoriteBinding
 import com.foundy.presentation.extension.addDividerDecoration
-import com.foundy.presentation.view.notice.NoticeAdapter
 
 class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
@@ -20,12 +19,12 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         val binding = FragmentFavoriteBinding.bind(view)
 
         binding.apply {
-            val noticeAdapter = NoticeAdapter.favoriteOnly(viewModel)
-            recyclerView.adapter = noticeAdapter
+            val adapter = FavoriteAdapter(viewModel)
+            recyclerView.adapter = adapter
             recyclerView.addDividerDecoration(view.context)
             recyclerView.layoutManager = LinearLayoutManager(context)
 
-            noticeAdapter.addAll(viewModel.favoriteList)
+            adapter.addAll(viewModel.favoriteList)
         }
     }
 }

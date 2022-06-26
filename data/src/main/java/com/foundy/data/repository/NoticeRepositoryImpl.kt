@@ -1,33 +1,27 @@
 package com.foundy.data.repository
 
-import com.foundy.data.mapper.NoticeMapper
-import com.foundy.data.repository.notice.NoticeRemoteDataSource
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.foundy.data.api.NoticeApi
+import com.foundy.data.paging.NoticePagingSource
 import com.foundy.domain.model.Notice
 import com.foundy.domain.repository.NoticeRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import kotlin.Exception
 
 class NoticeRepositoryImpl @Inject constructor(
-    private val noticeRemoteDataSource: NoticeRemoteDataSource
+    private val noticeApi: NoticeApi,
 ) : NoticeRepository {
 
-    override suspend fun getNoticeList(): Result<List<Notice>> {
-        return try {
-            val response = withContext(Dispatchers.IO) {
-                noticeRemoteDataSource.getNoticeList()
-            }
+    companion object {
+        const val NOTICE_PAGE_SIZE = 30
+    }
 
-            val responseBody = response.body()
-            if (response.isSuccessful && responseBody != null) {
-                Result.success(NoticeMapper(responseBody))
-            } else {
-                val errorMessage = response.message()
-                Result.failure(Exception(errorMessage))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override fun getNoticeList(): Flow<PagingData<Notice>> {
+        return Pager(
+            config = PagingConfig(pageSize = NOTICE_PAGE_SIZE),
+            pagingSourceFactory = { NoticePagingSource(noticeApi) }
+        ).flow
     }
 }
