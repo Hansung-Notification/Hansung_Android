@@ -12,6 +12,7 @@ import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentNoticeBinding
 import com.foundy.presentation.extension.addDividerDecoration
+import com.foundy.presentation.view.paging.PagingLoadStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -27,7 +28,9 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
 
         binding.apply {
             recyclerView.addDividerDecoration(view.context)
-            recyclerView.adapter = adapter
+            recyclerView.adapter = adapter.withLoadStateFooter(
+                PagingLoadStateAdapter { adapter.retry() }
+            )
             recyclerView.layoutManager = LinearLayoutManager(context)
 
             retryButton.setOnClickListener {
