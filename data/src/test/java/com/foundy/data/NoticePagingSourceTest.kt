@@ -27,7 +27,7 @@ class NoticePagingSourceTest {
     private lateinit var noticePagingSource: NoticePagingSource
 
     @Before
-    fun setup() {
+    fun setUp() {
         MockitoAnnotations.openMocks(this)
         noticePagingSource = NoticePagingSource(api)
     }
