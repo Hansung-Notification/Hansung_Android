@@ -3,7 +3,7 @@ package com.foundy.data
 import androidx.paging.PagingSource
 import com.foundy.data.api.NoticeApi
 import com.foundy.data.mapper.NoticeMapper
-import com.foundy.data.paging.NoticePagingSource
+import com.foundy.data.source.notice.NoticePagingSource
 import com.foundy.domain.exception.ScrapingException
 import com.foundy.domain.model.Notice
 import kotlinx.coroutines.runBlocking

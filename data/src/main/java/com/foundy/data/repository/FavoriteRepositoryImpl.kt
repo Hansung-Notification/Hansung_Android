@@ -1,6 +1,6 @@
 package com.foundy.data.repository
 
-import com.foundy.data.repository.favorite.FavoriteLocalDataSource
+import com.foundy.data.source.favorite.FavoriteLocalDataSource
 import com.foundy.domain.model.Notice
 import com.foundy.domain.repository.FavoriteRepository
 import kotlinx.coroutines.Dispatchers

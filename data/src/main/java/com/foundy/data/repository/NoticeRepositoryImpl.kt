@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.foundy.data.api.NoticeApi
-import com.foundy.data.paging.NoticePagingSource
+import com.foundy.data.source.notice.NoticePagingSource
 import com.foundy.domain.model.Notice
 import com.foundy.domain.repository.NoticeRepository
 import kotlinx.coroutines.flow.Flow

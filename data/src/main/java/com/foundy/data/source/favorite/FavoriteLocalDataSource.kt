@@ -1,4 +1,4 @@
-package com.foundy.data.repository.favorite
+package com.foundy.data.source.favorite
 
 import com.foundy.domain.model.Notice
 

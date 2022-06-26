@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.foundy.data.db.FavoriteDao
 import com.foundy.data.db.FavoriteDatabase
-import com.foundy.data.repository.favorite.FavoriteLocalDataSource
-import com.foundy.data.repository.favorite.FavoriteLocalDataSourceImpl
+import com.foundy.data.source.favorite.FavoriteLocalDataSource
+import com.foundy.data.source.favorite.FavoriteLocalDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

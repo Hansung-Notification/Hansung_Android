@@ -1,4 +1,4 @@
-package com.foundy.data.paging
+package com.foundy.data.source.notice
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
