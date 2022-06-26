@@ -11,6 +11,8 @@ import com.foundy.domain.model.Notice
 import com.foundy.presentation.R
 import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.databinding.ItemNoticeBinding
+import com.foundy.presentation.extension.addRipple
+import com.foundy.presentation.extension.setBackgroundColor
 import com.foundy.presentation.view.webview.WebViewActivity
 
 class NoticeAdapter(
@@ -40,7 +42,13 @@ class NoticeAdapter(
                 title.text = notice.title
                 subtitle.text = notice.date + " · " + notice.writer
                 newIcon.isVisible = notice.isNew
+                favButton.isVisible = !notice.isHeader
                 favButton.isChecked = viewModel.isFavorite(notice)
+                if (notice.isHeader) {
+                    noticeItem.setBackgroundColor(R.color.purple_200, 30)
+                } else {
+                    noticeItem.addRipple()
+                }
 
                 noticeItem.setOnClickListener {
                     val intent = WebViewActivity.getIntent(root.context, notice)
