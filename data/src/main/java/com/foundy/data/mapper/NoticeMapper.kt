@@ -8,17 +8,7 @@ import org.jsoup.Jsoup
 import org.jsoup.internal.StringUtil.isNumeric
 import java.lang.Exception
 
-sealed class NoticeMapper(private val isHeaderOnly: Boolean) {
-
-    /**
-     * 헤더 공지사항은 제외한 공지만 뽑는 오브젝트이다.
-     */
-    object NonHeader : NoticeMapper(false)
-
-    /**
-     * 헤더 공지사항만 뽑아오는 오브젝트이다.
-     */
-    object Header : NoticeMapper(true)
+object NoticeMapper {
 
     operator fun invoke(responseBody: ResponseBody): List<Notice> {
         try {
@@ -37,18 +27,16 @@ sealed class NoticeMapper(private val isHeaderOnly: Boolean) {
                 val writer = it.select(".td-write").text()
                 val date = it.select(".td-date").text()
 
-                if ((isHeader && isHeaderOnly) || (!isHeader && !isHeaderOnly)) {
-                    result.add(
-                        Notice(
-                            isHeader = isHeader,
-                            isNew = isNew,
-                            title = title,
-                            date = date,
-                            writer = writer,
-                            url = NetworkModule.BASE_URL + href
-                        )
+                result.add(
+                    Notice(
+                        isHeader = isHeader,
+                        isNew = isNew,
+                        title = title,
+                        date = date,
+                        writer = writer,
+                        url = NetworkModule.BASE_URL + href
                     )
-                }
+                )
             }
             return result
         } catch (e: Exception) {

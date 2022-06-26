@@ -4,7 +4,6 @@ import com.foundy.data.api.NoticeApi
 import com.foundy.data.repository.FavoriteRepositoryImpl
 import com.foundy.data.repository.NoticeRepositoryImpl
 import com.foundy.data.repository.favorite.FavoriteLocalDataSource
-import com.foundy.data.repository.notice.NoticeRemoteDataSource
 import com.foundy.domain.repository.FavoriteRepository
 import com.foundy.domain.repository.NoticeRepository
 import dagger.Module
@@ -19,11 +18,8 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideNoticeRepository(
-        noticeApi: NoticeApi,
-        noticeRemoteDataSource: NoticeRemoteDataSource
-    ): NoticeRepository {
-        return NoticeRepositoryImpl(noticeApi, noticeRemoteDataSource)
+    fun provideNoticeRepository(noticeApi: NoticeApi): NoticeRepository {
+        return NoticeRepositoryImpl(noticeApi)
     }
 
     @Provides

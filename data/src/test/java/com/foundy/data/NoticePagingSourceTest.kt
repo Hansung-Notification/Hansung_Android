@@ -77,7 +77,7 @@ class NoticePagingSourceTest {
         given(api.getNoticeList(1)).willReturn(createMockResponse())
 
         val expectedResult = PagingSource.LoadResult.Page(
-            data = NoticeMapper.NonHeader(createMockResponse().body()!!),
+            data = NoticeMapper(createMockResponse().body()!!),
             prevKey = null,
             nextKey = 2
         )

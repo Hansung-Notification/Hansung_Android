@@ -6,5 +6,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface NoticeRepository {
     fun getNoticeList(): Flow<PagingData<Notice>>
-    suspend fun getHeaderNoticeList(): Result<List<Notice>>
 }

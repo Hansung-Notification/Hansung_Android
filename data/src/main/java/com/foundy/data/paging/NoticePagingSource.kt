@@ -28,7 +28,7 @@ class NoticePagingSource @Inject constructor(
             val responseBody = response.body()
             if (response.isSuccessful && responseBody != null) {
                 LoadResult.Page(
-                    data = NoticeMapper.NonHeader(responseBody),
+                    data = NoticeMapper(responseBody),
                     prevKey = if (page == START_PAGE) null else page - 1,
                     nextKey = page + 1
                 )
