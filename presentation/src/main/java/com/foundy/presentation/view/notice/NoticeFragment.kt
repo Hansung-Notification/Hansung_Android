@@ -24,7 +24,7 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentNoticeBinding.bind(view)
-        val adapter = NoticeAdapter(viewModel)
+        val adapter = NoticeAdapter()
 
         binding.apply {
             recyclerView.addDividerDecoration(view.context)
