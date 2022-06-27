@@ -34,19 +34,17 @@ class NoticeFragmentTest {
     )
     private val mockNoticeFlow = flowOf(PagingData.from(mockNotices))
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel = mockMainViewModel(
+        mockk<GetNoticeListUseCase>().also { every { it() } returns mockNoticeFlow }
+    )
 
     @Before
     fun setUp() {
-        val getNoticeListUseCase = mockk<GetNoticeListUseCase>().also {
-            every { it() } returns mockNoticeFlow
-        }
-        viewModel = mockMainViewModel(getNoticeListUseCase)
-
-        val viewModelFactory: ViewModelProvider.Factory = mockk()
-        every { viewModelFactory.create(MainViewModel::class.java) } answers { viewModel }
-        every { fragmentFactory.instantiate(any(), any()) } answers {
-            NoticeFragment { viewModelFactory }
+        with(mockk<ViewModelProvider.Factory>()) {
+            every { create(MainViewModel::class.java) } answers { viewModel }
+            every { fragmentFactory.instantiate(any(), any()) } answers {
+                NoticeFragment { this@with }
+            }
         }
     }
 
