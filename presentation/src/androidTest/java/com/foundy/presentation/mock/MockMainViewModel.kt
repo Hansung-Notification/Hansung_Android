@@ -23,7 +23,7 @@ fun mockMainViewModel(
     return MainViewModel(
         getNoticeListUseCase,
         readFavoriteListUseCase,
-        mockk(),
-        mockk()
+        mockk(relaxed = true),
+        mockk(relaxed = true)
     )
 }
