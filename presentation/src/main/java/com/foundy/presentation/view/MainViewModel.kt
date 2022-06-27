@@ -27,18 +27,18 @@ class MainViewModel @Inject constructor(
     val favoriteList: List<NoticeUiState> get() = _favoriteList
 
     val noticeFlow = getNoticeListUseCase().cachedIn(viewModelScope).map {
-        it.map { notice -> notice.toNoticeUiState() }
+        it.map(::createNoticeUiState)
     }
 
     init {
         readFavoriteList()
     }
 
-    private fun Notice.toNoticeUiState(): NoticeUiState {
+    private fun createNoticeUiState(notice: Notice): NoticeUiState {
         return NoticeUiState(
-            this,
-            onClickFavorite = { isFavorite -> onClickFavoriteButton(isFavorite, this) },
-            isFavorite = { isFavorite(this) }
+            notice,
+            onClickFavorite = { isFavorite -> onClickFavoriteButton(isFavorite, notice) },
+            isFavorite = { isFavorite(notice) }
         )
     }
 
@@ -55,7 +55,7 @@ class MainViewModel @Inject constructor(
             val result = readFavoriteListUseCase()
             if (result.isSuccess) {
                 result.getOrNull()?.let { notices ->
-                    val states = notices.map { notice -> notice.toNoticeUiState() }
+                    val states = notices.map(::createNoticeUiState)
                     _favoriteList.addAll(states)
                 }
             }
@@ -63,7 +63,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun addFavoriteItem(notice: Notice) {
-        _favoriteList.add(notice.toNoticeUiState())
+        _favoriteList.add(createNoticeUiState(notice))
         viewModelScope.launch {
             addFavoriteNoticeUseCase(notice)
         }
