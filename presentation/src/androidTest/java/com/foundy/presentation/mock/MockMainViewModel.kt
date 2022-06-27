@@ -13,13 +13,13 @@ fun mockMainViewModel(
     mockReadFavoriteListUseCase: ReadFavoriteListUseCase? = null,
 ) : MainViewModel {
     val getNoticeListUseCase = mockGetNoticeListUseCase ?: mockk()
-    if (mockGetNoticeListUseCase == null)
+    if (mockGetNoticeListUseCase == null) {
         every { getNoticeListUseCase() } returns emptyFlow()
-
+    }
     val readFavoriteListUseCase = mockReadFavoriteListUseCase ?: mockk()
-    if (mockReadFavoriteListUseCase == null)
+    if (mockReadFavoriteListUseCase == null) {
         coEvery { readFavoriteListUseCase() } returns Result.success(emptyList())
-
+    }
     return MainViewModel(
         getNoticeListUseCase,
         readFavoriteListUseCase,
