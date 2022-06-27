@@ -40,5 +40,3 @@ jobs:
 
     - name: Run unit tests
       run: ./gradlew test
-    - name: Run UI tests
-      uses: vgaidarji/android-github-actions-emulator@v1.0.1
