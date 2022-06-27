@@ -13,12 +13,16 @@ dependencies {
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // Coroutine
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
 
     // fragment
-    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    def fragment_version = "1.4.1"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // gson
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
