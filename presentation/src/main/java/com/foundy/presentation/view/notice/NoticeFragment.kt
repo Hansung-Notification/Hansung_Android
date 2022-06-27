@@ -3,8 +3,10 @@ package com.foundy.presentation.view.notice
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,9 +18,11 @@ import com.foundy.presentation.view.paging.PagingLoadStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NoticeFragment : Fragment(R.layout.fragment_notice) {
+class NoticeFragment(
+    @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
+) : Fragment(R.layout.fragment_notice) {
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels(factory)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
