@@ -4,7 +4,6 @@ import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagingData
-import androidx.paging.map
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -17,7 +16,6 @@ import com.foundy.presentation.view.notice.NoticeUiState
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -28,20 +26,18 @@ class NoticeFragmentTest {
 
     private val fragmentFactory: FragmentFactory = mockk()
 
-    private val mockNoticeList = listOf(
+    private val mockNoticeUiStates = listOf(
         NoticeFactory.create(NoticeType.HEADER),
         NoticeFactory.create(NoticeType.NORMAL),
         NoticeFactory.create(NoticeType.NORMAL)
-    )
-    private val mockNoticeFlow = flowOf(PagingData.from(mockNoticeList)).map {
-        it.map { notice ->
-            NoticeUiState(
-                notice,
-                onClickFavorite = { },
-                isFavorite = { true }
-            )
-        }
+    ).map {
+        NoticeUiState(
+            it,
+            onClickFavorite = { },
+            isFavorite = { true }
+        )
     }
+    private val mockNoticeFlow = flowOf(PagingData.from(mockNoticeUiStates))
 
     private lateinit var viewModel: MainViewModel
 
@@ -67,7 +63,7 @@ class NoticeFragmentTest {
             }
 
             val recyclerView = view as RecyclerView
-            assertEquals(mockNoticeList.size, recyclerView.adapter?.itemCount)
+            assertEquals(mockNoticeUiStates.size, recyclerView.adapter?.itemCount)
         }
     }
 }
