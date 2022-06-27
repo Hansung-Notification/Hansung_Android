@@ -26,6 +26,8 @@ class NoticePagingSourceTest {
 
     private lateinit var noticePagingSource: NoticePagingSource
 
+    private val mediaType = MediaType.get("text/html; charset=UTF-8")
+
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
@@ -34,7 +36,7 @@ class NoticePagingSourceTest {
 
     @Test
     fun `returns failure if http error`() = runBlocking {
-        val responseBody = ResponseBody.create(MediaType.get("text/html; charset=UTF-8"), "")
+        val responseBody = ResponseBody.create(mediaType, "")
         val mockResponse = Response.error<ResponseBody>(404, responseBody)
         given(api.getNoticeList(any())).willReturn(mockResponse)
 
@@ -52,12 +54,7 @@ class NoticePagingSourceTest {
     @Test
     fun `refreshes successfully`() = runBlocking {
         val createMockResponse = {
-            Response.success(
-                ResponseBody.create(
-                    MediaType.get("text/html; charset=UTF-8"),
-                    fakeNoticeResponseContent
-                )
-            )
+            Response.success(ResponseBody.create(mediaType, fakeNoticeResponseContent))
         }
         given(api.getNoticeList(1)).willReturn(createMockResponse())
 
@@ -80,10 +77,7 @@ class NoticePagingSourceTest {
 
     @Test
     fun `fails to refresh if NoticeMapper is invalid`(): Unit = runBlocking {
-        val mockResponse = Response.success(ResponseBody.create(
-            MediaType.get("text/html; charset=UTF-8"),
-            ""
-        ))
+        val mockResponse = Response.success(ResponseBody.create(mediaType, ""))
         given(api.getNoticeList(any())).willReturn(mockResponse)
 
         val expectedResult = PagingSource.LoadResult.Error<Int, Notice>(ScrapingException())
