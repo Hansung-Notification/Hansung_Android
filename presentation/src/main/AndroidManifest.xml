@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name="com.foundy.presentation.view.webview.WebViewActivity"
+            android:name=".view.webview.WebViewActivity"
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
