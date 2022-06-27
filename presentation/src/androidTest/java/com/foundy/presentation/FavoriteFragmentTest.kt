@@ -75,7 +75,9 @@ class FavoriteFragmentTest {
             }
 
             val recyclerView = view as RecyclerView
-            assertEquals(mockNotices.size - 1, recyclerView.adapter?.itemCount)
+            val expectedSize = mockNotices.size - 1
+            assertEquals(expectedSize, recyclerView.adapter?.itemCount)
+            assertEquals(expectedSize, viewModel.favoriteList.size)
         }
     }
 }
