@@ -50,21 +50,6 @@ class NoticePagingSourceTest {
     }
 
     @Test
-    fun `returns failure if received null`() = runBlocking {
-        given(api.getNoticeList(any())).willReturn(null)
-
-        val expectedResult = PagingSource.LoadResult.Error<Int, Notice>(NullPointerException())
-        val actualResult = noticePagingSource.load(
-            PagingSource.LoadParams.Refresh(
-                key = 0,
-                loadSize = 1,
-                placeholdersEnabled = false
-            )
-        )
-        assertEquals(expectedResult.toString(), actualResult.toString())
-    }
-
-    @Test
     fun `refreshes successfully`() = runBlocking {
         val createMockResponse = {
             Response.success(
