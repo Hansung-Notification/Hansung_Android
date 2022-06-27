@@ -3,6 +3,7 @@ package com.foundy.presentation.view.favorite
 import android.view.View
 import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
+import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ItemNoticeBinding
 import com.foundy.presentation.view.notice.NoticeUiState
 import com.foundy.presentation.view.webview.WebViewActivity
@@ -16,7 +17,7 @@ class FavoriteViewHolder(
         binding.apply {
             val notice = noticeUiState.notice
             title.text = notice.title
-            subtitle.text = notice.date + " · " + notice.writer
+            subtitle.text = root.context.getString(R.string.notice_subtitle, notice.date, notice.writer)
             newIcon.visibility = View.GONE
             favButton.isChecked = noticeUiState.isFavorite()
 

@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.webkit.WebSettings.FORCE_DARK_OFF
-import android.webkit.WebSettings.FORCE_DARK_ON
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebSettingsCompat.FORCE_DARK_OFF
+import androidx.webkit.WebSettingsCompat.FORCE_DARK_ON
 import androidx.webkit.WebViewFeature
 import com.foundy.domain.model.Notice
 import com.foundy.presentation.databinding.ActivityWebViewBinding

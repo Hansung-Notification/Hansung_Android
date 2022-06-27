@@ -16,12 +16,12 @@ class NoticeViewHolder(
     fun bind(noticeUiState: NoticeUiState?) {
         binding.apply {
             if (noticeUiState == null) {
-                title.text = binding.root.context.getString(R.string.invalid_data)
+                title.text = root.context.getString(R.string.invalid_data)
                 return@apply
             }
             val notice = noticeUiState.notice
             title.text = notice.title
-            subtitle.text = notice.date + " · " + notice.writer
+            subtitle.text = root.context.getString(R.string.notice_subtitle, notice.date, notice.writer)
             newIcon.isVisible = notice.isNew
             favButton.isVisible = !notice.isHeader
             favButton.isChecked = noticeUiState.isFavorite()

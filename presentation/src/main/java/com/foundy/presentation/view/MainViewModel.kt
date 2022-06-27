@@ -70,7 +70,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun removeFavoriteItem(notice: Notice) {
-        _favoriteList.removeIf { it.notice == notice }
+        _favoriteList.removeAll { it.notice == notice }
         viewModelScope.launch {
             removeFavoriteNoticeUseCase(notice)
         }
