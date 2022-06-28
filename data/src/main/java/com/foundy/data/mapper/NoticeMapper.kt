@@ -34,7 +34,7 @@ object NoticeMapper {
                         title = title,
                         date = date,
                         writer = writer,
-                        url = NetworkModule.BASE_URL + href
+                        url = NetworkModule.BASE_URL + href.removePrefix("/")
                     )
                 )
             }
