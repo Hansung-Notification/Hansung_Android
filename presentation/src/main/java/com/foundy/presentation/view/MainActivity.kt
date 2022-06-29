@@ -3,7 +3,6 @@ package com.foundy.presentation.view
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,12 +10,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    private val viewModel: MainViewModel by viewModels()
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding get() = requireNotNull(_binding)
@@ -42,8 +41,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkUserAuth() {
-        if (!viewModel.isSigned) {
-            viewModel.signInAnonymously().addOnCompleteListener(this) { task ->
+        val auth = Firebase.auth
+        if (auth.currentUser != null) {
+            auth.signInAnonymously().addOnCompleteListener(this) { task ->
                 if (!task.isSuccessful) {
                     Log.w(TAG, "signInAnonymously:failure", task.exception)
                     Snackbar.make(
