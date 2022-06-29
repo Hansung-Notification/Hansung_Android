@@ -9,7 +9,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -33,19 +32,17 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    @Named("retrofit")
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .client(provideHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideNoticeApiService(@Named("retrofit") retrofit: Retrofit): NoticeApi {
+    fun provideNoticeApiService(retrofit: Retrofit): NoticeApi {
         return retrofit.create(NoticeApi::class.java)
     }
 }
