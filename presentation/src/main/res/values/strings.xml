@@ -7,4 +7,5 @@
     <string name="fail_to_connect">연결에 실패했습니다.</string>
     <string name="invalid_data">잘못된 정보입니다.</string>
     <string name="notice_subtitle">%s · %s</string>
+    <string name="authentication_failed">인증 실패. 인터넷 연결을 확인해주세요.</string>
 </resources>

@@ -10,6 +10,10 @@ import com.foundy.domain.usecase.GetNoticeListUseCase
 import com.foundy.domain.usecase.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.RemoveFavoriteNoticeUseCase
 import com.foundy.presentation.view.notice.NoticeUiState
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -23,6 +27,8 @@ class MainViewModel @Inject constructor(
     private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase
 ) : ViewModel() {
 
+    private val auth = Firebase.auth
+
     private val _favoriteList = mutableListOf<NoticeUiState>()
     val favoriteList: List<NoticeUiState> get() = _favoriteList
 
@@ -32,6 +38,12 @@ class MainViewModel @Inject constructor(
 
     init {
         readFavoriteList()
+    }
+
+    val isSigned get() = auth.currentUser != null
+
+    fun signInAnonymously(): Task<AuthResult> {
+        return auth.signInAnonymously()
     }
 
     private fun createNoticeUiState(notice: Notice): NoticeUiState {

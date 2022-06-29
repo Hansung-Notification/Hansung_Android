@@ -43,6 +43,12 @@ dependencies {
     implementation "androidx.paging:paging-common-ktx:$paging"
     implementation "androidx.paging:paging-runtime-ktx:$paging"
 
+    // firebase
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.6'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.6'
+
     // mockk
     testImplementation "io.mockk:mockk:$mockk_version"
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
