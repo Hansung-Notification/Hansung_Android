@@ -2,9 +2,12 @@ package com.foundy.data.di
 
 import com.foundy.data.api.NoticeApi
 import com.foundy.data.repository.FavoriteRepositoryImpl
+import com.foundy.data.repository.KeywordRepositoryImpl
 import com.foundy.data.repository.NoticeRepositoryImpl
 import com.foundy.data.source.favorite.FavoriteLocalDataSource
+import com.foundy.data.source.keyword.KeywordLocalDataSource
 import com.foundy.domain.repository.FavoriteRepository
+import com.foundy.domain.repository.KeywordRepository
 import com.foundy.domain.repository.NoticeRepository
 import dagger.Module
 import dagger.Provides
@@ -26,5 +29,11 @@ class RepositoryModule {
     @Singleton
     fun provideFavoriteRepository(favoriteLocalDataSource: FavoriteLocalDataSource): FavoriteRepository {
         return FavoriteRepositoryImpl(favoriteLocalDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideKeywordRepository(keywordLocalDataSource: KeywordLocalDataSource): KeywordRepository {
+        return KeywordRepositoryImpl(keywordLocalDataSource)
     }
 }
