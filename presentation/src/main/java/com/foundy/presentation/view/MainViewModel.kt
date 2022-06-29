@@ -37,17 +37,9 @@ class MainViewModel @Inject constructor(
     private fun createNoticeUiState(notice: Notice): NoticeUiState {
         return NoticeUiState(
             notice,
-            onClickFavorite = { isFavorite -> onClickFavoriteButton(isFavorite, notice) },
+            onClickFavorite = { if (it) addFavoriteItem(notice) else removeFavoriteItem(notice) },
             isFavorite = { isFavorite(notice) }
         )
-    }
-
-    private fun onClickFavoriteButton(isFavorite: Boolean, notice: Notice) {
-        if (isFavorite) {
-            addFavoriteItem(notice)
-        } else {
-            removeFavoriteItem(notice)
-        }
     }
 
     private fun readFavoriteList() {
