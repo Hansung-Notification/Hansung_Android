@@ -23,7 +23,7 @@ class LocalDataModule {
 
     @Provides
     @Singleton
-    fun provideKeywordDatabase(@ApplicationContext context: Context): FavoriteDatabase {
+    fun provideFavoriteDatabase(@ApplicationContext context: Context): FavoriteDatabase {
         return Room.databaseBuilder(
             context,
             FavoriteDatabase::class.java,
@@ -33,13 +33,13 @@ class LocalDataModule {
 
     @Provides
     @Singleton
-    fun provideKeywordDao(favoriteDatabase: FavoriteDatabase): FavoriteDao {
+    fun provideFavoriteDao(favoriteDatabase: FavoriteDatabase): FavoriteDao {
         return favoriteDatabase.favoriteDao()
     }
 
     @Provides
     @Singleton
-    fun provideKeywordLocalDataSource(favoriteDao: FavoriteDao): FavoriteLocalDataSource {
+    fun provideFavoriteLocalDataSource(favoriteDao: FavoriteDao): FavoriteLocalDataSource {
         return FavoriteLocalDataSourceImpl(favoriteDao)
     }
 }
