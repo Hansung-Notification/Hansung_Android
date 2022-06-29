@@ -1,4 +1,4 @@
-package com.foundy.domain.usecase
+package com.foundy.domain.usecase.favorite
 
 import com.foundy.domain.model.Notice
 import com.foundy.domain.repository.FavoriteRepository

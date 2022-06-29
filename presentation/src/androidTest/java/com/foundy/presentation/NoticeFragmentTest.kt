@@ -10,7 +10,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
-import com.foundy.domain.usecase.GetNoticeListUseCase
+import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.presentation.factory.NoticeFactory
 import com.foundy.presentation.factory.NoticeType
 import com.foundy.presentation.mock.mockMainViewModel

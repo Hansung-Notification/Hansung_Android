@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.foundy.domain.model.Notice
-import com.foundy.domain.usecase.AddFavoriteNoticeUseCase
-import com.foundy.domain.usecase.GetNoticeListUseCase
-import com.foundy.domain.usecase.ReadFavoriteListUseCase
-import com.foundy.domain.usecase.RemoveFavoriteNoticeUseCase
+import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
+import com.foundy.domain.usecase.notice.GetNoticeListUseCase
+import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
+import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.presentation.view.notice.NoticeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map

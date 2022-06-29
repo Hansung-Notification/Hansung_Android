@@ -1,4 +1,4 @@
-package com.foundy.domain.usecase
+package com.foundy.domain.usecase.notice
 
 import androidx.paging.PagingData
 import com.foundy.domain.model.Notice

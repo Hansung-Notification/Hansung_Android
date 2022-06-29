@@ -1,7 +1,7 @@
 package com.foundy.presentation.mock
 
-import com.foundy.domain.usecase.GetNoticeListUseCase
-import com.foundy.domain.usecase.ReadFavoriteListUseCase
+import com.foundy.domain.usecase.notice.GetNoticeListUseCase
+import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.presentation.view.MainViewModel
 import io.mockk.coEvery
 import io.mockk.every

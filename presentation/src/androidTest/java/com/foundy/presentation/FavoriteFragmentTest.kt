@@ -11,8 +11,8 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
-import com.foundy.domain.usecase.GetNoticeListUseCase
-import com.foundy.domain.usecase.ReadFavoriteListUseCase
+import com.foundy.domain.usecase.notice.GetNoticeListUseCase
+import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.presentation.factory.NoticeFactory
 import com.foundy.presentation.factory.NoticeType
 import com.foundy.presentation.mock.mockMainViewModel
