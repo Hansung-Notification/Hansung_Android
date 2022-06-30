@@ -3,9 +3,8 @@ package com.foundy.data.di
 import android.content.Context
 import androidx.room.Room
 import com.foundy.data.db.FavoriteDao
-import com.foundy.data.db.FavoriteDatabase
+import com.foundy.data.db.HansungDatabase
 import com.foundy.data.db.KeywordDao
-import com.foundy.data.db.KeywordDatabase
 import com.foundy.data.source.favorite.FavoriteLocalDataSource
 import com.foundy.data.source.favorite.FavoriteLocalDataSourceImpl
 import com.foundy.data.source.keyword.KeywordLocalDataSource
@@ -25,21 +24,21 @@ class LocalDataModule {
         const val DB_NAME = "hansung_notification"
     }
 
-    // Favorite
     @Provides
     @Singleton
-    fun provideFavoriteDatabase(@ApplicationContext context: Context): FavoriteDatabase {
+    fun provideFavoriteDatabase(@ApplicationContext context: Context): HansungDatabase {
         return Room.databaseBuilder(
             context,
-            FavoriteDatabase::class.java,
+            HansungDatabase::class.java,
             DB_NAME
         ).build()
     }
 
+    // Favorite
     @Provides
     @Singleton
-    fun provideFavoriteDao(favoriteDatabase: FavoriteDatabase): FavoriteDao {
-        return favoriteDatabase.favoriteDao()
+    fun provideFavoriteDao(hansungDatabase: HansungDatabase): FavoriteDao {
+        return hansungDatabase.favoriteDao()
     }
 
     @Provides
@@ -52,18 +51,8 @@ class LocalDataModule {
     // Keyword
     @Provides
     @Singleton
-    fun provideKeywordDatabase(@ApplicationContext context: Context): KeywordDatabase {
-        return Room.databaseBuilder(
-            context,
-            KeywordDatabase::class.java,
-            DB_NAME
-        ).build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideKeywordDao(keywordDatabase: KeywordDatabase): KeywordDao {
-        return keywordDatabase.keywordDao()
+    fun provideKeywordDao(hansungDatabase: HansungDatabase): KeywordDao {
+        return hansungDatabase.keywordDao()
     }
 
     @Provides
