@@ -37,4 +37,8 @@ class KeywordViewModel @Inject constructor(
             removeKeywordUseCase(keyword)
         }
     }
+
+    fun hasKeyword(keyword: String): Boolean {
+        return keywordList.value?.firstOrNull { it.keyword == keyword } != null
+    }
 }

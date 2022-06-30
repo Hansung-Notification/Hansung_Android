@@ -23,6 +23,9 @@ class KeywordActivity : AppCompatActivity() {
     private val viewModel: KeywordViewModel by viewModels()
 
     companion object {
+
+        const val MAX_KEYWORD_COUNT = 10
+
         fun getIntent(context: Context): Intent {
             return Intent(context, KeywordActivity::class.java)
         }
@@ -34,7 +37,7 @@ class KeywordActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initToolBar()
-        initTextInputEvent()
+        initTextInput()
         initRecyclerView()
     }
 
@@ -51,16 +54,17 @@ class KeywordActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun initTextInputEvent() {
+    private fun initTextInput() {
         binding.textInput.setOnEditorActionListener { textView, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_SEND -> {
-                    val text = textView.text ?: ""
-                    // TODO: 이미 존재하는 단어는 예외처리 해야함
+                    val text = (textView.text ?: "").toString()
                     if (text.length < 2) {
                         showSnackBar(getString(R.string.keyword_min_length_warning))
+                    } else if (viewModel.hasKeyword(text)) {
+                        showSnackBar(getString(R.string.already_exists_keyword))
                     } else {
-                        addKeyword(text.toString())
+                        addKeyword(text)
                         textView.text = ""
                     }
                     true
@@ -82,12 +86,33 @@ class KeywordActivity : AppCompatActivity() {
 
             viewModel.keywordList.observe(this@KeywordActivity) { keywords ->
                 adapter.submitList(keywords)
+                if (keywords.size >= MAX_KEYWORD_COUNT) {
+                    disableTextInput()
+                } else {
+                    enableTextInput()
+                }
             }
         }
     }
 
     private fun addKeyword(keyword: String) {
         viewModel.addKeywordItem(Keyword(title = keyword))
+    }
+
+    private fun enableTextInput() {
+        binding.textInputLayout.apply {
+            if (isEnabled) return@apply
+            hint = getString(R.string.input_hint)
+            isEnabled = true
+        }
+    }
+
+    private fun disableTextInput() {
+        binding.textInputLayout.apply {
+            if (!isEnabled) return@apply
+            hint = getString(R.string.keyword_max_hint, MAX_KEYWORD_COUNT)
+            isEnabled = false
+        }
     }
 
     private fun showSnackBar(message: String) {
