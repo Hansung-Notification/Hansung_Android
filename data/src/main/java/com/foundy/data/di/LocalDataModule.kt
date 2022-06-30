@@ -33,7 +33,7 @@ class LocalDataModule {
             context,
             FavoriteDatabase::class.java,
             DB_NAME
-        ).fallbackToDestructiveMigration().build()
+        ).build()
     }
 
     @Provides
@@ -57,7 +57,7 @@ class LocalDataModule {
             context,
             KeywordDatabase::class.java,
             DB_NAME
-        ).fallbackToDestructiveMigration().build()
+        ).build()
     }
 
     @Provides
