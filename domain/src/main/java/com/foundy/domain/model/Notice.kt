@@ -13,5 +13,5 @@ data class Notice(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "date") val date: String,
     @ColumnInfo(name = "writer") val writer: String,
-    @PrimaryKey val url: String
+    @PrimaryKey @ColumnInfo(name = "url") val url: String
 )
