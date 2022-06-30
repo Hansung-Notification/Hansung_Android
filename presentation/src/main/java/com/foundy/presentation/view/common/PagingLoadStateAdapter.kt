@@ -1,4 +1,4 @@
-package com.foundy.presentation.view.paging
+package com.foundy.presentation.view.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

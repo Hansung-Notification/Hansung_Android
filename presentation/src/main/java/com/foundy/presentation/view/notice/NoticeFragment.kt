@@ -14,7 +14,7 @@ import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentNoticeBinding
 import com.foundy.presentation.extension.addDividerDecoration
-import com.foundy.presentation.view.paging.PagingLoadStateAdapter
+import com.foundy.presentation.view.common.PagingLoadStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
