@@ -27,8 +27,12 @@
         app:layout_constraintTop_toBottomOf="@id/keyword_toolBar">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInput"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
+            android:inputType="textAutoCorrect"
+            android:imeOptions="actionSend"
+            android:maxLength="10"
             android:hint="@string/input_hint" />
 
     </com.google.android.material.textfield.TextInputLayout>

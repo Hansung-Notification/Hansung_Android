@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.foundy.domain.model.Keyword
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityKeywordBinding
 import com.foundy.presentation.extension.addDividerDecoration
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +34,7 @@ class KeywordActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initToolBar()
+        initTextInputEvent()
         initRecyclerView()
     }
 
@@ -47,6 +51,25 @@ class KeywordActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun initTextInputEvent() {
+        binding.textInput.setOnEditorActionListener { textView, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_SEND -> {
+                    val text = textView.text ?: ""
+                    // TODO: 이미 존재하는 단어는 예외처리 해야함
+                    if (text.length < 2) {
+                        showSnackBar(getString(R.string.keyword_min_length_warning))
+                    } else {
+                        addKeyword(text.toString())
+                        textView.text = ""
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     private fun initRecyclerView() {
         val adapter = KeywordAdapter()
         binding.apply {
@@ -54,7 +77,17 @@ class KeywordActivity : AppCompatActivity() {
             recyclerView.addDividerDecoration(this@KeywordActivity)
             recyclerView.layoutManager = LinearLayoutManager(this@KeywordActivity)
 
-            adapter.addAll(viewModel.keywordList)
+            viewModel.keywordList.observe(this@KeywordActivity) { keywords ->
+                adapter.submitList(keywords)
+            }
         }
+    }
+
+    private fun addKeyword(keyword: String) {
+        viewModel.addKeywordItem(Keyword(title = keyword))
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 }

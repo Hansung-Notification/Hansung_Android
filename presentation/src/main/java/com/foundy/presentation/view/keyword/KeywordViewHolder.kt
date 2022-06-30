@@ -6,7 +6,6 @@ import com.foundy.presentation.model.KeywordUiState
 
 class KeywordViewHolder(
     private val binding: ItemKeywordBinding,
-    private val remove: (KeywordUiState) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(keywordUiState: KeywordUiState) {
@@ -15,7 +14,6 @@ class KeywordViewHolder(
 
             deleteButton.setOnClickListener {
                 keywordUiState.onClickDelete()
-                remove(keywordUiState)
             }
         }
     }

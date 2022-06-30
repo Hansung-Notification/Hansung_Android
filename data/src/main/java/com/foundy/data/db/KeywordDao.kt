@@ -6,11 +6,12 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.foundy.data.model.KEYWORD_TABLE_NAME
 import com.foundy.data.model.KeywordEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface KeywordDao {
     @Query("SELECT * FROM $KEYWORD_TABLE_NAME")
-    suspend fun getAll(): List<KeywordEntity>
+    fun getAll(): Flow<List<KeywordEntity>>
 
     @Insert
     suspend fun insert(entity: KeywordEntity)
