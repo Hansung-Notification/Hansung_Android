@@ -9,7 +9,7 @@ import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
-import com.foundy.presentation.view.notice.NoticeUiState
+import com.foundy.presentation.model.NoticeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch

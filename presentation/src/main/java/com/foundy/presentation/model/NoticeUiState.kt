@@ -1,4 +1,4 @@
-package com.foundy.presentation.view.notice
+package com.foundy.presentation.model
 
 import com.foundy.domain.model.Notice
 

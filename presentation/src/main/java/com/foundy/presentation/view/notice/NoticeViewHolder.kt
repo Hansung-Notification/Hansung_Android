@@ -7,6 +7,7 @@ import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ItemNoticeBinding
 import com.foundy.presentation.extension.addRipple
 import com.foundy.presentation.extension.setBackgroundColor
+import com.foundy.presentation.model.NoticeUiState
 import com.foundy.presentation.view.webview.WebViewActivity
 
 class NoticeViewHolder(

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.foundy.presentation.databinding.ItemNoticeBinding
+import com.foundy.presentation.model.NoticeUiState
 
 class NoticeAdapter : PagingDataAdapter<NoticeUiState, NoticeViewHolder>(diffCallback) {
 

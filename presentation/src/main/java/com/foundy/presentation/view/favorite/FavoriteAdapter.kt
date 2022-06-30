@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.foundy.presentation.databinding.ItemNoticeBinding
-import com.foundy.presentation.view.notice.NoticeUiState
+import com.foundy.presentation.model.NoticeUiState
 
 class FavoriteAdapter : RecyclerView.Adapter<FavoriteViewHolder>() {
 

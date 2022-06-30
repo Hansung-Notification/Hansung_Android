@@ -5,7 +5,7 @@ import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ItemNoticeBinding
-import com.foundy.presentation.view.notice.NoticeUiState
+import com.foundy.presentation.model.NoticeUiState
 import com.foundy.presentation.view.webview.WebViewActivity
 
 class FavoriteViewHolder(
