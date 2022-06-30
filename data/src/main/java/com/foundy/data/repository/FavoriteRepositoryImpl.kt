@@ -4,6 +4,7 @@ import com.foundy.data.source.favorite.FavoriteLocalDataSource
 import com.foundy.domain.model.Notice
 import com.foundy.domain.repository.FavoriteRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -11,15 +12,8 @@ class FavoriteRepositoryImpl @Inject constructor(
     private val favoriteLocalDataSource: FavoriteLocalDataSource
 ) : FavoriteRepository {
 
-    override suspend fun getAll(): Result<List<Notice>> {
-        return try {
-            val list = withContext(Dispatchers.IO) {
-                favoriteLocalDataSource.getAll()
-            }
-            Result.success(list)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override fun getAll(): Flow<List<Notice>> {
+        return favoriteLocalDataSource.getAll()
     }
 
     override suspend fun add(notice: Notice) {

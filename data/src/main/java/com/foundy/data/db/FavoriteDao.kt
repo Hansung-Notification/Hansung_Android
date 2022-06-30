@@ -6,11 +6,12 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.foundy.data.model.FAVORITE_NOTICE_TABLE_NAME
 import com.foundy.data.model.FavoriteNoticeEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteDao {
     @Query("SELECT * FROM $FAVORITE_NOTICE_TABLE_NAME")
-    suspend fun getAll(): List<FavoriteNoticeEntity>
+    fun getAll(): Flow<List<FavoriteNoticeEntity>>
 
     @Insert
     suspend fun insert(entity: FavoriteNoticeEntity)

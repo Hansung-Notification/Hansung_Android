@@ -10,7 +10,6 @@ import com.foundy.presentation.view.webview.WebViewActivity
 
 class FavoriteViewHolder(
     private val binding: ItemNoticeBinding,
-    private val remove: (NoticeUiState) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(noticeUiState: NoticeUiState) {
@@ -28,7 +27,6 @@ class FavoriteViewHolder(
             favButton.setOnClickListener {
                 val isChecked = (it as ToggleButton).isChecked
                 noticeUiState.onClickFavorite(isChecked)
-                if (!isChecked) remove(noticeUiState)
             }
         }
     }

@@ -2,10 +2,11 @@ package com.foundy.domain.usecase.favorite
 
 import com.foundy.domain.model.Notice
 import com.foundy.domain.repository.FavoriteRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ReadFavoriteListUseCase @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ) {
-    suspend operator fun invoke(): Result<List<Notice>> = favoriteRepository.getAll()
+    operator fun invoke(): Flow<List<Notice>> = favoriteRepository.getAll()
 }

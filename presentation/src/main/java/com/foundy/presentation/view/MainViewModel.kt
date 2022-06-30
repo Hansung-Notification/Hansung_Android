@@ -1,7 +1,6 @@
 package com.foundy.presentation.view
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.foundy.domain.model.Notice
@@ -11,8 +10,11 @@ import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.presentation.model.NoticeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,52 +25,48 @@ class MainViewModel @Inject constructor(
     private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase
 ) : ViewModel() {
 
-    private val _favoriteList = mutableListOf<NoticeUiState>()
-    val favoriteList: List<NoticeUiState> get() = _favoriteList
+    private val _favoriteList = MutableLiveData<List<NoticeUiState>>(emptyList())
+    val favoriteList: LiveData<List<NoticeUiState>> get() = _favoriteList
 
     val noticeFlow = getNoticeListUseCase().cachedIn(viewModelScope).map {
         it.map(::createNoticeUiState)
     }
 
     init {
-        readFavoriteList()
+        initFavoriteList()
     }
 
     private fun createNoticeUiState(notice: Notice): NoticeUiState {
         return NoticeUiState(
             notice,
             onClickFavorite = { if (it) addFavoriteItem(notice) else removeFavoriteItem(notice) },
-            isFavorite = { isFavorite(notice) }
+            isFavorite = {
+                favoriteList.value?.let { list ->
+                    list.firstOrNull { it.notice.url == notice.url } != null
+                } ?: false
+            }
         )
     }
 
-    private fun readFavoriteList() {
+    private fun initFavoriteList() {
         viewModelScope.launch {
-            val result = readFavoriteListUseCase()
-            if (result.isSuccess) {
-                result.getOrNull()?.let { notices ->
-                    val states = notices.map(::createNoticeUiState)
-                    _favoriteList.addAll(states)
+            withContext(Dispatchers.IO) {
+                readFavoriteListUseCase().collect { list ->
+                    _favoriteList.postValue(list.map(::createNoticeUiState))
                 }
             }
         }
     }
 
     private fun addFavoriteItem(notice: Notice) {
-        _favoriteList.add(createNoticeUiState(notice))
         viewModelScope.launch {
             addFavoriteNoticeUseCase(notice)
         }
     }
 
     private fun removeFavoriteItem(notice: Notice) {
-        _favoriteList.removeAll { it.notice == notice }
         viewModelScope.launch {
             removeFavoriteNoticeUseCase(notice)
         }
-    }
-
-    private fun isFavorite(notice: Notice): Boolean {
-        return _favoriteList.firstOrNull { it.notice.url == notice.url } != null
     }
 }

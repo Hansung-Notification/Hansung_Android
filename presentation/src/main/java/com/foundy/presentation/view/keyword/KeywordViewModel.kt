@@ -17,9 +17,7 @@ class KeywordViewModel @Inject constructor(
     private val removeKeywordUseCase: RemoveKeywordUseCase
 ) : ViewModel() {
 
-    val keywordList = readKeywordListUseCase().asLiveData().map { list ->
-        list.map { createKeywordUiState(it) }
-    }
+    val keywordList = readKeywordListUseCase().asLiveData().map { it.map(::createKeywordUiState) }
 
     private fun createKeywordUiState(keyword: Keyword): KeywordUiState {
         return KeywordUiState(
