@@ -11,8 +11,10 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
+import com.foundy.domain.model.Notice
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
+import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.presentation.factory.NoticeFactory
 import com.foundy.presentation.factory.NoticeType
 import com.foundy.presentation.mock.mockMainViewModel
@@ -22,7 +24,9 @@ import com.foundy.presentation.view.favorite.FavoriteFragment
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -40,10 +44,19 @@ class FavoriteFragmentTest {
         NoticeFactory.create(NoticeType.NORMAL)
     )
     private val mockNoticeFlow = flowOf(PagingData.from(mockNotices))
+    private val mockFavoriteFlow = MutableSharedFlow<List<Notice>>()
 
     private val viewModel: MainViewModel = mockMainViewModel(
         mockk<GetNoticeListUseCase>().also { every { it() } returns mockNoticeFlow },
-        mockk<ReadFavoriteListUseCase>().also { coEvery { it() } returns Result.success(mockNotices) }
+        mockk<ReadFavoriteListUseCase>().also { coEvery { it() } returns mockFavoriteFlow },
+        mockk<RemoveFavoriteNoticeUseCase>().also {
+            coEvery { it(any()) } answers {
+                runBlocking {
+                    // 하나 제거하는 것을 흉내낸다.
+                    mockFavoriteFlow.emit(mockNotices.subList(1, mockNotices.size))
+                }
+            }
+        },
     )
 
     @Before
@@ -59,6 +72,10 @@ class FavoriteFragmentTest {
     @Test
     fun itemDisappears_whenFavoriteButtonClicked() {
         launchFragmentInContainer<FavoriteFragment>(factory = fragmentFactory)
+
+        runBlocking {
+            mockFavoriteFlow.emit(mockNotices)
+        }
 
         onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
             if (noViewFoundException != null) {
@@ -79,7 +96,7 @@ class FavoriteFragmentTest {
             val recyclerView = view as RecyclerView
             val expectedSize = mockNotices.size - 1
             assertEquals(expectedSize, recyclerView.adapter?.itemCount)
-            assertEquals(expectedSize, viewModel.favoriteList.size)
+            assertEquals(expectedSize, viewModel.favoriteList.value?.size)
         }
     }
 }
