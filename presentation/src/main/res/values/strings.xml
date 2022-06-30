@@ -8,4 +8,8 @@
     <string name="invalid_data">잘못된 정보입니다.</string>
     <string name="notice_subtitle">%s · %s</string>
     <string name="authentication_failed">인증 실패. 인터넷 연결을 확인해주세요.</string>
+    <string name="input_hint">입력</string>
+    <string name="keyword_help">10분마다 새로운 공지사항을 확인하여 키워드가 새로운 공지사항에 포함되어 있는 경우 알림을 보내드려요.</string>
+    <string name="delete_keyword">키워드 삭제</string>
+    <string name="notification_keyword">알림 키워드</string>
 </resources>

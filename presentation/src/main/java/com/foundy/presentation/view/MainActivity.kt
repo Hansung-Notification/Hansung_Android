@@ -3,12 +3,14 @@ package com.foundy.presentation.view
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityMainBinding
+import com.foundy.presentation.view.keyword.KeywordActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -31,13 +33,28 @@ class MainActivity : AppCompatActivity() {
             topLevelDestinationIds = setOf(R.id.noticeFragment, R.id.favoriteFragment),
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
-        binding.toolBar.setupWithNavController(navController, appBarConfiguration)
-        binding.bottomNav.setupWithNavController(navController)
+
+        binding.apply {
+            toolBar.setupWithNavController(navController, appBarConfiguration)
+            toolBar.inflateMenu(R.menu.menu_main_option)
+            toolBar.setOnMenuItemClickListener(::onMenuItemClick)
+            bottomNav.setupWithNavController(navController)
+        }
     }
 
     override fun onStart() {
         super.onStart()
         checkUserAuth()
+    }
+
+    private fun onMenuItemClick(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.notification_keyword -> {
+                startKeywordActivity()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun checkUserAuth() {
@@ -56,5 +73,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun startKeywordActivity() {
+        val intent = KeywordActivity.getIntent(this)
+        startActivity(intent)
     }
 }
