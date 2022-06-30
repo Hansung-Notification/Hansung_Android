@@ -74,7 +74,10 @@ class KeywordActivity : AppCompatActivity() {
         val adapter = KeywordAdapter()
         binding.apply {
             recyclerView.adapter = adapter
-            recyclerView.addDividerDecoration(this@KeywordActivity)
+            recyclerView.addDividerDecoration(
+                this@KeywordActivity,
+                horizontalPaddingDimen = R.dimen.keyword_divider_horizontal_padding
+            )
             recyclerView.layoutManager = LinearLayoutManager(this@KeywordActivity)
 
             viewModel.keywordList.observe(this@KeywordActivity) { keywords ->
