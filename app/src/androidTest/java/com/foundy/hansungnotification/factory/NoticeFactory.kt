@@ -1,16 +1,13 @@
-package com.foundy.domain.testutils
+package com.foundy.hansungnotification.factory
 
-import androidx.annotation.VisibleForTesting
 import com.foundy.domain.model.Notice
 
-@VisibleForTesting
 enum class NoticeType {
     HEADER,
     NEW,
     NORMAL
 }
 
-@VisibleForTesting
 object NoticeFactory {
 
     fun create(noticeType: NoticeType): Notice {

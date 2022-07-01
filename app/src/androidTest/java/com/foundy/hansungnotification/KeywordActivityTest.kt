@@ -14,10 +14,10 @@ import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
+import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
 import com.foundy.presentation.view.keyword.KeywordActivity
 import com.foundy.presentation.view.keyword.KeywordViewModel
-import com.foundy.test_utils.withIndex
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule

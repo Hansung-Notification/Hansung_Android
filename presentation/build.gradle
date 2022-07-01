@@ -9,7 +9,6 @@ apply from: rootProject.file("android.gradle")
 
 dependencies {
     implementation project(":domain")
-    androidTestImplementation project(":test-utils")
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"

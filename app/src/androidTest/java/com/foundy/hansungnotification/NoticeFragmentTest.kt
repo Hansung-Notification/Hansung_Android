@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
-import com.foundy.domain.testutils.NoticeFactory
-import com.foundy.domain.testutils.NoticeType
 import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
+import com.foundy.hansungnotification.factory.NoticeFactory
+import com.foundy.hansungnotification.factory.NoticeType
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.presentation.R

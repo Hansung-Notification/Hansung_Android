@@ -1,12 +1,10 @@
-package com.foundy.test_utils
+package com.foundy.hansungnotification.utils
 
 import android.view.View
-import androidx.annotation.VisibleForTesting
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 
-@VisibleForTesting
 fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?> {
     return object : TypeSafeMatcher<View?>() {
         var currentIndex = 0

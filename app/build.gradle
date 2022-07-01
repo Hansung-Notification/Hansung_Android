@@ -12,7 +12,6 @@ dependencies {
     implementation project(":data")
     implementation project(":domain")
     implementation project(":presentation")
-    androidTestImplementation project(":test-utils")
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
