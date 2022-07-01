@@ -41,7 +41,7 @@ class KeywordActivityTest {
     private val fakeRepository = FakeKeywordRepositoryImpl()
 
     @BindValue
-    val mockMyViewModel = KeywordViewModel(
+    val keywordViewModel = KeywordViewModel(
         ReadKeywordListUseCase(fakeRepository),
         AddKeywordUseCase(fakeRepository),
         RemoveKeywordUseCase(fakeRepository)
