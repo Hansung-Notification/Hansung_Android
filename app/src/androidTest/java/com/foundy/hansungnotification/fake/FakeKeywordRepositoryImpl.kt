@@ -11,6 +11,7 @@ class FakeKeywordRepositoryImpl : KeywordRepository {
     private val keywordList = mutableListOf<Keyword>()
 
     fun setFakeList(keywords: List<Keyword>) {
+        keywordList.clear()
         keywordList.addAll(keywords)
     }
 
