@@ -8,6 +8,7 @@ buildscript {
         paging = "3.1.1"
         hilt_version = "2.42"
         mockk_version = "1.12.3" // 1.12.4 is Not working!
+        fragment_version = "1.4.1"
     }
     dependencies {
         // hilt

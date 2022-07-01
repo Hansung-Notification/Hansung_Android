@@ -1,4 +1,4 @@
-package com.foundy.presentation.factory
+package com.foundy.domain.testutils
 
 import com.foundy.domain.model.Notice
 
