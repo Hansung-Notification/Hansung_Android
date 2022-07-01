@@ -22,13 +22,15 @@ import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class KeywordActivityTest {
 
@@ -87,7 +89,7 @@ class KeywordActivityTest {
     }
 
     @Test
-    fun disableInputText_ifKeywordListIsFull(): Unit = runBlocking {
+    fun disableInputText_ifKeywordListIsFull() = runTest {
         val list = (0..9).map { Keyword(it.toString()) }
         fakeRepository.setFakeList(list)
         fakeRepository.emitFake()
@@ -115,7 +117,7 @@ class KeywordActivityTest {
     }
 
     @Test
-    fun enableInputText_afterRemoveKeywordWhenListIsFull(): Unit = runBlocking {
+    fun enableInputText_afterRemoveKeywordWhenListIsFull() = runTest {
         val list = (0..9).map { Keyword(it.toString()) }
         fakeRepository.setFakeList(list)
         fakeRepository.emitFake()
@@ -128,7 +130,7 @@ class KeywordActivityTest {
     }
 
     @Test
-    fun showWarningMessage_ifSendAlreadyExistsKeyword(): Unit = runBlocking {
+    fun showWarningMessage_ifSendAlreadyExistsKeyword() = runTest {
         val keyword = Keyword("hello")
         fakeRepository.setFakeList(listOf(keyword))
         fakeRepository.emitFake()

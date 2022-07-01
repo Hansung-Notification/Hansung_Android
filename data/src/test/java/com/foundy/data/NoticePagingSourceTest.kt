@@ -6,7 +6,8 @@ import com.foundy.data.mapper.NoticeMapper
 import com.foundy.data.source.notice.NoticePagingSource
 import com.foundy.domain.exception.ScrapingException
 import com.foundy.domain.model.Notice
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import org.junit.Assert.*
@@ -19,6 +20,7 @@ import org.mockito.kotlin.any
 import retrofit2.HttpException
 import retrofit2.Response
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class NoticePagingSourceTest {
 
     @Mock
@@ -35,7 +37,7 @@ class NoticePagingSourceTest {
     }
 
     @Test
-    fun `returns failure if http error`() = runBlocking {
+    fun `returns failure if http error`() = runTest {
         val responseBody = ResponseBody.create(mediaType, "")
         val mockResponse = Response.error<ResponseBody>(404, responseBody)
         given(api.getNoticeList(any())).willReturn(mockResponse)
@@ -52,7 +54,7 @@ class NoticePagingSourceTest {
     }
 
     @Test
-    fun `refreshes successfully`() = runBlocking {
+    fun `refreshes successfully`() = runTest {
         val createMockResponse = {
             Response.success(ResponseBody.create(mediaType, fakeNoticeResponseContent))
         }
@@ -76,7 +78,7 @@ class NoticePagingSourceTest {
     }
 
     @Test
-    fun `fails to refresh if NoticeMapper is invalid`(): Unit = runBlocking {
+    fun `fails to refresh if NoticeMapper is invalid`() = runTest {
         val mockResponse = Response.success(ResponseBody.create(mediaType, ""))
         given(api.getNoticeList(any())).willReturn(mockResponse)
 

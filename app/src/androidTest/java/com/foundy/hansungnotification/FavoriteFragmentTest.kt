@@ -27,12 +27,14 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class FavoriteFragmentTest {
 
@@ -45,7 +47,7 @@ class FavoriteFragmentTest {
     private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
 
     private val mockNotices = listOf(
-        NoticeFactory.create(NoticeType.HEADER),
+        NoticeFactory.create(NoticeType.NORMAL),
         NoticeFactory.create(NoticeType.NORMAL),
         NoticeFactory.create(NoticeType.NORMAL)
     )
@@ -74,7 +76,7 @@ class FavoriteFragmentTest {
     }
 
     @Test
-    fun itemDisappears_whenFavoriteButtonClicked(): Unit = runBlocking {
+    fun itemDisappears_whenFavoriteButtonClicked() = runTest {
         launchFragmentInContainer<FavoriteFragment>(factory = fragmentFactory)
 
         fakeFavoriteRepository.setFakeList(mockNotices)
@@ -105,7 +107,7 @@ class FavoriteFragmentTest {
     }
 
     @Test
-    fun showEmptyFavoriteText_ifThereIsNoFavorite(): Unit = runBlocking {
+    fun showEmptyFavoriteText_ifThereIsNoFavorite() = runTest {
         launchFragmentInContainer<FavoriteFragment>(factory = fragmentFactory)
 
         onView(withId(R.id.emptyText)).check { view, _ -> assertTrue(view.isVisible) }

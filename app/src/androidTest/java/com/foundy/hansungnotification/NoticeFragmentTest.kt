@@ -24,12 +24,14 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class NoticeFragmentTest {
 
@@ -71,7 +73,7 @@ class NoticeFragmentTest {
     }
 
     @Test
-    fun loadsNoticesCorrectly(): Unit = runBlocking {
+    fun loadsNoticesCorrectly() = runTest {
         launchFragmentInContainer<NoticeFragment>(factory = fragmentFactory)
 
         fakeNoticeRepository.setFakeList(mockNotices)
