@@ -1,4 +1,4 @@
-package com.foundy.hansungnotification
+package com.foundy.hansungnotification.runner
 
 import android.app.Application
 import android.content.Context
