@@ -3,6 +3,7 @@ package com.foundy.domain.testutils
 import androidx.annotation.VisibleForTesting
 import com.foundy.domain.model.Notice
 
+@VisibleForTesting
 enum class NoticeType {
     HEADER,
     NEW,
