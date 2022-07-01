@@ -1,13 +1,14 @@
 package com.foundy.hansungnotification
 
 import android.content.Context
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.testutils.NoticeFactory
 import com.foundy.domain.testutils.NoticeType
@@ -27,7 +28,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -73,13 +74,13 @@ class FavoriteFragmentTest {
     }
 
     @Test
-    fun itemDisappears_whenFavoriteButtonClicked(): Unit = runBlocking{
+    fun itemDisappears_whenFavoriteButtonClicked(): Unit = runBlocking {
         launchFragmentInContainer<FavoriteFragment>(factory = fragmentFactory)
 
         fakeFavoriteRepository.setFakeList(mockNotices)
         fakeFavoriteRepository.emitFake()
 
-        onView(ViewMatchers.withId(R.id.recyclerView)).check { view, noViewFoundException ->
+        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
             if (noViewFoundException != null) {
                 throw noViewFoundException
             }
@@ -88,10 +89,10 @@ class FavoriteFragmentTest {
             assertEquals(mockNotices.size, recyclerView.adapter?.itemCount)
         }
 
-        onView(withIndex(ViewMatchers.withId(R.id.favButton), 0))
+        onView(withIndex(withId(R.id.favButton), 0))
             .perform(ViewActions.click())
 
-        onView(ViewMatchers.withId(R.id.recyclerView)).check { view, noViewFoundException ->
+        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
             if (noViewFoundException != null) {
                 throw noViewFoundException
             }
@@ -101,5 +102,19 @@ class FavoriteFragmentTest {
             assertEquals(expectedSize, recyclerView.adapter?.itemCount)
             assertEquals(expectedSize, viewModel.favoriteList.value?.size)
         }
+    }
+
+    @Test
+    fun showEmptyFavoriteText_ifThereIsNoFavorite(): Unit = runBlocking {
+        launchFragmentInContainer<FavoriteFragment>(factory = fragmentFactory)
+
+        onView(withId(R.id.emptyText)).check { view, _ -> assertTrue(view.isVisible) }
+
+        val notice = mockNotices.first()
+        fakeFavoriteRepository.add(notice)
+        onView(withId(R.id.emptyText)).check { view, _ -> assertFalse(view.isVisible) }
+
+        fakeFavoriteRepository.remove(notice)
+        onView(withId(R.id.emptyText)).check { view, _ -> assertTrue(view.isVisible) }
     }
 }

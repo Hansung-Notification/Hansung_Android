@@ -15,4 +15,5 @@
     <string name="keyword_min_length_warning">두 글자 이상으로 입력해주세요</string>
     <string name="already_exists_keyword">이미 존재하는 키워드입니다</string>
     <string name="keyword_max_hint">최대 %d개까지 만들 수 있어요</string>
+    <string name="empty_favorite_notice">즐겨찾기된 항목이 없어요</string>
 </resources>

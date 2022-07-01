@@ -3,6 +3,7 @@ package com.foundy.presentation.view.favorite
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.VisibleForTesting
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +31,7 @@ class FavoriteFragment(
             recyclerView.layoutManager = LinearLayoutManager(context)
 
             viewModel.favoriteList.observe(viewLifecycleOwner) {
+                emptyText.isVisible = it.isEmpty()
                 adapter.submitList(it)
             }
         }
