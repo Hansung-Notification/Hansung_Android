@@ -1,5 +1,6 @@
 package com.foundy.domain.testutils
 
+import androidx.annotation.VisibleForTesting
 import com.foundy.domain.model.Notice
 
 enum class NoticeType {
@@ -8,6 +9,7 @@ enum class NoticeType {
     NORMAL
 }
 
+@VisibleForTesting
 object NoticeFactory {
 
     fun create(noticeType: NoticeType): Notice {
