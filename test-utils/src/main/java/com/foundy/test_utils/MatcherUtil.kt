@@ -1,4 +1,4 @@
-package com.foundy.presentation.util
+package com.foundy.test_utils
 
 import android.view.View
 import org.hamcrest.Description

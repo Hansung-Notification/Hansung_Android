@@ -18,7 +18,7 @@ import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.presentation.factory.NoticeFactory
 import com.foundy.presentation.factory.NoticeType
 import com.foundy.presentation.mock.mockMainViewModel
-import com.foundy.presentation.util.withIndex
+import com.foundy.test_utils.withIndex
 import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.view.favorite.FavoriteFragment
 import io.mockk.coEvery
