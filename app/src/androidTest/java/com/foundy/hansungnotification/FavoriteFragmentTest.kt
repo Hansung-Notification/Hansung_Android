@@ -1,13 +1,14 @@
 package com.foundy.hansungnotification
 
 import android.content.Context
-import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
@@ -29,6 +30,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.Matchers.not
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -110,13 +112,13 @@ class FavoriteFragmentTest {
     fun showEmptyFavoriteText_ifThereIsNoFavorite() = runTest {
         launchFragmentInContainer<FavoriteFragment>(factory = fragmentFactory)
 
-        onView(withId(R.id.emptyText)).check { view, _ -> assertTrue(view.isVisible) }
+        onView(withId(R.id.emptyText)).check(matches(isDisplayed()))
 
         val notice = mockNotices.first()
         fakeFavoriteRepository.add(notice)
-        onView(withId(R.id.emptyText)).check { view, _ -> assertFalse(view.isVisible) }
+        onView(withId(R.id.emptyText)).check(matches(not(isDisplayed())))
 
         fakeFavoriteRepository.remove(notice)
-        onView(withId(R.id.emptyText)).check { view, _ -> assertTrue(view.isVisible) }
+        onView(withId(R.id.emptyText)).check(matches(isDisplayed()))
     }
 }
