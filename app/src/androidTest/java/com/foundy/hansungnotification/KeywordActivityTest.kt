@@ -91,7 +91,7 @@ class KeywordActivityTest {
 
     @Test
     fun disableInputText_ifKeywordListIsFull() = runTest {
-        val list = (0..9).map { Keyword(it.toString()) }
+        val list = (0 until KeywordActivity.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
         fakeRepository.setFakeList(list)
         fakeRepository.emitFake()
 
@@ -119,7 +119,7 @@ class KeywordActivityTest {
 
     @Test
     fun enableInputText_afterRemoveKeywordWhenListIsFull() = runTest {
-        val list = (0..9).map { Keyword(it.toString()) }
+        val list = (0 until KeywordActivity.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
         fakeRepository.setFakeList(list)
         fakeRepository.emitFake()
 
