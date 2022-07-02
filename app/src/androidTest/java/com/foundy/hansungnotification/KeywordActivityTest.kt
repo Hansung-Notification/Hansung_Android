@@ -14,6 +14,7 @@ import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
+import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
 import com.foundy.presentation.view.keyword.KeywordActivity
@@ -122,11 +123,11 @@ class KeywordActivityTest {
         fakeRepository.setFakeList(list)
         fakeRepository.emitFake()
 
-        onView(withId(R.id.textInputLayout)).check(matches(isNotEnabled()))
+        waitForView(withId(R.id.textInputLayout), isNotEnabled())
 
         onView(withIndex(withId(R.id.delete_button), 0)).perform(click())
 
-        onView(withId(R.id.textInputLayout)).check(matches(isEnabled()))
+        waitForView(withId(R.id.textInputLayout), isEnabled())
     }
 
     @Test
@@ -135,7 +136,7 @@ class KeywordActivityTest {
         fakeRepository.setFakeList(listOf(keyword))
         fakeRepository.emitFake()
 
-        onView(withId(R.id.title)).check(matches(withText(keyword.title)))
+        waitForView(withId(R.id.title), withText(keyword.title))
 
         inputTextToTextInputEditText(keyword.title)
         pressSendKeyboardButton()

@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
@@ -16,6 +15,7 @@ import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
+import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.presentation.R
 import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.view.notice.NoticeFragment
@@ -79,7 +79,7 @@ class NoticeFragmentTest {
         fakeNoticeRepository.setFakeList(mockNotices)
         fakeNoticeRepository.emitFake()
 
-        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
+        waitForView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
             if (noViewFoundException != null) {
                 throw noViewFoundException
             }

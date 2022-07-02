@@ -19,6 +19,7 @@ import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
+import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
 import com.foundy.presentation.view.MainViewModel
@@ -84,7 +85,7 @@ class FavoriteFragmentTest {
         fakeFavoriteRepository.setFakeList(mockNotices)
         fakeFavoriteRepository.emitFake()
 
-        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
+        waitForView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
             if (noViewFoundException != null) {
                 throw noViewFoundException
             }
@@ -96,7 +97,7 @@ class FavoriteFragmentTest {
         onView(withIndex(withId(R.id.favButton), 0))
             .perform(ViewActions.click())
 
-        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
+        waitForView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
             if (noViewFoundException != null) {
                 throw noViewFoundException
             }
@@ -116,9 +117,9 @@ class FavoriteFragmentTest {
 
         val notice = mockNotices.first()
         fakeFavoriteRepository.add(notice)
-        onView(withId(R.id.emptyText)).check(matches(not(isDisplayed())))
+        waitForView(withId(R.id.emptyText), not(isDisplayed()))
 
         fakeFavoriteRepository.remove(notice)
-        onView(withId(R.id.emptyText)).check(matches(isDisplayed()))
+        waitForView(withId(R.id.emptyText), isDisplayed())
     }
 }
