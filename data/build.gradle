@@ -36,6 +36,13 @@ dependencies {
     // mock
     testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
 
+    // firebase
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.6'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
+
+    // 한영 변환 라이브러리
+    implementation 'im.kimcore:inko.kt:1.1'
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'

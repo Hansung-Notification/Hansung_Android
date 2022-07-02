@@ -10,9 +10,12 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.model.Keyword
+import com.foundy.domain.usecase.firebase.SubscribeToUseCase
+import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
+import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
@@ -41,13 +44,16 @@ class KeywordActivityTest {
     @get:Rule(order = 1)
     val scenario = ActivityScenarioRule(KeywordActivity::class.java)
 
-    private val fakeRepository = FakeKeywordRepositoryImpl()
+    private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
+    private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
 
     @BindValue
     val keywordViewModel = KeywordViewModel(
-        ReadKeywordListUseCase(fakeRepository),
-        AddKeywordUseCase(fakeRepository),
-        RemoveKeywordUseCase(fakeRepository)
+        ReadKeywordListUseCase(fakeKeywordRepository),
+        AddKeywordUseCase(fakeKeywordRepository),
+        RemoveKeywordUseCase(fakeKeywordRepository),
+        SubscribeToUseCase(fakeFirebaseRepository),
+        UnsubscribeFromUseCase(fakeFirebaseRepository)
     )
 
     lateinit var context: Context
@@ -92,8 +98,8 @@ class KeywordActivityTest {
     @Test
     fun disableInputText_ifKeywordListIsFull() = runTest {
         val list = (0 until KeywordActivity.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
-        fakeRepository.setFakeList(list)
-        fakeRepository.emitFake()
+        fakeKeywordRepository.setFakeList(list)
+        fakeKeywordRepository.emitFake()
 
         onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
             if (noViewFoundException != null) {
@@ -120,8 +126,8 @@ class KeywordActivityTest {
     @Test
     fun enableInputText_afterRemoveKeywordWhenListIsFull() = runTest {
         val list = (0 until KeywordActivity.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
-        fakeRepository.setFakeList(list)
-        fakeRepository.emitFake()
+        fakeKeywordRepository.setFakeList(list)
+        fakeKeywordRepository.emitFake()
 
         waitForView(withId(R.id.textInputLayout), isNotEnabled())
 
@@ -133,8 +139,8 @@ class KeywordActivityTest {
     @Test
     fun showWarningMessage_ifSendAlreadyExistsKeyword() = runTest {
         val keyword = Keyword("hello")
-        fakeRepository.setFakeList(listOf(keyword))
-        fakeRepository.emitFake()
+        fakeKeywordRepository.setFakeList(listOf(keyword))
+        fakeKeywordRepository.emitFake()
 
         waitForView(withId(R.id.title), withText(keyword.title))
 
