@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.domain.model.Keyword
 import com.foundy.presentation.R
@@ -23,6 +25,8 @@ class KeywordActivity : AppCompatActivity() {
     private val viewModel: KeywordViewModel by viewModels()
 
     companion object {
+
+        private const val TAG = "KeywordActivity"
 
         const val MAX_KEYWORD_COUNT = 10
 
@@ -58,6 +62,7 @@ class KeywordActivity : AppCompatActivity() {
         binding.textInput.setOnEditorActionListener { textView, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_SEND -> {
+                    // TODO: 공백 입력은 제외하도록 예외처리
                     val text = (textView.text ?: "").toString()
                     if (text.length < 2) {
                         showSnackBar(getString(R.string.keyword_min_length_warning))
@@ -75,8 +80,8 @@ class KeywordActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        val adapter = KeywordAdapter()
         binding.apply {
+            val adapter = KeywordAdapter(onClickDelete = ::removeKeyword, lifecycleScope)
             recyclerView.adapter = adapter
             recyclerView.addDividerDecoration(
                 this@KeywordActivity,
@@ -85,6 +90,7 @@ class KeywordActivity : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this@KeywordActivity)
 
             viewModel.keywordList.observe(this@KeywordActivity) { keywords ->
+                // TODO: 공백 입력은 제외하도록 예외처리
                 adapter.submitList(keywords)
                 if (keywords.size >= MAX_KEYWORD_COUNT) {
                     disableTextInput()
@@ -96,7 +102,27 @@ class KeywordActivity : AppCompatActivity() {
     }
 
     private fun addKeyword(keyword: String) {
-        viewModel.addKeywordItem(Keyword(title = keyword))
+        viewModel.let {
+            val keywordItem = Keyword(title = keyword)
+            it.addKeywordItem(keywordItem)
+            it.subscribeTo(keyword) { exception ->
+                showSnackBar(getString(R.string.failed_to_subscribe_keyword))
+                it.removeKeywordItem(keywordItem)
+                Log.e(TAG, "Failed to Subscribe $keyword: ${exception.stackTrace}")
+            }
+        }
+    }
+
+    private fun removeKeyword(keyword: String) {
+        viewModel.let {
+            val keywordItem = Keyword(title = keyword)
+            it.removeKeywordItem(keywordItem)
+            it.unsubscribeFrom(keyword) { exception ->
+                showSnackBar(getString(R.string.failed_to_unsubscribe_keyword))
+                it.addKeywordItem(keywordItem)
+                Log.e(TAG, "Failed to Unsubscribe $keyword: ${exception.stackTrace}")
+            }
+        }
     }
 
     private fun enableTextInput() {

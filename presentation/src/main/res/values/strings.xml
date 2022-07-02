@@ -16,4 +16,8 @@
     <string name="already_exists_keyword">이미 존재하는 키워드입니다</string>
     <string name="keyword_max_hint">최대 %d개까지 만들 수 있어요</string>
     <string name="empty_favorite_notice">즐겨찾기된 항목이 없어요</string>
+    <string name="failed_to_subscribe_keyword">키워드 구독에 실패했습니다.</string>
+    <string name="failed_to_unsubscribe_keyword">키워드 구독 취소에 실패했습니다.</string>
+    <string name="firebase_keyword_noti_channel_id">keyword_subscribe</string>
+    <string name="keyword_notification">키워드 알림</string>
 </resources>
