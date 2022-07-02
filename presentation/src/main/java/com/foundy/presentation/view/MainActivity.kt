@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkUserAuth() {
         val auth = Firebase.auth
-        if (auth.currentUser != null) {
+        if (auth.currentUser == null) {
             auth.signInAnonymously().addOnCompleteListener(this) { task ->
                 if (!task.isSuccessful) {
                     Log.w(TAG, "signInAnonymously:failure", task.exception)
