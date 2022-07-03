@@ -18,6 +18,10 @@ class FakeFirebaseRepositoryImpl(private var isSignedIn: Boolean = true) : Fireb
         return MutableLiveData()
     }
 
+    override fun subscribeAllPreviousTopic() {
+
+    }
+
     override fun subscribeTo(topic: String, onFailure: (Exception) -> Unit) {
 
     }

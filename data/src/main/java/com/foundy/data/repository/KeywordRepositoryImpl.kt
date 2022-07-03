@@ -1,6 +1,8 @@
 package com.foundy.data.repository
 
 import android.util.Log
+import com.foundy.data.constant.FirebaseConstant.USERS
+import com.foundy.data.constant.FirebaseConstant.KEYWORDS
 import com.foundy.domain.exception.NotSignedInException
 import com.foundy.domain.model.Keyword
 import com.foundy.domain.repository.KeywordRepository
@@ -16,15 +18,15 @@ import kotlinx.coroutines.flow.callbackFlow
 
 class KeywordRepositoryImpl : KeywordRepository {
 
-    private val keywordsReference = Firebase.database.reference.child("keywords")
+    private val keywordsReference = Firebase.database.reference.child(KEYWORDS)
 
     private val userKeywordsReference: DatabaseReference?
         get() {
             val uid = Firebase.auth.uid ?: return null
             return Firebase.database.reference
-                .child("users")
+                .child(USERS)
                 .child(uid)
-                .child("keywords")
+                .child(KEYWORDS)
         }
 
     override fun getAll(): Flow<Result<List<Keyword>>> = callbackFlow {
@@ -40,7 +42,7 @@ class KeywordRepositoryImpl : KeywordRepository {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val items = dataSnapshot.children.map { ds ->
-                    ds.key?.let { it -> Keyword(it) }
+                    ds.key?.let { Keyword(it) }
                 }
                 this@callbackFlow.trySendBlocking(Result.success(items.filterNotNull()))
             }

@@ -46,7 +46,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     )
                     Log.d(TAG, "Success google sign in: " + account.id)
                 } catch (e: ApiException) {
-                    showErrorSnackBar()
+                    showSnackBar(getString(R.string.failed_to_sign_in))
                     Log.e(TAG, "Failed google sign in: " + e.message)
                 }
             }
@@ -85,15 +85,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun onCompleteSignIn(result: Result<Any>) {
         if (result.isSuccess) {
-            // TODO: 이전에 만들었던 키워드들 구독 신청하기
-            findNavController().navigate(R.id.action_loginFragment_to_keywordFragment)
+            try {
+                viewModel.subscribeAllPreviousTopic()
+            } catch (e: Exception) {
+                showSnackBar(getString(R.string.failed_to_subscribe_previous_keywords))
+            } finally {
+                findNavController().navigate(R.id.action_loginFragment_to_keywordFragment)
+            }
         } else {
-            showErrorSnackBar()
+            showSnackBar(getString(R.string.failed_to_sign_in))
             Log.e(TAG, "Failed firebase sign in: " + result.exceptionOrNull())
         }
     }
 
-    private fun showErrorSnackBar() {
-        Snackbar.make(requireView(), getString(R.string.failed_to_sign_in), Snackbar.LENGTH_SHORT).show()
+    private fun showSnackBar(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
     }
 }
