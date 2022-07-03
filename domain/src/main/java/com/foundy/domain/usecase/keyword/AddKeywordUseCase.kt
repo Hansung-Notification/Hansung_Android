@@ -7,5 +7,5 @@ import javax.inject.Inject
 class AddKeywordUseCase @Inject constructor(
     private val repository: KeywordRepository
 ) {
-    suspend operator fun invoke(keyword: Keyword) = repository.add(keyword)
+    operator fun invoke(keyword: Keyword) = repository.add(keyword)
 }

@@ -1,8 +1,6 @@
 package com.foundy.data.converter
 
 import com.foundy.data.model.FavoriteNoticeEntity
-import com.foundy.data.model.KeywordEntity
-import com.foundy.domain.model.Keyword
 import com.foundy.domain.model.Notice
 
 fun FavoriteNoticeEntity.toNotice() = Notice(
@@ -20,7 +18,3 @@ fun Notice.toFavoriteNoticeEntity() = FavoriteNoticeEntity(
     writer = writer,
     url = url
 )
-
-fun KeywordEntity.toDomain() = Keyword(title = title)
-
-fun Keyword.toEntity() = KeywordEntity(title = title)

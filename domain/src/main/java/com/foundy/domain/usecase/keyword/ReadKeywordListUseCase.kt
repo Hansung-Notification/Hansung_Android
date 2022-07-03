@@ -8,5 +8,5 @@ import javax.inject.Inject
 class ReadKeywordListUseCase @Inject constructor(
     private val repository: KeywordRepository
 ) {
-    operator fun invoke(): Flow<List<Keyword>> = repository.getAll()
+    operator fun invoke(): Flow<Result<List<Keyword>>> = repository.getAll()
 }

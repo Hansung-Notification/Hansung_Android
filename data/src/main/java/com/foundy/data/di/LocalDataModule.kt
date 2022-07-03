@@ -4,11 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.foundy.data.db.FavoriteDao
 import com.foundy.data.db.HansungDatabase
-import com.foundy.data.db.KeywordDao
 import com.foundy.data.source.favorite.FavoriteLocalDataSource
 import com.foundy.data.source.favorite.FavoriteLocalDataSourceImpl
-import com.foundy.data.source.keyword.KeywordLocalDataSource
-import com.foundy.data.source.keyword.KeywordLocalDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,18 +44,4 @@ class LocalDataModule {
         return FavoriteLocalDataSourceImpl(favoriteDao)
     }
     // ~Favorite
-
-    // Keyword
-    @Provides
-    @Singleton
-    fun provideKeywordDao(hansungDatabase: HansungDatabase): KeywordDao {
-        return hansungDatabase.keywordDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideKeywordLocalDataSource(keywordDao: KeywordDao): KeywordLocalDataSource {
-        return KeywordLocalDataSourceImpl(keywordDao)
-    }
-    // ~Keyword
 }

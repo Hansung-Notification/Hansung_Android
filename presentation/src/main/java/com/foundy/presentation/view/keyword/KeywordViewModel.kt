@@ -9,7 +9,6 @@ import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,19 +24,15 @@ class KeywordViewModel @Inject constructor(
     val keywordList = readKeywordListUseCase().asLiveData()
 
     fun addKeywordItem(keyword: Keyword) {
-        viewModelScope.launch {
-            addKeywordUseCase(keyword)
-        }
+        addKeywordUseCase(keyword)
     }
 
     fun removeKeywordItem(keyword: Keyword) {
-        viewModelScope.launch {
-            removeKeywordUseCase(keyword)
-        }
+        removeKeywordUseCase(keyword)
     }
 
     fun hasKeyword(keyword: String): Boolean {
-        return keywordList.value?.firstOrNull { it.title == keyword } != null
+        return keywordList.value?.getOrNull()?.firstOrNull() { it.title == keyword } != null
     }
 
     fun subscribeTo(topic: String, onFailure: (Exception) -> Unit) {

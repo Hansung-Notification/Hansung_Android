@@ -65,13 +65,16 @@ class KeywordFragment : Fragment(R.layout.fragment_keyword) {
             )
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-            viewModel.keywordList.observe(viewLifecycleOwner) { keywords ->
-                // TODO: 공백 입력은 제외하도록 예외처리
-                adapter.submitList(keywords)
-                if (keywords.size >= MAX_KEYWORD_COUNT) {
-                    disableTextInput(binding)
-                } else {
-                    enableTextInput(binding)
+            viewModel.keywordList.observe(viewLifecycleOwner) { result ->
+                // TODO: 실패 예외처리
+                if (result.isSuccess) {
+                    val keywords = result.getOrNull()!!
+                    adapter.submitList(keywords)
+                    if (keywords.size >= MAX_KEYWORD_COUNT) {
+                        disableTextInput(binding)
+                    } else {
+                        enableTextInput(binding)
+                    }
                 }
             }
         }

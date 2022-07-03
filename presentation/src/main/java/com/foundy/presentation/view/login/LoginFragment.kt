@@ -85,6 +85,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun onCompleteSignIn(result: Result<Any>) {
         if (result.isSuccess) {
+            // TODO: 이전에 만들었던 키워드들 구독 신청하기
             findNavController().navigate(R.id.action_loginFragment_to_keywordFragment)
         } else {
             showErrorSnackBar()
