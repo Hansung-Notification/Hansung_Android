@@ -43,6 +43,7 @@ class FirebaseRepositoryImpl : FirebaseRepository {
     override fun subscribeAllPreviousTopic() {
         val uid = Firebase.auth.uid ?: throw NotSignedInException()
         val dbReference = Firebase.database.reference
+        val keywordReference = dbReference.child(KEYWORDS)
         val userKeywordsReference = dbReference.child(USERS).child(uid).child(KEYWORDS)
 
         userKeywordsReference.get().addOnCompleteListener { task ->
@@ -52,7 +53,7 @@ class FirebaseRepositoryImpl : FirebaseRepository {
                         subscribeTo(keyword) { e ->
                             // 재구독에 실패한 항목은 제거한다.
                             dataSnapshot.ref.removeValue()
-                            dbReference.child(KEYWORDS).setValue(ServerValue.increment(-1))
+                            keywordReference.child(keyword).setValue(ServerValue.increment(-1))
 
                             Log.e(TAG, "Failed to subscribe $keyword: ${e.stackTrace}")
                         }
