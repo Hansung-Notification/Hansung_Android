@@ -4,10 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.foundy.domain.repository.FirebaseRepository
 
-class FakeFirebaseRepositoryImpl : FirebaseRepository {
+class FakeFirebaseRepositoryImpl(private var isSignedIn: Boolean = true) : FirebaseRepository {
+
+    fun setSignedIn(isSignedIn: Boolean) {
+        this.isSignedIn = isSignedIn
+    }
 
     override fun isSignedIn(): Boolean {
-        return true
+        return isSignedIn
     }
 
     override fun signInWith(idToken: String): LiveData<Result<Any>> {

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/keywordFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.keyword.KeywordActivity">
@@ -13,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginVertical="8dp"
-        android:textSize="14sp"
         android:lineSpacingExtra="4sp"
         android:text="@string/keyword_help"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

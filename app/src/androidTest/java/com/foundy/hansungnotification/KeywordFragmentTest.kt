@@ -56,7 +56,7 @@ class KeywordFragmentTest {
     private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
 
     @BindValue
-    var keywordViewModel = KeywordViewModel(
+    val keywordViewModel = KeywordViewModel(
         ReadKeywordListUseCase(fakeKeywordRepository),
         AddKeywordUseCase(fakeKeywordRepository),
         RemoveKeywordUseCase(fakeKeywordRepository),
