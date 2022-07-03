@@ -2,6 +2,7 @@ package com.foundy.presentation.view.keyword
 
 import androidx.lifecycle.*
 import com.foundy.domain.model.Keyword
+import com.foundy.domain.usecase.firebase.IsSignedInUseCase
 import com.foundy.domain.usecase.firebase.SubscribeToUseCase
 import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
@@ -17,7 +18,8 @@ class KeywordViewModel @Inject constructor(
     private val addKeywordUseCase: AddKeywordUseCase,
     private val removeKeywordUseCase: RemoveKeywordUseCase,
     private val subscribeToUseCase: SubscribeToUseCase,
-    private val unsubscribeFromUseCase: UnsubscribeFromUseCase
+    private val unsubscribeFromUseCase: UnsubscribeFromUseCase,
+    private val isSignedInUseCase: IsSignedInUseCase
 ) : ViewModel() {
 
     val keywordList = readKeywordListUseCase().asLiveData()
@@ -45,4 +47,6 @@ class KeywordViewModel @Inject constructor(
     fun unsubscribeFrom(topic: String, onFailure: (Exception) -> Unit) {
         unsubscribeFromUseCase(topic, onFailure)
     }
+
+    fun isSignedIn() = isSignedInUseCase()
 }

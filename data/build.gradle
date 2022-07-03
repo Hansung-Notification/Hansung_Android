@@ -39,6 +39,8 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-messaging-ktx:23.0.6'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.6'
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
 
     // 한영 변환 라이브러리
     implementation 'im.kimcore:inko.kt:1.1'
