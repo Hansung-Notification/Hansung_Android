@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityKeywordBinding
-import com.foundy.presentation.view.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

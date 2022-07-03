@@ -1,4 +1,4 @@
-package com.foundy.presentation.view.login
+package com.foundy.presentation.view.keyword
 
 import androidx.lifecycle.ViewModel
 import com.foundy.domain.usecase.firebase.SignInWithUseCase

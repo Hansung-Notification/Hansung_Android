@@ -1,4 +1,4 @@
-package com.foundy.presentation.view.login
+package com.foundy.presentation.view.keyword
 
 import android.app.Activity.RESULT_OK
 import android.content.Context
