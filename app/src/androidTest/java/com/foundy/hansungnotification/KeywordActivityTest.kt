@@ -1,12 +1,10 @@
 package com.foundy.hansungnotification
 
 import android.content.Context
+import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
@@ -22,10 +20,10 @@ import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
-import com.foundy.presentation.view.MainActivity
 import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.view.keyword.KeywordViewModel
 import com.foundy.presentation.R
+import com.foundy.presentation.view.keyword.KeywordActivity
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -41,9 +39,6 @@ class KeywordActivityTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val scenario = ActivityScenarioRule(MainActivity::class.java)
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
@@ -79,8 +74,7 @@ class KeywordActivityTest {
     fun showLoginFragment_ifNotSignedIn() = runTest {
         fakeFirebaseRepository.setSignedIn(false)
 
-        openActionBarOverflowOrOptionsMenu(context)
-        onView(withText(R.string.notification_keyword)).perform(click())
+        launchActivity<KeywordActivity>()
 
         onView(withId(R.id.loginFragment)).check(matches(isDisplayed()))
     }
@@ -89,8 +83,7 @@ class KeywordActivityTest {
     fun showKeywordFragment_ifSignedIn() = runTest {
         fakeFirebaseRepository.setSignedIn(true)
 
-        openActionBarOverflowOrOptionsMenu(context)
-        onView(withText(R.string.notification_keyword)).perform(click())
+        launchActivity<KeywordActivity>()
 
         onView(withId(R.id.keywordFragment)).check(matches(isDisplayed()))
     }
