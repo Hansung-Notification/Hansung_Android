@@ -8,8 +8,12 @@ import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityKeywordBinding
+import com.foundy.presentation.view.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * 사용자가 로그인 했으면 [KeywordFragment]를 보이고, 로그인 되어있지 않다면 [LoginFragment]를 보인다.
+ */
 @AndroidEntryPoint
 class KeywordActivity : AppCompatActivity() {
 
