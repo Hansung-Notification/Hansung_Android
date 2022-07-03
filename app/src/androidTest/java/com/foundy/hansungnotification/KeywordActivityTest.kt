@@ -1,6 +1,7 @@
 package com.foundy.hansungnotification
 
 import android.content.Context
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -21,7 +22,6 @@ import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
-import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.presentation.view.MainActivity
 import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.view.keyword.KeywordViewModel
@@ -80,9 +80,9 @@ class KeywordActivityTest {
         fakeFirebaseRepository.setSignedIn(false)
 
         openActionBarOverflowOrOptionsMenu(context)
-        waitForView(withText(context.getString(R.string.notification_keyword))).perform(click())
+        onView(withText(context.getString(R.string.notification_keyword))).perform(click())
 
-        waitForView(withId(R.id.loginFragment)).check(matches(isDisplayed()))
+        onView(withId(R.id.loginFragment)).check(matches(isDisplayed()))
     }
 
     @Test
@@ -90,8 +90,8 @@ class KeywordActivityTest {
         fakeFirebaseRepository.setSignedIn(true)
 
         openActionBarOverflowOrOptionsMenu(context)
-        waitForView(withText(context.getString(R.string.notification_keyword))).perform(click())
+        onView(withText(context.getString(R.string.notification_keyword))).perform(click())
 
-        waitForView(withId(R.id.keywordFragment)).check(matches(isDisplayed()))
+        onView(withId(R.id.keywordFragment)).check(matches(isDisplayed()))
     }
 }
