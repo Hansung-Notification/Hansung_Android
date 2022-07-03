@@ -16,4 +16,14 @@
     <string name="already_exists_keyword">이미 존재하는 키워드입니다</string>
     <string name="keyword_max_hint">최대 %d개까지 만들 수 있어요</string>
     <string name="empty_favorite_notice">즐겨찾기된 항목이 없어요</string>
+    <string name="failed_to_subscribe_keyword">키워드 구독에 실패했습니다.</string>
+    <string name="failed_to_unsubscribe_keyword">키워드 구독 취소에 실패했습니다.</string>
+    <string name="firebase_keyword_noti_channel_id">keyword_subscribe</string>
+    <string name="keyword_notification">키워드 알림</string>
+    <string name="web_client_id">86099946857-q8hjdct33dbr1aqhdn7b9te9hcvde4ac.apps.googleusercontent.com</string>
+    <string name="failed_to_sign_in">로그인에 실패했습니다.</string>
+    <string name="keyword_login_text">키워드 목록을 저장하기 위해\n로그인이 필요해요.</string>
+    <string name="sync_image">동기화 이미지</string>
+    <string name="sign_in_with_google">Google 계정으로 로그인</string>
+    <string name="failed_to_subscribe_previous_keywords">이전 키워드 재구독에 실패했습니다. 키워드를 삭제후 다시 생성해주세요.</string>
 </resources>

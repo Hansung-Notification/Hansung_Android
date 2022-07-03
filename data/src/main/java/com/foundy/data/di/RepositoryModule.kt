@@ -2,11 +2,12 @@ package com.foundy.data.di
 
 import com.foundy.data.api.NoticeApi
 import com.foundy.data.repository.FavoriteRepositoryImpl
+import com.foundy.data.repository.FirebaseRepositoryImpl
 import com.foundy.data.repository.KeywordRepositoryImpl
 import com.foundy.data.repository.NoticeRepositoryImpl
 import com.foundy.data.source.favorite.FavoriteLocalDataSource
-import com.foundy.data.source.keyword.KeywordLocalDataSource
 import com.foundy.domain.repository.FavoriteRepository
+import com.foundy.domain.repository.FirebaseRepository
 import com.foundy.domain.repository.KeywordRepository
 import com.foundy.domain.repository.NoticeRepository
 import dagger.Module
@@ -33,7 +34,13 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideKeywordRepository(keywordLocalDataSource: KeywordLocalDataSource): KeywordRepository {
-        return KeywordRepositoryImpl(keywordLocalDataSource)
+    fun provideKeywordRepository(): KeywordRepository {
+        return KeywordRepositoryImpl()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseRepositoryImpl(): FirebaseRepository {
+        return FirebaseRepositoryImpl()
     }
 }

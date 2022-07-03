@@ -1,32 +1,34 @@
 package com.foundy.hansungnotification
 
 import android.content.Context
-import androidx.annotation.StringRes
-import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
-import com.foundy.domain.model.Keyword
+import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
+import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
+import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
+import com.foundy.domain.usecase.firebase.IsSignedInUseCase
+import com.foundy.domain.usecase.firebase.SubscribeToUseCase
+import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
+import com.foundy.domain.usecase.notice.GetNoticeListUseCase
+import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
+import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
-import com.foundy.hansungnotification.utils.waitForView
-import com.foundy.hansungnotification.utils.withIndex
+import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
+import com.foundy.presentation.view.MainViewModel
+import com.foundy.presentation.view.keyword.KeywordViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.view.keyword.KeywordActivity
-import com.foundy.presentation.view.keyword.KeywordViewModel
-import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,18 +40,28 @@ class KeywordActivityTest {
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
-    @get:Rule(order = 1)
-    val scenario = ActivityScenarioRule(KeywordActivity::class.java)
+    private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
+    private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
+    private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
+    private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
 
-    private val fakeRepository = FakeKeywordRepositoryImpl()
+    @BindValue
+    val mainViewModel = MainViewModel(
+        GetNoticeListUseCase(fakeNoticeRepository),
+        ReadFavoriteListUseCase(fakeFavoriteRepository),
+        AddFavoriteNoticeUseCase(fakeFavoriteRepository),
+        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository)
+    )
 
     @BindValue
     val keywordViewModel = KeywordViewModel(
-        ReadKeywordListUseCase(fakeRepository),
-        AddKeywordUseCase(fakeRepository),
-        RemoveKeywordUseCase(fakeRepository)
+        ReadKeywordListUseCase(fakeKeywordRepository),
+        AddKeywordUseCase(fakeKeywordRepository),
+        RemoveKeywordUseCase(fakeKeywordRepository),
+        SubscribeToUseCase(fakeFirebaseRepository),
+        UnsubscribeFromUseCase(fakeFirebaseRepository),
+        IsSignedInUseCase(fakeFirebaseRepository)
     )
-
     lateinit var context: Context
 
     @Before
@@ -59,102 +71,20 @@ class KeywordActivityTest {
     }
 
     @Test
-    fun textViewIsEmpty_afterAddedKeyword() {
-        inputTextToTextInputEditText("some text")
-        pressSendKeyboardButton()
+    fun showLoginFragment_ifNotSignedIn() = runTest {
+        fakeFirebaseRepository.setSignedIn(false)
 
-        onView(withId(R.id.textInput)).check { view, noViewFoundException ->
-            if (noViewFoundException != null)
-                throw noViewFoundException
+        launchActivity<KeywordActivity>()
 
-            val textInput = view as TextInputEditText
-            assertTrue(textInput.text!!.isEmpty())
-        }
+        onView(withId(R.id.loginFragment)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun cannotAddKeyword_ifTextLengthIsLowerThanTwo() {
-        val text = "t"
-        inputTextToTextInputEditText(text)
-        pressSendKeyboardButton()
+    fun showKeywordFragment_ifSignedIn() = runTest {
+        fakeFirebaseRepository.setSignedIn(true)
 
-        onView(withId(R.id.textInput)).check { view, noViewFoundException ->
-            if (noViewFoundException != null)
-                throw noViewFoundException
+        launchActivity<KeywordActivity>()
 
-            val textInput = view as TextInputEditText
-            assertEquals(textInput.text!!.toString(), text)
-        }
-
-        assertSnackBarHasText(R.string.keyword_min_length_warning)
-    }
-
-    @Test
-    fun disableInputText_ifKeywordListIsFull() = runTest {
-        val list = (0 until KeywordActivity.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
-        fakeRepository.setFakeList(list)
-        fakeRepository.emitFake()
-
-        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
-            if (noViewFoundException != null) {
-                throw noViewFoundException
-            }
-
-            val recyclerView = view as RecyclerView
-            assertEquals(recyclerView.adapter?.itemCount, list.size)
-        }
-
-        onView(withId(R.id.textInputLayout)).check(matches(isNotEnabled()))
-        onView(withId(R.id.textInput)).check(
-            matches(
-                withHint(
-                    context.getString(
-                        R.string.keyword_max_hint,
-                        list.size
-                    )
-                )
-            )
-        )
-    }
-
-    @Test
-    fun enableInputText_afterRemoveKeywordWhenListIsFull() = runTest {
-        val list = (0 until KeywordActivity.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
-        fakeRepository.setFakeList(list)
-        fakeRepository.emitFake()
-
-        waitForView(withId(R.id.textInputLayout), isNotEnabled())
-
-        onView(withIndex(withId(R.id.delete_button), 0)).perform(click())
-
-        waitForView(withId(R.id.textInputLayout), isEnabled())
-    }
-
-    @Test
-    fun showWarningMessage_ifSendAlreadyExistsKeyword() = runTest {
-        val keyword = Keyword("hello")
-        fakeRepository.setFakeList(listOf(keyword))
-        fakeRepository.emitFake()
-
-        waitForView(withId(R.id.title), withText(keyword.title))
-
-        inputTextToTextInputEditText(keyword.title)
-        pressSendKeyboardButton()
-
-        assertSnackBarHasText(R.string.already_exists_keyword)
-    }
-
-    private fun inputTextToTextInputEditText(text: String) {
-        onView(withId(R.id.textInput)).perform(typeText(text))
-    }
-
-    private fun pressSendKeyboardButton() {
-        onView(withId(R.id.textInput)).perform(pressImeActionButton())
-    }
-
-    private fun assertSnackBarHasText(@StringRes resourceId: Int) {
-        onView(withId(com.google.android.material.R.id.snackbar_text)).check(
-            matches(withText(resourceId))
-        )
+        onView(withId(R.id.keywordFragment)).check(matches(isDisplayed()))
     }
 }

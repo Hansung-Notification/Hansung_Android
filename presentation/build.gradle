@@ -44,9 +44,7 @@ dependencies {
 
     // firebase
     implementation 'com.google.firebase:firebase-messaging-ktx:23.0.6'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.0'
-    implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.6'
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
 
     // mockk
     testImplementation "io.mockk:mockk:$mockk_version"
