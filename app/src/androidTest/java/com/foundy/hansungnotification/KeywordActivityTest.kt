@@ -8,14 +8,20 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
+import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
+import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
+import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.domain.usecase.firebase.IsSignedInUseCase
 import com.foundy.domain.usecase.firebase.SubscribeToUseCase
 import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
+import com.foundy.domain.usecase.notice.GetNoticeListUseCase
+import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
+import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.presentation.view.MainActivity
 import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.view.keyword.KeywordViewModel
@@ -23,7 +29,6 @@ import com.foundy.presentation.R
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -42,9 +47,16 @@ class KeywordActivityTest {
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
+    private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
+    private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
 
     @BindValue
-    val mainViewModel: MainViewModel = mockk(relaxed = true)
+    val mainViewModel = MainViewModel(
+        GetNoticeListUseCase(fakeNoticeRepository),
+        ReadFavoriteListUseCase(fakeFavoriteRepository),
+        AddFavoriteNoticeUseCase(fakeFavoriteRepository),
+        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository)
+    )
 
     @BindValue
     val keywordViewModel = KeywordViewModel(
