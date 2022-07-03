@@ -2,6 +2,8 @@ package com.foundy.hansungnotification
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.fragment.app.FragmentFactory
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -10,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.model.Keyword
+import com.foundy.domain.usecase.firebase.IsSignedInUseCase
 import com.foundy.domain.usecase.firebase.SubscribeToUseCase
 import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
@@ -21,11 +24,14 @@ import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
 import com.foundy.presentation.view.keyword.KeywordActivity
+import com.foundy.presentation.view.keyword.KeywordFragment
 import com.foundy.presentation.view.keyword.KeywordViewModel
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -36,7 +42,9 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
-class KeywordActivityTest {
+class KeywordFragmentTest {
+
+    private val fragmentFactory: FragmentFactory = mockk()
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
@@ -48,20 +56,28 @@ class KeywordActivityTest {
     private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
 
     @BindValue
-    val keywordViewModel = KeywordViewModel(
+    var keywordViewModel = KeywordViewModel(
         ReadKeywordListUseCase(fakeKeywordRepository),
         AddKeywordUseCase(fakeKeywordRepository),
         RemoveKeywordUseCase(fakeKeywordRepository),
         SubscribeToUseCase(fakeFirebaseRepository),
-        UnsubscribeFromUseCase(fakeFirebaseRepository)
+        UnsubscribeFromUseCase(fakeFirebaseRepository),
+        IsSignedInUseCase(fakeFirebaseRepository)
     )
 
-    lateinit var context: Context
+    private lateinit var context: Context
 
     @Before
     fun setUp() {
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().targetContext
+
+        with(mockk<ViewModelProvider.Factory>()) {
+            every { create(keywordViewModel::class.java) } answers { keywordViewModel }
+            every { fragmentFactory.instantiate(any(), any()) } answers {
+                KeywordFragment { this@with }
+            }
+        }
     }
 
     @Test
@@ -97,9 +113,8 @@ class KeywordActivityTest {
 
     @Test
     fun disableInputText_ifKeywordListIsFull() = runTest {
-        val list = (0 until KeywordActivity.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
+        val list = (0 until KeywordFragment.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
         fakeKeywordRepository.setFakeList(list)
-        fakeKeywordRepository.emitFake()
 
         onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
             if (noViewFoundException != null) {
@@ -125,9 +140,8 @@ class KeywordActivityTest {
 
     @Test
     fun enableInputText_afterRemoveKeywordWhenListIsFull() = runTest {
-        val list = (0 until KeywordActivity.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
+        val list = (0 until KeywordFragment.MAX_KEYWORD_COUNT).map { Keyword(it.toString()) }
         fakeKeywordRepository.setFakeList(list)
-        fakeKeywordRepository.emitFake()
 
         waitForView(withId(R.id.textInputLayout), isNotEnabled())
 
@@ -140,7 +154,6 @@ class KeywordActivityTest {
     fun showWarningMessage_ifSendAlreadyExistsKeyword() = runTest {
         val keyword = Keyword("hello")
         fakeKeywordRepository.setFakeList(listOf(keyword))
-        fakeKeywordRepository.emitFake()
 
         waitForView(withId(R.id.title), withText(keyword.title))
 

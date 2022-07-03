@@ -23,11 +23,11 @@ class FakeFavoriteRepositoryImpl: FavoriteRepository {
 
     override suspend fun add(notice: Notice) {
         noticeList.add(notice)
-        sharedFlow.emit(noticeList)
+        emitFake()
     }
 
     override suspend fun remove(notice: Notice) {
         noticeList.remove(notice)
-        sharedFlow.emit(noticeList)
+        emitFake()
     }
 }

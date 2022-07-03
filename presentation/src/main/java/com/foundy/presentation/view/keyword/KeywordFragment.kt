@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.domain.model.Keyword
@@ -14,9 +16,11 @@ import com.foundy.presentation.databinding.FragmentKeywordBinding
 import com.foundy.presentation.extension.addDividerDecoration
 import com.google.android.material.snackbar.Snackbar
 
-class KeywordFragment : Fragment(R.layout.fragment_keyword) {
+class KeywordFragment(
+    @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
+) : Fragment(R.layout.fragment_keyword) {
 
-    private val viewModel: KeywordViewModel by activityViewModels()
+    private val viewModel: KeywordViewModel by activityViewModels(factory)
 
     companion object {
 
