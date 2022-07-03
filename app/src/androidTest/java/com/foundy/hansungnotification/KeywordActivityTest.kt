@@ -80,7 +80,7 @@ class KeywordActivityTest {
         fakeFirebaseRepository.setSignedIn(false)
 
         openActionBarOverflowOrOptionsMenu(context)
-        onView(withText(context.getString(R.string.notification_keyword))).perform(click())
+        onView(withText(R.string.notification_keyword)).perform(click())
 
         onView(withId(R.id.loginFragment)).check(matches(isDisplayed()))
     }
@@ -90,7 +90,7 @@ class KeywordActivityTest {
         fakeFirebaseRepository.setSignedIn(true)
 
         openActionBarOverflowOrOptionsMenu(context)
-        onView(withText(context.getString(R.string.notification_keyword))).perform(click())
+        onView(withText(R.string.notification_keyword)).perform(click())
 
         onView(withId(R.id.keywordFragment)).check(matches(isDisplayed()))
     }
