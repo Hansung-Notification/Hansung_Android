@@ -12,9 +12,10 @@ object KeywordValidator {
     @VisibleForTesting
     val PATTERN: Pattern = Pattern.compile("^[0-9가-힣]+$")
 
-    class MinLengthException : Exception("두 글자 이상 입력해주세요.")
-    class AlreadyExistsException : Exception("이미 존재하는 키워드입니다.")
-    class InvalidCharacterException : Exception("한글과 숫자만 입력할 수 있어요.")
+    open class KeywordInvalidException(message: String) : Exception(message)
+    class MinLengthException : KeywordInvalidException("두 글자 이상 입력해주세요.")
+    class AlreadyExistsException : KeywordInvalidException("이미 존재하는 키워드입니다.")
+    class InvalidCharacterException : KeywordInvalidException("한글과 숫자만 입력할 수 있어요.")
 
     operator fun invoke(keyword: String, registeredKeywordList: List<Keyword>): Boolean {
         if (!PATTERN.matcher(keyword).matches()) throw InvalidCharacterException()

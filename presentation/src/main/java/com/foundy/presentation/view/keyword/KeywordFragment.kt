@@ -16,6 +16,7 @@ import com.foundy.domain.model.Keyword
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentKeywordBinding
 import com.foundy.presentation.extension.addDividerDecoration
+import com.foundy.presentation.utils.KeywordValidator
 import com.google.android.material.snackbar.Snackbar
 
 class KeywordFragment(
@@ -46,7 +47,7 @@ class KeywordFragment(
             try {
                 viewModel.checkValid(keyword)
                 binding.textInputLayout.error = null
-            } catch (e: Exception) {
+            } catch (e: KeywordValidator.KeywordInvalidException) {
                 binding.textInputLayout.error = e.message ?: getString(R.string.invalid_keyword)
             }
         }
@@ -58,7 +59,7 @@ class KeywordFragment(
                         viewModel.checkValid(keyword)
                         addKeyword(keyword)
                         textView.text = ""
-                    } catch (e: Exception) {
+                    } catch (e: KeywordValidator.KeywordInvalidException) {
                         showSnackBar(e.message ?: getString(R.string.invalid_keyword))
                     }
                     true
