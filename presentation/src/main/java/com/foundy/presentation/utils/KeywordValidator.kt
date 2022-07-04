@@ -1,16 +1,13 @@
 package com.foundy.presentation.utils
 
-import androidx.annotation.VisibleForTesting
 import com.foundy.domain.model.Keyword
 import java.util.regex.Pattern
 
 object KeywordValidator {
 
-    @VisibleForTesting
-    const val MIN_LENGTH: Int = 2
+    private const val MIN_LENGTH: Int = 2
 
-    @VisibleForTesting
-    val PATTERN: Pattern = Pattern.compile("^[0-9가-힣]+$")
+    private val PATTERN: Pattern = Pattern.compile("^[0-9가-힣]+$")
 
     open class KeywordInvalidException(message: String) : Exception(message)
     class MinLengthException : KeywordInvalidException("두 글자 이상 입력해주세요.")
