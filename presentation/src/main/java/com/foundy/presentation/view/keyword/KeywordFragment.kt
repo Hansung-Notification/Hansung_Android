@@ -144,6 +144,7 @@ class KeywordFragment(
         binding.textInputLayout.apply {
             if (!isEnabled) return@apply
             hint = getString(R.string.keyword_max_hint, MAX_KEYWORD_COUNT)
+            error = null
             isEnabled = false
         }
     }
