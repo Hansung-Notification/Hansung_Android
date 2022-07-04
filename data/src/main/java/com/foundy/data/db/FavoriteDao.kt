@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteDao {
-    @Query("SELECT * FROM $FAVORITE_NOTICE_TABLE_NAME")
+    @Query("SELECT * FROM $FAVORITE_NOTICE_TABLE_NAME ORDER BY date DESC")
     fun getAll(): Flow<List<FavoriteNoticeEntity>>
 
     @Insert
