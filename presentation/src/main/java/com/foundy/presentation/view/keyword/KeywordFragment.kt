@@ -72,7 +72,6 @@ class KeywordFragment(
 
             viewModel.keywordList.observe(viewLifecycleOwner) { result ->
                 progressBar.isVisible = false
-                // TODO: 실패 예외처리
                 if (result.isSuccess) {
                     val keywords = result.getOrNull()!!
                     adapter.submitList(keywords)
@@ -81,6 +80,11 @@ class KeywordFragment(
                     } else {
                         enableTextInput(binding)
                     }
+                } else {
+                    errorMsg.isVisible = true
+                    textInputLayout.isVisible = false
+                    keywordHelpText.isVisible = false
+                    Log.e(TAG, "Failed to load keywords: ${result.exceptionOrNull()}")
                 }
             }
         }

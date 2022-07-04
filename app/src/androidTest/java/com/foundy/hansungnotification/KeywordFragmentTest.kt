@@ -34,6 +34,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.Matchers.not
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -161,6 +162,15 @@ class KeywordFragmentTest {
         pressSendKeyboardButton()
 
         assertSnackBarHasText(R.string.already_exists_keyword)
+    }
+
+    @Test
+    fun showErrorMessage_ifFailedToLoadData() = runTest {
+        fakeKeywordRepository.setFailedResult()
+
+        waitForView(withId(R.id.errorMsg), withText(R.string.failed_to_load))
+        waitForView(withId(R.id.textInputLayout), not(isDisplayed()))
+        waitForView(withId(R.id.keyword_help_text), not(isDisplayed()))
     }
 
     private fun inputTextToTextInputEditText(text: String) {

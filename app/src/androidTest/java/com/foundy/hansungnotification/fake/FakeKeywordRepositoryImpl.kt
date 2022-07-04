@@ -18,6 +18,10 @@ class FakeKeywordRepositoryImpl : KeywordRepository {
         emitFake()
     }
 
+    suspend fun setFailedResult() {
+        sharedFlow.emit(Result.failure(Exception()))
+    }
+
     private suspend fun emitFake() {
         sharedFlow.emit(Result.success(keywordList))
     }
