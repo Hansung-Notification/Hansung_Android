@@ -12,8 +12,6 @@
     <string name="keyword_help">10분마다 새로운 공지사항을 확인하여 새로운 공지사항에 키워드가 포함되어 있는 경우 알림을 보내드려요.</string>
     <string name="delete_keyword">키워드 삭제</string>
     <string name="notification_keyword">알림 키워드</string>
-    <string name="keyword_min_length_warning">두 글자 이상으로 입력해주세요</string>
-    <string name="already_exists_keyword">이미 존재하는 키워드입니다</string>
     <string name="keyword_max_hint">최대 %d개까지 만들 수 있어요</string>
     <string name="empty_favorite_notice">즐겨찾기된 항목이 없어요</string>
     <string name="failed_to_subscribe_keyword">키워드 구독에 실패했습니다.</string>
@@ -28,4 +26,5 @@
     <string name="failed_to_subscribe_previous_keywords">이전 키워드 재구독에 실패했습니다. 키워드를 삭제후 다시 생성해주세요.</string>
     <string name="failed_to_load">로딩에 실패했습니다.</string>
     <string name="invalid_keyword">유효하지 않은 키워드입니다.</string>
+    <string name="add_keyword">키워드 추가하기</string>
 </resources>

@@ -55,17 +55,15 @@ class KeywordFragment(
             when (actionId) {
                 EditorInfo.IME_ACTION_SEND -> {
                     val keyword = (textView.text ?: "").toString()
-                    try {
-                        viewModel.checkValid(keyword)
-                        addKeyword(keyword)
-                        textView.text = ""
-                    } catch (e: KeywordValidator.KeywordInvalidException) {
-                        showSnackBar(e.message ?: getString(R.string.invalid_keyword))
-                    }
+                    if (addKeywordIfValid(keyword)) textView.text = ""
                     true
                 }
                 else -> false
             }
+        }
+        binding.textInputLayout.setEndIconOnClickListener {
+            val keyword = binding.textInput.text?.toString() ?: ""
+            if (addKeywordIfValid(keyword)) binding.textInput.setText("")
         }
     }
 
@@ -96,6 +94,17 @@ class KeywordFragment(
                     Log.e(TAG, "Failed to load keywords: ${result.exceptionOrNull()}")
                 }
             }
+        }
+    }
+
+    private fun addKeywordIfValid(keyword: String): Boolean {
+        return try {
+            viewModel.checkValid(keyword)
+            addKeyword(keyword)
+            true
+        } catch (e: KeywordValidator.KeywordInvalidException) {
+            showSnackBar(e.message ?: getString(R.string.invalid_keyword))
+            false
         }
     }
 

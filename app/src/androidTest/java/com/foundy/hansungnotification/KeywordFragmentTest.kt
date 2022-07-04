@@ -1,7 +1,6 @@
 package com.foundy.hansungnotification
 
 import android.content.Context
-import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +22,7 @@ import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
+import com.foundy.presentation.utils.KeywordValidator
 import com.foundy.presentation.view.keyword.KeywordActivity
 import com.foundy.presentation.view.keyword.KeywordFragment
 import com.foundy.presentation.view.keyword.KeywordViewModel
@@ -83,7 +83,7 @@ class KeywordFragmentTest {
 
     @Test
     fun textViewIsEmpty_afterAddedKeyword() {
-        inputTextToTextInputEditText("some text")
+        inputTextToTextInputEditText("키워드")
         pressSendKeyboardButton()
 
         onView(withId(R.id.textInput)).check { view, noViewFoundException ->
@@ -97,7 +97,7 @@ class KeywordFragmentTest {
 
     @Test
     fun cannotAddKeyword_ifTextLengthIsLowerThanTwo() {
-        val text = "t"
+        val text = "휴"
         inputTextToTextInputEditText(text)
         pressSendKeyboardButton()
 
@@ -109,7 +109,7 @@ class KeywordFragmentTest {
             assertEquals(textInput.text!!.toString(), text)
         }
 
-        assertSnackBarHasText(R.string.keyword_min_length_warning)
+        assertSnackBarHasText(KeywordValidator.MinLengthException().message!!)
     }
 
     @Test
@@ -152,8 +152,8 @@ class KeywordFragmentTest {
     }
 
     @Test
-    fun showWarningMessage_ifSendAlreadyExistsKeyword() = runTest {
-        val keyword = Keyword("hello")
+    fun showWarningSnackBar_ifSendAlreadyExistsKeyword() = runTest {
+        val keyword = Keyword("안녕")
         fakeKeywordRepository.setFakeList(listOf(keyword))
 
         waitForView(withId(R.id.title), withText(keyword.title))
@@ -161,7 +161,7 @@ class KeywordFragmentTest {
         inputTextToTextInputEditText(keyword.title)
         pressSendKeyboardButton()
 
-        assertSnackBarHasText(R.string.already_exists_keyword)
+        assertSnackBarHasText(KeywordValidator.AlreadyExistsException().message!!)
     }
 
     @Test
@@ -173,17 +173,61 @@ class KeywordFragmentTest {
         waitForView(withId(R.id.keyword_help_text), not(isDisplayed()))
     }
 
+    @Test
+    fun endIconWorksCorrectly() {
+        val text = "키워드"
+        inputTextToTextInputEditText(text)
+
+        onView(withContentDescription(R.string.add_keyword)).perform(click())
+
+        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
+            if (noViewFoundException != null) {
+                throw noViewFoundException
+            }
+
+            val recyclerView = view as RecyclerView
+            assertEquals(recyclerView.adapter?.itemCount, 1)
+        }
+        onView(withText(text)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun showErrorMessage_ifTypeEnglish() {
+        val text = "hello"
+        inputTextToTextInputEditText(text)
+
+        onView(withContentDescription(R.string.add_keyword)).check(matches(not(isDisplayed())))
+        onView(withText(KeywordValidator.InvalidCharacterException().message!!)).check(
+            matches(
+                isDisplayed()
+            )
+        )
+    }
+
+    @Test
+    fun showErrorMessage_ifTypeBlankCharacter() {
+        val text = "안녕 "
+        inputTextToTextInputEditText(text)
+
+        onView(withContentDescription(R.string.add_keyword)).check(matches(not(isDisplayed())))
+        onView(withText(KeywordValidator.InvalidCharacterException().message!!)).check(
+            matches(
+                isDisplayed()
+            )
+        )
+    }
+
     private fun inputTextToTextInputEditText(text: String) {
-        onView(withId(R.id.textInput)).perform(typeText(text))
+        onView(withId(R.id.textInput)).perform(replaceText(text))
     }
 
     private fun pressSendKeyboardButton() {
         onView(withId(R.id.textInput)).perform(pressImeActionButton())
     }
 
-    private fun assertSnackBarHasText(@StringRes resourceId: Int) {
+    private fun assertSnackBarHasText(text: String) {
         onView(withId(com.google.android.material.R.id.snackbar_text)).check(
-            matches(withText(resourceId))
+            matches(withText(text))
         )
     }
 }

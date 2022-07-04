@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="16dp"
     android:paddingVertical="8dp"
     android:paddingStart="16dp"
-    android:paddingEnd="4dp">
+    android:paddingEnd="0dp">
 
     <TextView
         style="@style/contentTitleText"

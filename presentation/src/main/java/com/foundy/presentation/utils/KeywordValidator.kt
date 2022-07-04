@@ -15,9 +15,9 @@ object KeywordValidator {
     class InvalidCharacterException : KeywordInvalidException("완성된 한글과 숫자만 입력할 수 있어요.")
 
     operator fun invoke(keyword: String, registeredKeywordList: List<Keyword>): Boolean {
+        if (keyword.length < MIN_LENGTH) throw MinLengthException()
         if (!PATTERN.matcher(keyword).matches()) throw InvalidCharacterException()
         if (registeredKeywordList.any { it.title == keyword }) throw AlreadyExistsException()
-        if (keyword.length < MIN_LENGTH) throw MinLengthException()
         return true
     }
 }
