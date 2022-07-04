@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.VisibleForTesting
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -70,6 +71,7 @@ class KeywordFragment(
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             viewModel.keywordList.observe(viewLifecycleOwner) { result ->
+                progressBar.isVisible = false
                 // TODO: 실패 예외처리
                 if (result.isSuccess) {
                     val keywords = result.getOrNull()!!
