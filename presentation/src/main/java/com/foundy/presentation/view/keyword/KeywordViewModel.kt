@@ -8,6 +8,7 @@ import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
+import com.foundy.presentation.utils.KeywordValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -31,8 +32,8 @@ class KeywordViewModel @Inject constructor(
         removeKeywordUseCase(keyword)
     }
 
-    fun hasKeyword(keyword: String): Boolean {
-        return keywordList.value?.getOrNull()?.firstOrNull() { it.title == keyword } != null
+    fun checkValid(keyword: String): Boolean {
+        return KeywordValidator(keyword, keywordList.value?.getOrNull() ?: emptyList())
     }
 
     fun subscribeTo(topic: String, onFailure: (Exception) -> Unit) {

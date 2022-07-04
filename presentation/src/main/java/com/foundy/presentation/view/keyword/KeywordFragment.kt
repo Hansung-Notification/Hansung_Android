@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -40,18 +41,25 @@ class KeywordFragment(
     }
 
     private fun initTextInput(binding: FragmentKeywordBinding) {
+        binding.textInput.addTextChangedListener { text ->
+            val keyword = text?.toString() ?: ""
+            try {
+                viewModel.checkValid(keyword)
+                binding.textInputLayout.error = null
+            } catch (e: Exception) {
+                binding.textInputLayout.error = e.message ?: getString(R.string.invalid_keyword)
+            }
+        }
         binding.textInput.setOnEditorActionListener { textView, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_SEND -> {
-                    // TODO: 공백 입력은 제외하도록 예외처리
-                    val text = (textView.text ?: "").toString()
-                    if (text.length < 2) {
-                        showSnackBar(getString(R.string.keyword_min_length_warning))
-                    } else if (viewModel.hasKeyword(text)) {
-                        showSnackBar(getString(R.string.already_exists_keyword))
-                    } else {
-                        addKeyword(text)
+                    val keyword = (textView.text ?: "").toString()
+                    try {
+                        viewModel.checkValid(keyword)
+                        addKeyword(keyword)
                         textView.text = ""
+                    } catch (e: Exception) {
+                        showSnackBar(e.message ?: getString(R.string.invalid_keyword))
                     }
                     true
                 }

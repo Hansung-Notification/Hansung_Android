@@ -27,4 +27,5 @@
     <string name="sign_in_with_google">Google 계정으로 로그인</string>
     <string name="failed_to_subscribe_previous_keywords">이전 키워드 재구독에 실패했습니다. 키워드를 삭제후 다시 생성해주세요.</string>
     <string name="failed_to_load">로딩에 실패했습니다.</string>
+    <string name="invalid_keyword">유효하지 않은 키워드입니다.</string>
 </resources>

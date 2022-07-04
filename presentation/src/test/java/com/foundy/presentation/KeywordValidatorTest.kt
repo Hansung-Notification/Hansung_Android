@@ -11,10 +11,7 @@ class KeywordValidatorTest {
     @Test
     fun `throws MinLengthException exception`() {
         assertThrows(KeywordValidator.MinLengthException::class.java) {
-            KeywordValidator(
-                "강",
-                emptyList()
-            )
+            KeywordValidator("강", emptyList())
         }
     }
 
@@ -29,17 +26,28 @@ class KeywordValidatorTest {
     }
 
     @Test
-    fun `throws InvalidCharacterException exception`() {
+    fun `throws InvalidCharacterException exception if keyword has blank`() {
         assertThrows(KeywordValidator.InvalidCharacterException::class.java) {
-            KeywordValidator(
-                " f",
-                emptyList()
-            )
+            KeywordValidator(" 안녕", emptyList())
+        }
+    }
+
+    @Test
+    fun `throws InvalidCharacterException exception if keyword has English`() {
+        assertThrows(KeywordValidator.InvalidCharacterException::class.java) {
+            KeywordValidator("wow", emptyList())
+        }
+    }
+
+    @Test
+    fun `throws InvalidCharacterException exception if keyword has not completed Korean`() {
+        assertThrows(KeywordValidator.InvalidCharacterException::class.java) {
+            KeywordValidator("단어ㅋ", emptyList())
         }
     }
 
     @Test
     fun `returns true if characters of keyword is valid`() {
-        assertTrue(KeywordValidator("안녕12ㅋ", emptyList()))
+        assertTrue(KeywordValidator("안1녕2", emptyList()))
     }
 }
