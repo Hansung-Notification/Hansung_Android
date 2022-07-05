@@ -13,9 +13,7 @@ import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.presentation.model.NoticeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -40,7 +38,7 @@ class MainViewModel @Inject constructor(
         initFavoriteList()
     }
 
-    fun search(query: String): Flow<PagingData<NoticeUiState>> {
+    fun searchNotices(query: String): Flow<PagingData<NoticeUiState>> {
         return searchNoticeListUseCase(query).cachedIn(viewModelScope).map {
             it.map(::createNoticeUiState)
         }
