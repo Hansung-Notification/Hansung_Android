@@ -11,6 +11,7 @@ import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
+import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
@@ -54,7 +55,8 @@ class NoticeFragmentTest {
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         AddFavoriteNoticeUseCase(fakeFavoriteRepository),
-        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository)
+        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository),
+        SearchNoticeListUseCase(fakeNoticeRepository)
     )
 
     lateinit var context: Context

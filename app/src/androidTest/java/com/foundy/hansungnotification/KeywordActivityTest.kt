@@ -17,6 +17,7 @@ import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
+import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
@@ -51,7 +52,8 @@ class KeywordActivityTest {
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         AddFavoriteNoticeUseCase(fakeFavoriteRepository),
-        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository)
+        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository),
+        SearchNoticeListUseCase(fakeNoticeRepository)
     )
 
     @BindValue
