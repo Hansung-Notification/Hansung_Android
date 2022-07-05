@@ -9,15 +9,20 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp"
-        app:queryInputHint="@string/search_notification"
-        app:queryInputBarIconColor="?attr/colorControlNormal"
+        android:paddingHorizontal="4dp"
+        android:paddingTop="4dp"
         app:cardBackgroundColor="@color/primary"
         app:isVoiceInputButtonEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryInputTextColor="@color/onPrimary">
+        app:queryInputBarIconColor="?attr/colorControlNormal"
+        app:queryInputHint="@string/search_notification"
+        app:queryInputTextColor="@color/onPrimary"
+        app:shouldDimBehind="false"
+        app:suggestionIconColor="?attr/colorControlNormal"
+        app:suggestionRecentSearchIconColor="?attr/colorControlNormal"
+        app:suggestionTextColor="@color/onPrimary">
 
         <requestFocus />
 
