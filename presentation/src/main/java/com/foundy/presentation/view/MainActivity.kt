@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityMainBinding
 import com.foundy.presentation.view.keyword.KeywordActivity
+import com.foundy.presentation.view.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,12 +40,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun onMenuItemClick(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.search_notification -> {
+                startSearchActivity()
+                true
+            }
             R.id.notification_keyword -> {
                 startKeywordActivity()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun startSearchActivity() {
+        val intent = SearchActivity.getIntent(this)
+        startActivity(intent)
     }
 
     private fun startKeywordActivity() {
