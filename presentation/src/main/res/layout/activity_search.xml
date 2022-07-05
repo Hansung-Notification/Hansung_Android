@@ -5,28 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.paulrybitskyi.persistentsearchview.PersistentSearchView
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="4dp"
+        app:queryInputHint="@string/search_notification"
+        app:queryInputBarIconColor="?attr/colorControlNormal"
+        app:cardBackgroundColor="@color/primary"
+        app:isVoiceInputButtonEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryInputTextColor="@color/onPrimary">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:iconifiedByDefault="false"
-            app:queryBackground="@drawable/search_view_background"
-            app:searchIcon="@null"
-            app:searchHintIcon="@null">
+        <requestFocus />
 
-            <requestFocus />
-
-        </androidx.appcompat.widget.SearchView>
-
-    </androidx.appcompat.widget.Toolbar>
+    </com.paulrybitskyi.persistentsearchview.PersistentSearchView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -36,6 +31,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/search_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
