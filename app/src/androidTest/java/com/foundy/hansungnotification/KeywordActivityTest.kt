@@ -98,6 +98,6 @@ class KeywordActivityTest {
             it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
-        onView(withId(R.id.keywordActivity)).check(matches(isDisplayed()))
+        onView(withId(R.id.keywordFragment)).check(matches(isDisplayed()))
     }
 }
