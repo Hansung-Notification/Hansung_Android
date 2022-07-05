@@ -44,10 +44,13 @@ class SearchingNoticePagingSource @Inject constructor(
             }
             val responseBody = response.body()
             if (response.isSuccessful && responseBody != null) {
+                val noticesResult = NoticeMapper(responseBody).filter { !it.isHeader }
+                val isEnd = noticesResult.isEmpty()
+
                 LoadResult.Page(
-                    data = NoticeMapper(responseBody).filter { !it.isHeader },
+                    data = noticesResult,
                     prevKey = if (page == START_PAGE) null else page - 1,
-                    nextKey = page + 1
+                    nextKey = if (isEnd) null else page + 1
                 )
             } else {
                 throw HttpException(response)
