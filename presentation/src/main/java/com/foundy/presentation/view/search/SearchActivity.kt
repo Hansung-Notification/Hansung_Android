@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.databinding.ActivitySearchBinding
@@ -36,41 +35,22 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val adapter = NoticeAdapter()
-        initToolBar()
         initSearchView(adapter)
         initRecyclerView(adapter)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
-
-    private fun initToolBar() {
-        binding.toolbar.apply {
-            title = ""
-            setSupportActionBar(this)
+    private fun initSearchView(adapter: NoticeAdapter) = with(binding.searchView) {
+        expand(true)
+        setOnSearchConfirmedListener { searchView, query ->
+            searchView.collapse()
+            lifecycleScope.launch {
+                viewModel.search(query ?: "").collectLatest {
+                    adapter.submitData(lifecycle, it)
+                }
+            }
         }
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    private fun initSearchView(adapter: NoticeAdapter) {
-        binding.searchView.apply {
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    lifecycleScope.launch {
-                        viewModel.search(query ?: "").collectLatest {
-                            adapter.submitData(lifecycle, it)
-                        }
-                    }
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    return false
-                }
-            })
+        setOnLeftBtnClickListener {
+            finish()
         }
     }
 
