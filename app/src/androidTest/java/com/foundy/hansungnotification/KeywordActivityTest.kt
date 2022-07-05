@@ -1,6 +1,7 @@
 package com.foundy.hansungnotification
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -20,10 +21,10 @@ import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
-import com.foundy.presentation.view.MainViewModel
-import com.foundy.presentation.view.keyword.KeywordViewModel
 import com.foundy.presentation.R
+import com.foundy.presentation.view.MainViewModel
 import com.foundy.presentation.view.keyword.KeywordActivity
+import com.foundy.presentation.view.keyword.KeywordViewModel
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -86,5 +87,17 @@ class KeywordActivityTest {
         launchActivity<KeywordActivity>()
 
         onView(withId(R.id.keywordFragment)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun navControllerWorksWithoutCrash_whenRecreateIfLoggedIn() {
+        fakeFirebaseRepository.setSignedIn(true)
+        val scenario = launchActivity<KeywordActivity>()
+
+        scenario.onActivity {
+            it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
+        onView(withId(R.id.keywordActivity)).check(matches(isDisplayed()))
     }
 }

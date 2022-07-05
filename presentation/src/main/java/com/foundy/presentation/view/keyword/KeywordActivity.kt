@@ -56,6 +56,9 @@ class KeywordActivity : AppCompatActivity() {
     }
 
     private fun navigateToKeywordFragment() {
-        findNavController(R.id.keyword_nav_host_fragment).navigate(R.id.action_loginFragment_to_keywordFragment)
+        val controller = findNavController(R.id.keyword_nav_host_fragment)
+        if (controller.currentDestination?.id == R.layout.fragment_login) {
+            controller.navigate(R.id.action_loginFragment_to_keywordFragment)
+        }
     }
 }
