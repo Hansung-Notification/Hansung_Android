@@ -44,6 +44,15 @@ class SearchActivity : AppCompatActivity() {
         initRecyclerView(adapter)
     }
 
+    override fun onBackPressed() {
+        // `PersistentSearchView`의 left button 동작과 통일을 한다.
+        if (binding.searchView.isExpanded) {
+            binding.searchView.collapse()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun initSearchView(adapter: NoticeAdapter) = with(binding.searchView) {
         expand(true)
 
