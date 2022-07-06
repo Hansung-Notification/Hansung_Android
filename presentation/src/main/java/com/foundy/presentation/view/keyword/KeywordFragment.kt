@@ -1,5 +1,6 @@
 package com.foundy.presentation.view.keyword
 
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -19,9 +20,11 @@ import com.foundy.domain.model.Keyword
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentKeywordBinding
 import com.foundy.presentation.extension.addDividerDecoration
+import com.foundy.presentation.extension.getProgressBarDrawable
+import com.foundy.presentation.extension.setEndIconOnClickListenerWithDebounce
+import com.foundy.presentation.extension.setOnEditorActionListenerWithDebounce
 import com.foundy.presentation.utils.KeywordValidator
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -53,17 +56,17 @@ class KeywordFragment(
             textInput.addTextChangedListener { text ->
                 onChangeText(text, textInputLayout)
             }
-            textInput.setOnEditorActionListener { _, actionId, _ ->
+            textInput.setOnEditorActionListenerWithDebounce { actionId ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_SEND -> {
-                        onSubmitKeyword(textInput)
+                        onSubmitKeyword(binding)
                         true
                     }
                     else -> false
                 }
             }
-            textInputLayout.setEndIconOnClickListener {
-                onSubmitKeyword(textInput)
+            textInputLayout.setEndIconOnClickListenerWithDebounce {
+                onSubmitKeyword(binding)
             }
         }
     }
@@ -79,7 +82,7 @@ class KeywordFragment(
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             viewModel.keywordList.observe(viewLifecycleOwner) { result ->
-                progressBar.isVisible = false
+                listProgressBar.isVisible = false
                 if (result.isSuccess) {
                     val keywords = result.getOrNull()!!
                     adapter.submitList(keywords)
@@ -109,8 +112,9 @@ class KeywordFragment(
         }
     }
 
-    private fun onSubmitKeyword(textInput: TextInputEditText) {
-        val keyword = textInput.text?.toString() ?: ""
+    private fun onSubmitKeyword(binding: FragmentKeywordBinding) {
+        val keyword = binding.textInput.text?.toString() ?: ""
+        changeEndIconToProgressBar(binding)
 
         lifecycleScope.launch {
             try {
@@ -118,18 +122,20 @@ class KeywordFragment(
                 checkKeywordHasSearchResult(keyword)
 
                 addKeyword(keyword)
-                textInput.setText("")
+                binding.textInput.setText("")
             } catch (e: KeywordValidator.KeywordInvalidException) {
                 showSnackBar(e.message ?: getString(R.string.invalid_keyword))
             } catch (e: NoSearchResultException) {
                 showAlertDialog(e.message ?: getString(R.string.invalid_keyword)) {
                     addKeyword(keyword)
-                    textInput.setText("")
+                    binding.textInput.setText("")
                 }
             } catch (e: HttpException) {
                 showSnackBar(getString(R.string.check_internet_connection))
             } catch (e: Exception) {
                 showSnackBar(getString(R.string.cannot_create_keyword))
+            } finally {
+                changeEndIconToAddButton(binding)
             }
         }
     }
@@ -181,6 +187,18 @@ class KeywordFragment(
             error = null
             isEnabled = false
         }
+    }
+
+    private fun changeEndIconToProgressBar(binding: FragmentKeywordBinding) {
+        val progressBar = requireContext().getProgressBarDrawable()
+        binding.textInputLayout.endIconDrawable = progressBar
+        (progressBar as? Animatable)?.start()
+    }
+
+    private fun changeEndIconToAddButton(binding: FragmentKeywordBinding) {
+        binding.textInputLayout.endIconDrawable = requireContext().getDrawable(
+            R.drawable.ic_baseline_add_box_24
+        )
     }
 
     private fun showSnackBar(message: String) {
