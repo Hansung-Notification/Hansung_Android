@@ -2,13 +2,13 @@ package com.foundy.hansungnotification
 
 import android.content.Context
 import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.model.Keyword
 import com.foundy.domain.usecase.firebase.IsSignedInUseCase
@@ -23,6 +23,7 @@ import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
 import com.foundy.presentation.utils.KeywordValidator
+import com.foundy.presentation.view.keyword.KeywordActivity
 import com.foundy.presentation.view.keyword.KeywordFragment
 import com.foundy.presentation.view.keyword.KeywordViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -48,6 +49,9 @@ class KeywordFragmentTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val scenario = ActivityScenarioRule(KeywordActivity::class.java)
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
@@ -75,8 +79,6 @@ class KeywordFragmentTest {
                 KeywordFragment { this@with }
             }
         }
-
-        launchKeywordFragment()
     }
 
     @Test
@@ -226,13 +228,6 @@ class KeywordFragmentTest {
     private fun assertSnackBarHasText(text: String) {
         onView(withId(com.google.android.material.R.id.snackbar_text)).check(
             matches(withText(text))
-        )
-    }
-
-    private fun launchKeywordFragment() {
-        launchFragmentInContainer<KeywordFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.Theme_HansungNotification
         )
     }
 }
