@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.VisibleForTesting
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -121,7 +122,10 @@ class KeywordFragment(
             } catch (e: KeywordValidator.KeywordInvalidException) {
                 showSnackBar(e.message ?: getString(R.string.invalid_keyword))
             } catch (e: NoSearchResultException) {
-                showSnackBar(e.message ?: getString(R.string.invalid_keyword))
+                showAlertDialog(e.message ?: getString(R.string.invalid_keyword)) {
+                    addKeyword(keyword)
+                    textInput.setText("")
+                }
             } catch (e: HttpException) {
                 showSnackBar(getString(R.string.check_internet_connection))
             } catch (e: Exception) {
@@ -181,5 +185,17 @@ class KeywordFragment(
 
     private fun showSnackBar(message: String) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun showAlertDialog(message: String, onSubmit: () -> Unit) {
+        val alertDialog: AlertDialog? = activity?.let {
+            val builder = AlertDialog.Builder(it).apply {
+                setPositiveButton(R.string.submit) { _, _ -> onSubmit() }
+                setNegativeButton(R.string.cancel) { _, _ -> }
+                setTitle(message)
+            }
+            builder.create()
+        }
+        alertDialog?.show()
     }
 }
