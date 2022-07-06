@@ -1,6 +1,7 @@
 package com.foundy.presentation.view
 
 import androidx.lifecycle.*
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.foundy.domain.model.Notice
@@ -8,11 +9,11 @@ import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
+import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.presentation.model.NoticeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -22,7 +23,8 @@ class MainViewModel @Inject constructor(
     getNoticeListUseCase: GetNoticeListUseCase,
     private val readFavoriteListUseCase: ReadFavoriteListUseCase,
     private val addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
-    private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase
+    private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase,
+    private val searchNoticeListUseCase: SearchNoticeListUseCase
 ) : ViewModel() {
 
     private val _favoriteList = MutableLiveData<List<NoticeUiState>>(emptyList())
@@ -34,6 +36,12 @@ class MainViewModel @Inject constructor(
 
     init {
         initFavoriteList()
+    }
+
+    fun searchNotices(query: String): Flow<PagingData<NoticeUiState>> {
+        return searchNoticeListUseCase(query).cachedIn(viewModelScope).map {
+            it.map(::createNoticeUiState)
+        }
     }
 
     private fun createNoticeUiState(notice: Notice): NoticeUiState {

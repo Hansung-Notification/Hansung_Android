@@ -8,7 +8,9 @@
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:padding="16dp">
+    android:paddingVertical="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="8dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="0dp"

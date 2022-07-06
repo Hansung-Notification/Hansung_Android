@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.foundy.domain.model.Notice
 import com.foundy.domain.repository.NoticeRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.emptyFlow
 
 class FakeNoticeRepositoryImpl: NoticeRepository {
 
@@ -20,4 +21,6 @@ class FakeNoticeRepositoryImpl: NoticeRepository {
     }
 
     override fun getNoticeList() = sharedFlow
+
+    override fun searchNoticeList(query: String) = emptyFlow<PagingData<Notice>>()
 }

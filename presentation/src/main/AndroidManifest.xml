@@ -4,6 +4,9 @@
 
     <application>
         <activity
+            android:name=".view.search.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.keyword.KeywordActivity"
             android:exported="false" />
         <activity
