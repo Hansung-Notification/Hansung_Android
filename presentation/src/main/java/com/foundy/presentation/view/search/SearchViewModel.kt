@@ -1,6 +1,5 @@
 package com.foundy.presentation.view.search
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import com.foundy.domain.model.Query
 import com.foundy.domain.usecase.query.AddRecentQueryUseCase
@@ -20,7 +19,7 @@ class SearchViewModel @Inject constructor(
     private val addRecentQueryUseCase: AddRecentQueryUseCase,
     private val removeRecentQueryUseCase: RemoveRecentQueryUseCase,
     private val updateRecentQueryUseCase: UpdateRecentQueryUseCase,
-    @VisibleForTesting @Named("RecentQuery")
+    @Named("RecentQuery")
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
