@@ -28,9 +28,9 @@ class SearchViewModel @Inject constructor(
     }
 
     fun addOrUpdateRecent(query: String) {
-        viewModelScope.launch(dispatcher) {
-            Query(content = query).let {
-                val hasQuery = recentQueries.value?.contains(query) == true
+        val hasQuery = recentQueries.value?.contains(query) == true
+        Query(content = query).let {
+            viewModelScope.launch(dispatcher) {
                 if (hasQuery) {
                     updateRecentQueryUseCase(it)
                 } else {
