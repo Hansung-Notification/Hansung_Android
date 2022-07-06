@@ -12,6 +12,7 @@
         android:paddingHorizontal="4dp"
         android:paddingTop="4dp"
         app:cardBackgroundColor="@color/primary"
+        app:dividerColor="#5C8C8C8C"
         app:isVoiceInputButtonEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
