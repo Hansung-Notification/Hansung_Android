@@ -44,15 +44,15 @@ class SearchViewModelTest {
         searchViewModel.recentQueries.observeForTesting {
             runBlocking {
                 searchViewModel.addOrUpdateRecent(query1)
-                delay(1)
+                delay(50)
                 assertEquals(1, searchViewModel.recentQueries.value?.size)
 
                 searchViewModel.addOrUpdateRecent(query1)
-                delay(1)
+                delay(50)
                 assertEquals(1, searchViewModel.recentQueries.value?.size)
 
                 searchViewModel.addOrUpdateRecent(query2)
-                delay(1)
+                delay(50)
                 assertEquals(2, searchViewModel.recentQueries.value?.size)
             }
         }
