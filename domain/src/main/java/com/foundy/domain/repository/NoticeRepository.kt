@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface NoticeRepository {
     fun getNoticeList(): Flow<PagingData<Notice>>
     fun searchNoticeList(query: String): Flow<PagingData<Notice>>
+    suspend fun hasSearchResult(query: String): Result<Boolean>
 }

@@ -3,6 +3,7 @@ package com.foundy.data.source.notice
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.foundy.data.api.NoticeApi
+import com.foundy.data.constant.WebConstant.START_PAGE
 import com.foundy.data.mapper.NoticeMapper
 import com.foundy.domain.model.Notice
 import kotlinx.coroutines.Dispatchers
@@ -14,10 +15,6 @@ import javax.inject.Inject
 class NoticePagingSource @Inject constructor(
     private val noticeApi: NoticeApi
 ) : PagingSource<Int, Notice>() {
-
-    companion object {
-        const val START_PAGE = 1
-    }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Notice> {
         val page = params.key ?: START_PAGE
