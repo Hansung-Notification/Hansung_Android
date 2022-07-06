@@ -17,6 +17,7 @@ import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
+import com.foundy.domain.usecase.notice.HasSearchResultUseCase
 import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
@@ -63,7 +64,8 @@ class KeywordActivityTest {
         RemoveKeywordUseCase(fakeKeywordRepository),
         SubscribeToUseCase(fakeFirebaseRepository),
         UnsubscribeFromUseCase(fakeFirebaseRepository),
-        IsSignedInUseCase(fakeFirebaseRepository)
+        IsSignedInUseCase(fakeFirebaseRepository),
+        HasSearchResultUseCase(fakeNoticeRepository)
     )
     lateinit var context: Context
 
