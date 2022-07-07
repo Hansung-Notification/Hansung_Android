@@ -33,7 +33,7 @@
         style="@style/contentSubtitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="8dp"
         android:lineSpacingExtra="4sp"
         android:text="@string/keyword_help"
