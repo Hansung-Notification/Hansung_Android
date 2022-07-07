@@ -31,10 +31,14 @@ class WebViewActivity : AppCompatActivity() {
 
         private const val IMAGE_CSS = "img{display: inline; height: auto; max-width: 100%;}"
         private const val IMAGE_SETTING_SCRIPT = """
-            var styles = `${IMAGE_CSS}`
-            var styleSheet = document.createElement("style")
-            styleSheet.innerText = styles
-            document.head.appendChild(styleSheet)
+            var styles = `${IMAGE_CSS}`;
+            var styleSheet = document.createElement("style");
+            styleSheet.innerText = styles;
+            document.head.appendChild(styleSheet);
+        """
+        private const val ZOOM_SETTING_SCRIPT = """
+            var content = `initial-scale=1, minimum-scale=0.5, maximum-scale=3.0, user-scalable=yes`;
+            document.getElementsByName('viewport')[0].setAttribute('content', content);
         """
 
         fun getIntent(context: Context, notice: Notice): Intent {
@@ -74,10 +78,13 @@ class WebViewActivity : AppCompatActivity() {
     private fun initWebView(notice: Notice) {
         binding.webView.apply {
             settings.javaScriptEnabled = true
+            settings.builtInZoomControls = true
+            settings.displayZoomControls = false
+
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     try {
-                        view?.evaluateJavascript(IMAGE_SETTING_SCRIPT) {}
+                        evaluateJavascript(IMAGE_SETTING_SCRIPT + ZOOM_SETTING_SCRIPT) {}
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
