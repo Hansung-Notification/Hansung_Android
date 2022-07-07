@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.webkit.WebSettingsCompat
@@ -14,13 +15,21 @@ import com.foundy.domain.model.Notice
 import com.foundy.presentation.databinding.ActivityWebViewBinding
 import com.google.gson.Gson
 
-
 class WebViewActivity : AppCompatActivity() {
 
     private var _binding: ActivityWebViewBinding? = null
     private val binding: ActivityWebViewBinding get() = requireNotNull(_binding)
 
     companion object {
+
+        private const val IMAGE_CSS = "img{display: inline; height: auto; max-width: 100%;}"
+        private const val IMAGE_SETTING_SCRIPT = """
+            var styles = `${IMAGE_CSS}`
+            var styleSheet = document.createElement("style")
+            styleSheet.innerText = styles
+            document.head.appendChild(styleSheet)
+        """
+
         fun getIntent(context: Context, notice: Notice): Intent {
             return Intent(context, WebViewActivity::class.java)
                 .putExtra("notice", Gson().toJson(notice))
@@ -57,7 +66,16 @@ class WebViewActivity : AppCompatActivity() {
 
     private fun initWebView(notice: Notice) {
         binding.webView.apply {
-            webViewClient = WebViewClient()
+            settings.javaScriptEnabled = true
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    try {
+                        view?.evaluateJavascript(IMAGE_SETTING_SCRIPT) {}
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
         }.loadUrl(notice.url)
         setWebViewThemeMode()
     }
