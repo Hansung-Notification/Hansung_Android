@@ -208,7 +208,7 @@ class KeywordFragment(
             val builder = AlertDialog.Builder(it).apply {
                 setPositiveButton(R.string.submit) { _, _ -> onSubmit() }
                 setNegativeButton(R.string.cancel) { _, _ -> }
-                setTitle(message)
+                setMessage(message)
             }
             builder.create()
         }
