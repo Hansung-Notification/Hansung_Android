@@ -54,7 +54,5 @@ jobs:
       - name: Run UI test
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          emulator-build: 7425822
-          arch: x86_64
           api-level: ${{ matrix.api-level }}
           script: ./gradlew connectedCheck --stacktrace
