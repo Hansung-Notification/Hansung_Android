@@ -53,6 +53,9 @@ dependencies {
     // search view
     implementation "com.paulrybitskyi.persistentsearchview:persistentsearchview:1.1.4"
 
+    // easy permission
+    implementation 'com.sagar:coroutinespermission:2.0.3'
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'

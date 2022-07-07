@@ -1,26 +1,33 @@
 package com.foundy.presentation.view.webview
 
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Environment
 import android.webkit.URLUtil
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebSettingsCompat.FORCE_DARK_OFF
 import androidx.webkit.WebSettingsCompat.FORCE_DARK_ON
 import androidx.webkit.WebViewFeature
+import com.eazypermissions.common.model.PermissionResult
+import com.eazypermissions.coroutinespermission.PermissionManager
 import com.foundy.domain.model.Notice
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityWebViewBinding
 import com.google.gson.Gson
-
+import kotlinx.coroutines.launch
 
 class WebViewActivity : AppCompatActivity() {
 
@@ -143,20 +150,54 @@ class WebViewActivity : AppCompatActivity() {
     }
 
     private fun onDownload(url: String, contentDisposition: String, mimeType: String) {
-        val request = DownloadManager.Request(Uri.parse(url)).apply {
-            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            setDestinationInExternalPublicDir(
-                Environment.DIRECTORY_DOWNLOADS,
-                URLUtil.guessFileName(url, contentDisposition, mimeType)
-            )
-        }
-        val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-        downloadManager.enqueue(request)
+        lifecycleScope.launch {
+            if (requestPermission()) {
+                val downloadRequest = DownloadManager.Request(Uri.parse(url)).apply {
+                    setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_DOWNLOADS,
+                        URLUtil.guessFileName(url, contentDisposition, mimeType)
+                    )
+                }
+                val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+                downloadManager.enqueue(downloadRequest)
 
-        Toast.makeText(
-            applicationContext,
-            getString(R.string.file_downloading),
-            Toast.LENGTH_LONG
-        ).show()
+                showToast(getString(R.string.file_downloading))
+            }
+        }
+    }
+
+    private suspend fun requestPermission(): Boolean {
+        if (SDK_INT > Build.VERSION_CODES.P) {
+            return true
+        }
+        val permissionResult = PermissionManager.requestPermissions(
+            this@WebViewActivity,
+            1,
+            WRITE_EXTERNAL_STORAGE,
+        )
+
+        when (permissionResult) {
+            is PermissionResult.PermissionGranted -> {
+                return true
+            }
+            is PermissionResult.ShowRational -> {
+                AlertDialog.Builder(this@WebViewActivity).apply {
+                    setMessage(getString(R.string.need_permission_for_download_file))
+                    setPositiveButton(getString(R.string.ok)) { _, _ ->
+                        lifecycleScope.launch { requestPermission() }
+                    }
+                    setNegativeButton(getString(R.string.deny)) { _, _ -> }
+                }.show()
+            }
+            else -> {
+                showToast(getString(R.string.need_permission_for_download_file))
+            }
+        }
+        return false
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }
