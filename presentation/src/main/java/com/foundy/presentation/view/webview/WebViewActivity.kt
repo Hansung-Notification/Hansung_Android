@@ -40,6 +40,18 @@ class WebViewActivity : AppCompatActivity() {
             var content = `initial-scale=1, minimum-scale=0.5, maximum-scale=3.0, user-scalable=yes`;
             document.getElementsByName('viewport')[0].setAttribute('content', content);
         """
+        private const val TABLE_WIDTH_SCRIPT = """
+            const tables = document.getElementsByTagName("table");
+            const tableDatas = document.getElementsByTagName("td");
+            [...tables, ...tableDatas].forEach((element) => {
+            element.style.width = null;
+            });
+            
+            var styles = `td { width: auto;} table { width: 100%;}`;
+            var styleSheet = document.createElement("style");
+            styleSheet.innerText = styles;
+            document.head.appendChild(styleSheet);
+        """
 
         fun getIntent(context: Context, notice: Notice): Intent {
             return Intent(context, WebViewActivity::class.java)
@@ -84,7 +96,11 @@ class WebViewActivity : AppCompatActivity() {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     try {
-                        evaluateJavascript(IMAGE_SETTING_SCRIPT + ZOOM_SETTING_SCRIPT) {}
+                        evaluateJavascript(
+                            IMAGE_SETTING_SCRIPT +
+                                    ZOOM_SETTING_SCRIPT +
+                                    TABLE_WIDTH_SCRIPT
+                        ) {}
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
