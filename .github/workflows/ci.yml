@@ -55,6 +55,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           emulator-build: 7425822
+          arch: x86_64
           api-level: ${{ matrix.api-level }}
-          target: playstore
+          target: google_apis
           script: ./gradlew connectedCheck --stacktrace
