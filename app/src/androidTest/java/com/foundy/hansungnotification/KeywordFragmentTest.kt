@@ -17,8 +17,10 @@ import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
+import com.foundy.domain.usecase.notice.HasSearchResultUseCase
 import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
+import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
@@ -55,6 +57,7 @@ class KeywordFragmentTest {
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
+    private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
 
     @BindValue
     val keywordViewModel = KeywordViewModel(
@@ -63,7 +66,8 @@ class KeywordFragmentTest {
         RemoveKeywordUseCase(fakeKeywordRepository),
         SubscribeToUseCase(fakeFirebaseRepository),
         UnsubscribeFromUseCase(fakeFirebaseRepository),
-        IsSignedInUseCase(fakeFirebaseRepository)
+        IsSignedInUseCase(fakeFirebaseRepository),
+        HasSearchResultUseCase(fakeNoticeRepository)
     )
 
     private lateinit var context: Context

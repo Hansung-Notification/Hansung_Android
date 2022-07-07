@@ -8,7 +8,7 @@
     tools:context=".view.keyword.KeywordActivity">
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/listProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

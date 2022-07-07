@@ -10,10 +10,15 @@ class FakeNoticeRepositoryImpl: NoticeRepository {
 
     private val sharedFlow = MutableSharedFlow<PagingData<Notice>>()
     private val noticeList = mutableListOf<Notice>()
+    private var hasSearchResult = Result.success(true)
 
     fun setFakeList(notices: List<Notice>) {
         noticeList.clear()
         noticeList.addAll(notices)
+    }
+
+    fun setHasSearchResult(result: Result<Boolean>) {
+        hasSearchResult = result
     }
 
     suspend fun emitFake() {
@@ -23,4 +28,6 @@ class FakeNoticeRepositoryImpl: NoticeRepository {
     override fun getNoticeList() = sharedFlow
 
     override fun searchNoticeList(query: String) = emptyFlow<PagingData<Notice>>()
+
+    override suspend fun hasSearchResult(query: String) = hasSearchResult
 }

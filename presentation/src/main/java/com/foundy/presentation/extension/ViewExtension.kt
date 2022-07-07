@@ -2,15 +2,21 @@ package com.foundy.presentation.extension
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.InsetDrawable
+import android.os.SystemClock
 import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.IntRange
+import androidx.core.content.res.getDrawableOrThrow
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputLayout
 
 
 fun View.addRipple() = with(TypedValue()) {
@@ -39,4 +45,51 @@ fun View.setBackgroundColor(@ColorRes id: Int, @IntRange(from = 0, to = 255) alp
     val green: Int = Color.green(resourceColor)
     val color = Color.argb(alpha, red, green, blue)
     setBackgroundColor(color)
+}
+
+fun Context.getProgressBarDrawable(): Drawable {
+    val value = TypedValue()
+    theme.resolveAttribute(android.R.attr.progressBarStyleSmall, value, false)
+    val progressBarStyle = value.data
+    val attributes = intArrayOf(android.R.attr.indeterminateDrawable)
+    val array = obtainStyledAttributes(progressBarStyle, attributes)
+    val drawable = array.getDrawableOrThrow(0)
+    array.recycle()
+    return drawable
+}
+
+fun TextView.setOnEditorActionListenerWithDebounce(
+    debounceTime: Long = 1000L,
+    action: (actionId: Int) -> Boolean
+) {
+    this.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+        private var lastClickTime: Long = 0
+
+        override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+            if (SystemClock.elapsedRealtime() - lastClickTime < debounceTime) {
+                return true
+            }
+
+            lastClickTime = SystemClock.elapsedRealtime()
+            return action(actionId)
+        }
+    })
+}
+
+fun TextInputLayout.setEndIconOnClickListenerWithDebounce(
+    debounceTime: Long = 1000L,
+    action: () -> Unit
+) {
+    this.setEndIconOnClickListener(object : View.OnClickListener {
+        private var lastClickTime: Long = 0
+
+        override fun onClick(v: View?) {
+            if (SystemClock.elapsedRealtime() - lastClickTime < debounceTime) {
+                return
+            }
+
+            lastClickTime = SystemClock.elapsedRealtime()
+            action()
+        }
+    })
 }

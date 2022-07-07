@@ -19,8 +19,8 @@ class SearchViewModel @Inject constructor(
     private val addRecentQueryUseCase: AddRecentQueryUseCase,
     private val removeRecentQueryUseCase: RemoveRecentQueryUseCase,
     private val updateRecentQueryUseCase: UpdateRecentQueryUseCase,
-    @Named("RecentQuery")
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    @Named("Main")
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     val recentQueries = getRecentQueryListUseCase().asLiveData().map { list ->
