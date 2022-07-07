@@ -12,10 +12,8 @@ import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.presentation.model.NoticeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,10 +56,8 @@ class MainViewModel @Inject constructor(
 
     private fun initFavoriteList() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                readFavoriteListUseCase().collect { list ->
-                    _favoriteList.postValue(list.map(::createNoticeUiState))
-                }
+            readFavoriteListUseCase().collect { list ->
+                _favoriteList.postValue(list.map(::createNoticeUiState))
             }
         }
     }

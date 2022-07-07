@@ -7,8 +7,6 @@ import com.foundy.data.constant.WebConstant
 import com.foundy.data.constant.WebConstant.START_PAGE
 import com.foundy.data.mapper.NoticeMapper
 import com.foundy.domain.model.Notice
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.lang.Exception
 import javax.inject.Inject
@@ -21,12 +19,10 @@ class SearchingNoticePagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Notice> {
         val page = params.key ?: START_PAGE
         return try {
-            val response = withContext(Dispatchers.IO) {
-                noticeApi.searchNoticeList(
-                    page = page,
-                    param = WebConstant.createSearchPostParameter(query)
-                )
-            }
+            val response = noticeApi.searchNoticeList(
+                page = page,
+                param = WebConstant.createSearchPostParameter(query)
+            )
             val responseBody = response.body()
             if (response.isSuccessful && responseBody != null) {
                 val noticesResult = NoticeMapper(responseBody).filter { !it.isHeader }
