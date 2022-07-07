@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.foundy.presentation.view.MainViewModel
+import com.foundy.presentation.view.NoticeViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentNoticeBinding
 import com.foundy.presentation.extension.addDividerDecoration
@@ -22,7 +22,7 @@ class NoticeFragment(
     @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
 ) : Fragment(R.layout.fragment_notice) {
 
-    private val viewModel: MainViewModel by activityViewModels(factory)
+    private val viewModel: NoticeViewModel by activityViewModels(factory)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

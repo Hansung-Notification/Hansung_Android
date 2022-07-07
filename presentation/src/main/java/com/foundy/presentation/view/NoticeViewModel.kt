@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class NoticeViewModel @Inject constructor(
     getNoticeListUseCase: GetNoticeListUseCase,
     private val readFavoriteListUseCase: ReadFavoriteListUseCase,
     private val addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,

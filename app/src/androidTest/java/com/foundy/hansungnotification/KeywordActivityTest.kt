@@ -24,7 +24,7 @@ import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.presentation.R
-import com.foundy.presentation.view.MainViewModel
+import com.foundy.presentation.view.NoticeViewModel
 import com.foundy.presentation.view.keyword.KeywordActivity
 import com.foundy.presentation.view.keyword.KeywordViewModel
 import dagger.hilt.android.testing.BindValue
@@ -49,7 +49,7 @@ class KeywordActivityTest {
     private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
 
     @BindValue
-    val mainViewModel = MainViewModel(
+    val noticeViewModel = NoticeViewModel(
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         AddFavoriteNoticeUseCase(fakeFavoriteRepository),

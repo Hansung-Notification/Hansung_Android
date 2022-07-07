@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.databinding.ActivitySearchBinding
-import com.foundy.presentation.view.MainViewModel
+import com.foundy.presentation.view.NoticeViewModel
 import com.foundy.presentation.view.common.PagingLoadStateAdapter
 import com.foundy.presentation.view.notice.NoticeAdapter
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
-    private val mainViewModel: MainViewModel by viewModels()
+    private val noticeViewModel: NoticeViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
 
     private var _binding: ActivitySearchBinding? = null
@@ -106,7 +106,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchNotices(query: String, adapter: NoticeAdapter) {
         lifecycleScope.launch {
-            mainViewModel.searchNotices(query).collectLatest {
+            noticeViewModel.searchNotices(query).collectLatest {
                 adapter.submitData(lifecycle, it)
             }
         }
