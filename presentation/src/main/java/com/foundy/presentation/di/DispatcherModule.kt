@@ -15,6 +15,6 @@ class DispatcherModule {
 
     @Singleton
     @Provides
-    @Named("RecentQuery")
-    fun provideRecentQueryDispatchers(): CoroutineDispatcher = Dispatchers.IO
+    @Named("Main")
+    fun provideMainDispatchers(): CoroutineDispatcher = Dispatchers.Main
 }

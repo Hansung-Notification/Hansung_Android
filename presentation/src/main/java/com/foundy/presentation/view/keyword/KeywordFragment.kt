@@ -26,7 +26,6 @@ import com.foundy.presentation.extension.setOnEditorActionListenerWithDebounce
 import com.foundy.presentation.utils.KeywordValidator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 class KeywordFragment(
@@ -104,7 +103,7 @@ class KeywordFragment(
     private fun onChangeText(editableText: Editable?, textInputLayout: TextInputLayout) {
         val keyword = editableText?.toString() ?: ""
         try {
-            checkValid(keyword)
+            viewModel.checkValid(keyword)
 
             textInputLayout.error = null
         } catch (e: KeywordValidator.KeywordInvalidException) {
@@ -116,36 +115,35 @@ class KeywordFragment(
         val keyword = binding.textInput.text?.toString() ?: ""
         changeEndIconToProgressBar(binding)
 
-        lifecycleScope.launch {
-            try {
-                checkValid(keyword)
-                checkKeywordHasSearchResult(keyword)
-
+        viewModel.checkKeywordSubmit(
+            keyword,
+            onSuccess = {
                 addKeyword(keyword)
                 binding.textInput.setText("")
-            } catch (e: KeywordValidator.KeywordInvalidException) {
-                showSnackBar(e.message ?: getString(R.string.invalid_keyword))
-            } catch (e: NoSearchResultException) {
-                showAlertDialog(e.message ?: getString(R.string.invalid_keyword)) {
-                    addKeyword(keyword)
-                    binding.textInput.setText("")
+            },
+            onFailure = { e ->
+                when (e) {
+                    is KeywordValidator.KeywordInvalidException -> {
+                        showSnackBar(e.message ?: getString(R.string.invalid_keyword))
+                    }
+                    is NoSearchResultException -> {
+                        showAlertDialog(e.message ?: getString(R.string.invalid_keyword)) {
+                            addKeyword(keyword)
+                            binding.textInput.setText("")
+                        }
+                    }
+                    is HttpException -> {
+                        showSnackBar(getString(R.string.check_internet_connection))
+                    }
+                    else -> {
+                        showSnackBar(getString(R.string.cannot_create_keyword))
+                    }
                 }
-            } catch (e: HttpException) {
-                showSnackBar(getString(R.string.check_internet_connection))
-            } catch (e: Exception) {
-                showSnackBar(getString(R.string.cannot_create_keyword))
-            } finally {
+            },
+            onFinally = {
                 changeEndIconToAddButton(binding)
             }
-        }
-    }
-
-    private fun checkValid(keyword: String) {
-        viewModel.checkValid(keyword)
-    }
-
-    private suspend fun checkKeywordHasSearchResult(keyword: String) {
-        viewModel.checkKeywordHasSearchResult(keyword)
+        )
     }
 
     private fun addKeyword(keyword: String) {
