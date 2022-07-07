@@ -1,19 +1,26 @@
 package com.foundy.presentation.view.webview
 
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.webkit.URLUtil
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebSettingsCompat.FORCE_DARK_OFF
 import androidx.webkit.WebSettingsCompat.FORCE_DARK_ON
 import androidx.webkit.WebViewFeature
 import com.foundy.domain.model.Notice
+import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityWebViewBinding
 import com.google.gson.Gson
+
 
 class WebViewActivity : AppCompatActivity() {
 
@@ -76,6 +83,9 @@ class WebViewActivity : AppCompatActivity() {
                     }
                 }
             }
+            setDownloadListener { url, _, contentDisposition, mimetype, _ ->
+                onDownload(url, contentDisposition, mimetype)
+            }
         }.loadUrl(notice.url)
         setWebViewThemeMode()
     }
@@ -91,5 +101,23 @@ class WebViewActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun onDownload(url: String, contentDisposition: String, mimeType: String) {
+        val request = DownloadManager.Request(Uri.parse(url)).apply {
+            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            setDestinationInExternalPublicDir(
+                Environment.DIRECTORY_DOWNLOADS,
+                URLUtil.guessFileName(url, contentDisposition, mimeType)
+            )
+        }
+        val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager.enqueue(request)
+
+        Toast.makeText(
+            applicationContext,
+            getString(R.string.file_downloading),
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
