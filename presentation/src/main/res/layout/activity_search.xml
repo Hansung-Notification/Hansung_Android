@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="4dp"
         android:paddingTop="4dp"
-        app:cardBackgroundColor="@color/cardBackground"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:dividerColor="#5C8C8C8C"
         app:isVoiceInputButtonEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,11 +19,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:queryInputBarIconColor="?attr/colorControlNormal"
         app:queryInputHint="@string/search_notification"
-        app:queryInputTextColor="@color/cardForeground"
+        app:queryInputTextColor="?attr/colorOnSurface"
         app:shouldDimBehind="false"
         app:suggestionIconColor="?attr/colorControlNormal"
         app:suggestionRecentSearchIconColor="?attr/colorControlNormal"
-        app:suggestionTextColor="@color/cardForeground">
+        app:suggestionTextColor="?attr/colorOnSurface">
 
         <requestFocus />
 

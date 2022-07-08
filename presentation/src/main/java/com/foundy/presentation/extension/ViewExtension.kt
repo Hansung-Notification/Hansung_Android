@@ -10,7 +10,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.ColorRes
+import androidx.annotation.AttrRes
 import androidx.annotation.DimenRes
 import androidx.annotation.IntRange
 import androidx.core.content.res.getDrawableOrThrow
@@ -38,11 +38,14 @@ fun RecyclerView.addDividerDecoration(
     addItemDecoration(decoration)
 }
 
-fun View.setBackgroundColor(@ColorRes id: Int, @IntRange(from = 0, to = 255) alpha: Int) {
-    val resourceColor = resources.getColor(id, null)
-    val red: Int = Color.red(resourceColor)
-    val blue: Int = Color.blue(resourceColor)
-    val green: Int = Color.green(resourceColor)
+fun View.setBackgroundColor(@AttrRes attrRes: Int, @IntRange(from = 0, to = 255) alpha: Int) {
+    val value = TypedValue()
+    val valid = context.theme.resolveAttribute(attrRes, value, true)
+    if (!valid) return
+
+    val red: Int = Color.red(value.data)
+    val blue: Int = Color.blue(value.data)
+    val green: Int = Color.green(value.data)
     val color = Color.argb(alpha, red, green, blue)
     setBackgroundColor(color)
 }

@@ -60,10 +60,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            app:endIconTint="?attr/colorPrimary"
+            app:endIconContentDescription="@string/add_keyword"
             app:endIconDrawable="@drawable/ic_baseline_add_box_24"
-            app:endIconTint="@color/purple_200"
-            app:endIconMode="custom"
-            app:endIconContentDescription="@string/add_keyword">
+            app:endIconMode="custom">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInput"
