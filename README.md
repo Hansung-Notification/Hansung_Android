@@ -1,7 +1,29 @@
 # HansungNotification
- 
+
+한성대 공지사항을 편하게 보기 위한 어플입니다. 키워드 알림, 즐겨찾기, 검색 기능을 가지고 있습니다.
+
+# 스크린샷
+
+|공지사항 탭|즐겨찾기 탭|
+|------|---|
+|![system structure](./images/screenshots/notice.png)|![system structure](./images/screenshots/favorite.png)|
+
+|검색 페이지|알림 키워드 페이지|
+|------|---|
+|![system structure](./images/screenshots/search.png)|![system structure](./images/screenshots/keyword.png)|
+
+# 시스템 구조도
+
+![system structure](./images/system_structure.png)
+
 # 한성대 웹 사이트 리뉴얼시 대응 방법
 
-- data 모듈에 있는 api 패키지에서 URL을 수정한다.
-- data 모듈에 있는 `mapper`를 수정한다.
-- [HansungNotificationServer 레파지토리의 `scraper.py` 파일](https://github.com/jja08111/HansungNotificationServer/blob/main/src/scraper.py)을 수정한다.
+- data 모듈 -> api 패키지 -> api 파일들의 URL을 수정한다.
+- data 모듈 -> mapper 패키지 -> 스크래퍼를 수정한다.
+- [HansungNotificationServer 레파지토리의 `scraper.py` 파일](https://github.com/jja08111/HansungNotificationServer/blob/main/src/scraper.py)을
+  수정한다.
+
+# Thanks to
+
+이 프로젝트는 [아냥이](https://github.com/juhwankim-dev/pushNotificationApp) 구조를 참고하여 제작되었습니다.
+[Juhwan Kim](https://github.com/juhwankim-dev)님께 감사드립니다.
