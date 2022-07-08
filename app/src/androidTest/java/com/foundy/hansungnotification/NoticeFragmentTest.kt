@@ -76,7 +76,10 @@ class NoticeFragmentTest {
 
     @Test
     fun loadsNoticesCorrectly() = runTest {
-        launchFragmentInContainer<NoticeFragment>(factory = fragmentFactory)
+        launchFragmentInContainer<NoticeFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.Theme_HansungNotification
+        )
 
         fakeNoticeRepository.setFakeList(mockNotices)
         fakeNoticeRepository.emitFake()
