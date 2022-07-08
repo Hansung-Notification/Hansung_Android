@@ -74,10 +74,7 @@ class KeywordFragment(
         binding.apply {
             val adapter = KeywordAdapter(onClickDelete = ::removeKeyword, lifecycleScope)
             recyclerView.adapter = adapter
-            recyclerView.addDividerDecoration(
-                requireContext(),
-                horizontalPaddingDimen = R.dimen.keyword_divider_horizontal_padding
-            )
+            recyclerView.addDividerDecoration(horizontalPaddingDimen = R.dimen.keyword_divider_horizontal_padding)
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             viewModel.keywordList.observe(viewLifecycleOwner) { result ->

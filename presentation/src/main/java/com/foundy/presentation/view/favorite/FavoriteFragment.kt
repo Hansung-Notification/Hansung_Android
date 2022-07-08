@@ -27,7 +27,7 @@ class FavoriteFragment(
 
         binding.apply {
             recyclerView.adapter = adapter
-            recyclerView.addDividerDecoration(view.context)
+            recyclerView.addDividerDecoration()
             recyclerView.layoutManager = LinearLayoutManager(context)
 
             viewModel.favoriteList.observe(viewLifecycleOwner) {

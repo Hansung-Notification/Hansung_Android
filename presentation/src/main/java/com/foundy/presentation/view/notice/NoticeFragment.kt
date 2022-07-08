@@ -31,7 +31,7 @@ class NoticeFragment(
         val adapter = NoticeAdapter()
 
         binding.apply {
-            recyclerView.addDividerDecoration(view.context)
+            recyclerView.addDividerDecoration()
             recyclerView.adapter = adapter.withLoadStateFooter(
                 PagingLoadStateAdapter { adapter.retry() }
             )

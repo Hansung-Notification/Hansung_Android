@@ -25,10 +25,7 @@ fun View.addRipple() = with(TypedValue()) {
     setBackgroundResource(resourceId)
 }
 
-fun RecyclerView.addDividerDecoration(
-    context: Context,
-    @DimenRes horizontalPaddingDimen: Int? = null
-) {
+fun RecyclerView.addDividerDecoration(@DimenRes horizontalPaddingDimen: Int? = null) {
     val attr = intArrayOf(android.R.attr.listDivider)
     val typeArray = context.obtainStyledAttributes(attr)
     val divider = typeArray.getDrawable(0)
