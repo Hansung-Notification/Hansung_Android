@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.databinding.ActivitySearchBinding
+import com.foundy.presentation.extension.addDividerDecoration
 import com.foundy.presentation.view.NoticeViewModel
 import com.foundy.presentation.view.common.PagingLoadStateAdapter
 import com.foundy.presentation.view.notice.NoticeAdapter
@@ -91,6 +92,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView(adapter: NoticeAdapter) = with(binding.recyclerView) {
+        this.addDividerDecoration()
         this.adapter = adapter.withLoadStateFooter(
             PagingLoadStateAdapter { adapter.retry() }
         )
