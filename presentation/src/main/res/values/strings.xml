@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Presentation</string>
+    <string name="app_name">한성대 공지</string>
     <string name="retry">재시도</string>
     <string name="notice">공지사항</string>
     <string name="favorite">즐겨찾기</string>
