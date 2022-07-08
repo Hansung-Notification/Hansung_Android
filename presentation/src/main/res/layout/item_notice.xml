@@ -24,18 +24,19 @@
 
         <TextView
             android:id="@+id/title"
-            style="@style/contentTitleText"
+            style="?attr/textAppearanceBodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="4dp"
             android:maxLines="2"
-            android:lineSpacingExtra="2dp"
+            android:textColor="?attr/colorOnBackground"
             tools:text="공지사항 제목" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="6dp" />
-
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
@@ -43,13 +44,15 @@
 
             <TextView
                 android:id="@+id/subtitle"
-                style="@style/contentSubtitleText"
+                style="?attr/textAppearanceBodySmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
+                android:alpha="0.6"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:textColor="?attr/colorOnBackground"
                 tools:text="2022.06.21 · 학생장학팀" />
 
             <ImageView
@@ -60,7 +63,7 @@
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/new_notice"
                 android:src="@drawable/ic_baseline_fiber_new_24"
-                app:tint="@color/purple_100" />
+                app:tint="?attr/colorPrimary" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

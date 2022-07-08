@@ -27,7 +27,7 @@ class NoticeViewHolder(
             favButton.isVisible = !notice.isHeader
             favButton.isChecked = noticeUiState.isFavorite()
             if (notice.isHeader) {
-                noticeItem.setBackgroundColor(R.color.purple_200, 30)
+                noticeItem.setBackgroundColor(androidx.appcompat.R.attr.colorPrimary, 30)
             } else {
                 noticeItem.addRipple()
             }

@@ -82,7 +82,10 @@ class FavoriteFragmentTest {
 
     @Test
     fun itemDisappears_whenFavoriteButtonClicked() = runTest {
-        launchFragmentInContainer<FavoriteFragment>(factory = fragmentFactory)
+        launchFragmentInContainer<FavoriteFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.Theme_HansungNotification
+        )
 
         fakeFavoriteRepository.setFakeList(mockNotices)
         fakeFavoriteRepository.emitFake()
@@ -113,7 +116,10 @@ class FavoriteFragmentTest {
 
     @Test
     fun showEmptyFavoriteText_ifThereIsNoFavorite() = runTest {
-        launchFragmentInContainer<FavoriteFragment>(factory = fragmentFactory)
+        launchFragmentInContainer<FavoriteFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.Theme_HansungNotification
+        )
 
         onView(withId(R.id.emptyText)).check(matches(isDisplayed()))
 

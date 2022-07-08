@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="4dp"
         android:paddingTop="4dp"
-        app:cardBackgroundColor="@color/primary"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:dividerColor="#5C8C8C8C"
         app:isVoiceInputButtonEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,11 +19,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:queryInputBarIconColor="?attr/colorControlNormal"
         app:queryInputHint="@string/search_notification"
-        app:queryInputTextColor="@color/onPrimary"
+        app:queryInputTextColor="?attr/colorOnSurface"
         app:shouldDimBehind="false"
         app:suggestionIconColor="?attr/colorControlNormal"
         app:suggestionRecentSearchIconColor="?attr/colorControlNormal"
-        app:suggestionTextColor="@color/onPrimary">
+        app:suggestionTextColor="?attr/colorOnSurface">
 
         <requestFocus />
 
@@ -31,14 +31,10 @@
 
     <TextView
         android:id="@+id/no_search_result_text"
-        style="@style/contentSubtitleText"
+        style="@style/CenterHelpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="center"
         android:text="@string/no_search_result"
-        android:textSize="20sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

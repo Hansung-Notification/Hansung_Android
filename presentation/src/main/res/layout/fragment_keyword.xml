@@ -18,10 +18,10 @@
 
     <TextView
         android:id="@+id/errorMsg"
+        style="@style/CenterHelpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/failed_to_load"
-        android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,14 +30,15 @@
 
     <TextView
         android:id="@+id/keyword_help_text"
-        style="@style/contentSubtitleText"
+        style="?attr/textAppearanceBodyMedium"
+        android:alpha="0.7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="8dp"
-        android:lineSpacingExtra="4sp"
+        android:lineSpacingExtra="4dp"
         android:text="@string/keyword_help"
-        android:textSize="14sp"
+        android:textColor="?attr/colorOnBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -60,10 +61,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            app:endIconTint="?attr/colorPrimary"
+            app:endIconContentDescription="@string/add_keyword"
             app:endIconDrawable="@drawable/ic_baseline_add_box_24"
-            app:endIconTint="@color/purple_200"
-            app:endIconMode="custom"
-            app:endIconContentDescription="@string/add_keyword">
+            app:endIconMode="custom">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInput"
