@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.databinding.ActivitySearchBinding
 import com.foundy.presentation.extension.addDividerDecoration
@@ -107,6 +108,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchNotices(query: String, adapter: NoticeAdapter) {
+        adapter.submitData(lifecycle, PagingData.empty())
         lifecycleScope.launch {
             noticeViewModel.searchNotices(query).collectLatest {
                 adapter.submitData(lifecycle, it)
