@@ -30,7 +30,7 @@ class KeywordAdapter(
         }
 
         override fun areContentsTheSame(oldItem: Keyword, newItem: Keyword): Boolean {
-            return oldItem.title == newItem.title
+            return oldItem == newItem
         }
     }
 }

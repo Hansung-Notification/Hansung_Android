@@ -26,7 +26,7 @@ class FavoriteAdapter : ListAdapter<NoticeUiState, FavoriteViewHolder>(KeywordsC
         }
 
         override fun areContentsTheSame(oldItem: NoticeUiState, newItem: NoticeUiState): Boolean {
-            return oldItem.notice.url == newItem.notice.url
+            return oldItem.notice == newItem.notice
         }
     }
 }

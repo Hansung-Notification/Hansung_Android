@@ -29,7 +29,7 @@ class NoticeAdapter : PagingDataAdapter<NoticeUiState, NoticeViewHolder>(diffCal
                 oldItem: NoticeUiState,
                 newItem: NoticeUiState
             ): Boolean {
-                return oldItem.notice.url == newItem.notice.url
+                return oldItem.notice == newItem.notice
             }
         }
     }
