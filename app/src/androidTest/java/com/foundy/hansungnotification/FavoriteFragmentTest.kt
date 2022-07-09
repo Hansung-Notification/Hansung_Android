@@ -20,6 +20,7 @@ import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
+import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
@@ -41,6 +42,10 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class FavoriteFragmentTest {
+
+    @Rule
+    @JvmField
+    val retryRule = RetryTestRule()
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)

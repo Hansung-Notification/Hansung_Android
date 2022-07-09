@@ -6,6 +6,7 @@ import com.foundy.domain.usecase.query.GetRecentQueryListUseCase
 import com.foundy.domain.usecase.query.RemoveRecentQueryUseCase
 import com.foundy.domain.usecase.query.UpdateRecentQueryUseCase
 import com.foundy.hansungnotification.fake.FakeQueryRepositoryImpl
+import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.hansungnotification.utils.observeForTesting
 import com.foundy.presentation.view.search.SearchViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,6 +22,10 @@ import org.junit.Test
 class SearchViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
+
+    @Rule
+    @JvmField
+    val retryRule = RetryTestRule()
 
     @Rule
     @JvmField

@@ -23,6 +23,7 @@ import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
+import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.presentation.R
 import com.foundy.presentation.view.NoticeViewModel
 import com.foundy.presentation.view.keyword.KeywordActivity
@@ -42,6 +43,10 @@ class KeywordActivityTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
+
+    @Rule
+    @JvmField
+    val retryRule = RetryTestRule()
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
