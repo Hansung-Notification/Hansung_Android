@@ -4,17 +4,34 @@
 
 # 스크린샷
 
-|공지사항 탭|즐겨찾기 탭|
+|공지사항|즐겨찾기|
 |------|---|
-|![system structure](./images/screenshots/notice.png)|![system structure](./images/screenshots/favorite.png)|
+|![system structure](./images/screenshots/notice.jpg)|![system structure](./images/screenshots/favorite.jpg)|
 
-|검색 페이지|알림 키워드 페이지|
+|검색|알림 키워드|
 |------|---|
-|![system structure](./images/screenshots/search.png)|![system structure](./images/screenshots/keyword.png)|
+|![system structure](./images/screenshots/search.jpg)|![system structure](./images/screenshots/keyword.jpg)|
 
 # 시스템 구조도
 
 ![system structure](./images/system_structure.png)
+
+# 아키텍쳐
+
+![architecture](./images/architecture.png)
+
+# 기술
+
+- Clean architecture
+- MVVM
+- Hilt
+- Paging
+- Room
+- Retrofit
+- Flow
+- Coroutine
+- Firebase(messaging, realtime-database, auth)
+- Espresso
 
 # 한성대 웹 사이트 리뉴얼시 대응 방법
 
