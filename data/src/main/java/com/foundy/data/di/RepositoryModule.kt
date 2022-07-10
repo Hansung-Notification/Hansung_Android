@@ -35,8 +35,14 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseRepository(): FirebaseRepository {
-        return FirebaseRepositoryImpl()
+    fun provideAuthRepository(): AuthRepository {
+        return AuthRepositoryImpl()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMessagingRepository(): MessagingRepository {
+        return MessagingRepositoryImpl()
     }
 
     @Provides

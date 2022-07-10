@@ -1,38 +1,18 @@
 package com.foundy.data.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.foundy.data.constant.FirebaseConstant.USERS
 import com.foundy.data.constant.FirebaseConstant.KEYWORDS
 import com.foundy.domain.exception.NotSignedInException
-import com.foundy.domain.repository.FirebaseRepository
+import com.foundy.domain.repository.MessagingRepository
 import com.github.kimcore.inko.Inko.Companion.asEnglish
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 
-class FirebaseRepositoryImpl : FirebaseRepository {
-
-    override fun isSignedIn(): Boolean {
-        return Firebase.auth.currentUser != null
-    }
-
-    override fun signInWith(idToken: String): LiveData<Result<Any>> {
-        val result = MutableLiveData<Result<Any>>()
-        val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-        Firebase.auth.signInWithCredential(firebaseCredential).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                result.value = Result.success(true)
-            } else {
-                result.value = Result.failure(task.exception!!)
-            }
-        }
-        return result
-    }
+class MessagingRepositoryImpl : MessagingRepository {
 
     /**
      * 앱 설치 이전에 저장한 토픽들을 다시 구독한다.

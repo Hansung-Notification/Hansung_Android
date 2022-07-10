@@ -1,10 +1,10 @@
-package com.foundy.domain.usecase.firebase
+package com.foundy.domain.usecase.messaging
 
-import com.foundy.domain.repository.FirebaseRepository
+import com.foundy.domain.repository.MessagingRepository
 import javax.inject.Inject
 
 class SubscribeToUseCase @Inject constructor(
-    private val repository: FirebaseRepository,
+    private val repository: MessagingRepository,
 ) {
     operator fun invoke(topic: String, onFailure: (Exception) -> Unit) {
         repository.subscribeTo(topic, onFailure)
