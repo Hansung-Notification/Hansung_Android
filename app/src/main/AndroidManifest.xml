@@ -16,7 +16,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HansungNotification.Starting"
+        android:theme="@style/Theme.HansungNotification"
         tools:targetApi="31" />
 
 </manifest>
