@@ -3,9 +3,9 @@ package com.foundy.presentation.view.keyword
 import androidx.lifecycle.*
 import com.foundy.domain.exception.NoSearchResultException
 import com.foundy.domain.model.Keyword
-import com.foundy.domain.usecase.firebase.IsSignedInUseCase
-import com.foundy.domain.usecase.firebase.SubscribeToUseCase
-import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
+import com.foundy.domain.usecase.auth.IsSignedInUseCase
+import com.foundy.domain.usecase.messaging.SubscribeToUseCase
+import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
