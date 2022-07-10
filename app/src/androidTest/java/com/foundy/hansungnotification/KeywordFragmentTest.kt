@@ -11,15 +11,16 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.model.Keyword
-import com.foundy.domain.usecase.firebase.IsSignedInUseCase
-import com.foundy.domain.usecase.firebase.SubscribeToUseCase
-import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
+import com.foundy.domain.usecase.auth.IsSignedInUseCase
+import com.foundy.domain.usecase.messaging.SubscribeToUseCase
+import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
-import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
+import com.foundy.hansungnotification.fake.FakeAuthRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
+import com.foundy.hansungnotification.fake.FakeMessagingRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
@@ -56,7 +57,8 @@ class KeywordFragmentTest {
     val scenario = ActivityScenarioRule(KeywordActivity::class.java)
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
-    private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
+    private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
+    private val fakeAuthRepository = FakeAuthRepositoryImpl()
     private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
 
     @BindValue
@@ -64,9 +66,9 @@ class KeywordFragmentTest {
         ReadKeywordListUseCase(fakeKeywordRepository),
         AddKeywordUseCase(fakeKeywordRepository),
         RemoveKeywordUseCase(fakeKeywordRepository),
-        SubscribeToUseCase(fakeFirebaseRepository),
-        UnsubscribeFromUseCase(fakeFirebaseRepository),
-        IsSignedInUseCase(fakeFirebaseRepository),
+        SubscribeToUseCase(fakeMessagingRepository),
+        UnsubscribeFromUseCase(fakeMessagingRepository),
+        IsSignedInUseCase(fakeAuthRepository),
         HasSearchResultUseCase(fakeNoticeRepository)
     )
 

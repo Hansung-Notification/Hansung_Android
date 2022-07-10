@@ -10,19 +10,16 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
-import com.foundy.domain.usecase.firebase.IsSignedInUseCase
-import com.foundy.domain.usecase.firebase.SubscribeToUseCase
-import com.foundy.domain.usecase.firebase.UnsubscribeFromUseCase
+import com.foundy.domain.usecase.auth.IsSignedInUseCase
+import com.foundy.domain.usecase.messaging.SubscribeToUseCase
+import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
 import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
-import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
-import com.foundy.hansungnotification.fake.FakeFirebaseRepositoryImpl
-import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
-import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
+import com.foundy.hansungnotification.fake.*
 import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.presentation.R
 import com.foundy.presentation.view.NoticeViewModel
@@ -49,7 +46,8 @@ class KeywordActivityTest {
     val retryRule = RetryTestRule()
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
-    private val fakeFirebaseRepository = FakeFirebaseRepositoryImpl()
+    private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
+    private val fakeAuthRepository = FakeAuthRepositoryImpl()
     private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
     private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
 
@@ -67,9 +65,9 @@ class KeywordActivityTest {
         ReadKeywordListUseCase(fakeKeywordRepository),
         AddKeywordUseCase(fakeKeywordRepository),
         RemoveKeywordUseCase(fakeKeywordRepository),
-        SubscribeToUseCase(fakeFirebaseRepository),
-        UnsubscribeFromUseCase(fakeFirebaseRepository),
-        IsSignedInUseCase(fakeFirebaseRepository),
+        SubscribeToUseCase(fakeMessagingRepository),
+        UnsubscribeFromUseCase(fakeMessagingRepository),
+        IsSignedInUseCase(fakeAuthRepository),
         HasSearchResultUseCase(fakeNoticeRepository)
     )
     lateinit var context: Context
@@ -82,7 +80,7 @@ class KeywordActivityTest {
 
     @Test
     fun showLoginFragment_ifNotSignedIn() = runTest {
-        fakeFirebaseRepository.setSignedIn(false)
+        fakeAuthRepository.setSignedIn(false)
 
         launchActivity<KeywordActivity>()
 
@@ -91,7 +89,7 @@ class KeywordActivityTest {
 
     @Test
     fun showKeywordFragment_ifSignedIn() = runTest {
-        fakeFirebaseRepository.setSignedIn(true)
+        fakeAuthRepository.setSignedIn(true)
 
         launchActivity<KeywordActivity>()
 
@@ -100,7 +98,7 @@ class KeywordActivityTest {
 
     @Test
     fun navControllerWorksWithoutCrash_whenRecreateIfLoggedIn() {
-        fakeFirebaseRepository.setSignedIn(true)
+        fakeAuthRepository.setSignedIn(true)
         val scenario = launchActivity<KeywordActivity>()
 
         scenario.onActivity {

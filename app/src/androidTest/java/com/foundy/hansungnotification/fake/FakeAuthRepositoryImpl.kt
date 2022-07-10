@@ -2,9 +2,9 @@ package com.foundy.hansungnotification.fake
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.foundy.domain.repository.FirebaseRepository
+import com.foundy.domain.repository.AuthRepository
 
-class FakeFirebaseRepositoryImpl(private var isSignedIn: Boolean = true) : FirebaseRepository {
+class FakeAuthRepositoryImpl(private var isSignedIn: Boolean = true) : AuthRepository {
 
     fun setSignedIn(isSignedIn: Boolean) {
         this.isSignedIn = isSignedIn
@@ -16,17 +16,5 @@ class FakeFirebaseRepositoryImpl(private var isSignedIn: Boolean = true) : Fireb
 
     override fun signInWith(idToken: String): LiveData<Result<Any>> {
         return MutableLiveData()
-    }
-
-    override fun subscribeAllPreviousTopic() {
-
-    }
-
-    override fun subscribeTo(topic: String, onFailure: (Exception) -> Unit) {
-
-    }
-
-    override fun unsubscribeFrom(topic: String, onFailure: (Exception) -> Unit) {
-
     }
 }
