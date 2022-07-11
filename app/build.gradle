@@ -29,6 +29,7 @@ dependencies {
     // firebase
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
 
     // mockk
     testImplementation "io.mockk:mockk:$mockk_version"
