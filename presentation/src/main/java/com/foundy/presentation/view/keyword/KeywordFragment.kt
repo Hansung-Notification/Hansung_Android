@@ -99,6 +99,12 @@ class KeywordFragment(
 
     private fun onChangeText(editableText: Editable?, textInputLayout: TextInputLayout) {
         val keyword = editableText?.toString() ?: ""
+        // 키워드를 추가한 직후 에러 메시지가 보이면 보기 좋지 않아 문자열이 빈 경우 에러 메시지를 보이지 않는다.
+        if (keyword.isEmpty()) {
+            textInputLayout.error = null
+            return
+        }
+
         try {
             viewModel.checkValid(keyword)
 
@@ -114,11 +120,7 @@ class KeywordFragment(
 
         viewModel.checkKeywordSubmit(
             keyword,
-            onSuccess = {
-                addKeyword(keyword)
-                showSnackBar(getString(R.string.subscribed_keyword, keyword))
-                binding.textInput.setText("")
-            },
+            onSuccess = { onSuccessSubmitKeyword(keyword, binding) },
             onFailure = { e ->
                 when (e) {
                     is KeywordValidator.KeywordInvalidException -> {
@@ -126,8 +128,7 @@ class KeywordFragment(
                     }
                     is NoSearchResultException -> {
                         showAlertDialog(e.message ?: getString(R.string.invalid_keyword)) {
-                            addKeyword(keyword)
-                            binding.textInput.setText("")
+                            onSuccessSubmitKeyword(keyword, binding)
                         }
                     }
                     is HttpException -> {
@@ -142,6 +143,12 @@ class KeywordFragment(
                 changeEndIconToAddButton(binding)
             }
         )
+    }
+
+    private fun onSuccessSubmitKeyword(keyword: String, binding: FragmentKeywordBinding) {
+        addKeyword(keyword)
+        showSnackBar(getString(R.string.subscribed_keyword, keyword))
+        binding.textInput.text = null
     }
 
     private fun addKeyword(keyword: String) {

@@ -223,6 +223,26 @@ class KeywordFragmentTest {
         )
     }
 
+    @Test
+    fun disableErrorMessage_afterAddingKeywordSuccessfully() = runTest {
+        val keyword = Keyword("안녕")
+        inputTextToTextInputEditText(keyword.title)
+
+        pressSendKeyboardButton()
+
+        onView(withId(R.id.errorMsg)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun showSnackBar_afterAddingKeywordSuccessfully() = runTest {
+        val keyword = Keyword("안녕")
+        inputTextToTextInputEditText(keyword.title)
+
+        pressSendKeyboardButton()
+
+        assertSnackBarHasText(context.getString(R.string.subscribed_keyword, keyword.title))
+    }
+
     private fun inputTextToTextInputEditText(text: String) {
         onView(withId(R.id.textInput)).perform(replaceText(text))
     }
