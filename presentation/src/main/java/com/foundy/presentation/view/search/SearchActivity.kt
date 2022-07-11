@@ -12,9 +12,9 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.databinding.ActivitySearchBinding
 import com.foundy.presentation.extension.addDividerDecoration
-import com.foundy.presentation.view.NoticeViewModel
+import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.view.common.PagingLoadStateAdapter
-import com.foundy.presentation.view.notice.NoticeAdapter
+import com.foundy.presentation.view.home.notice.NoticeAdapter
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem
 import com.paulrybitskyi.persistentsearchview.listeners.OnSuggestionChangeListener
 import com.paulrybitskyi.persistentsearchview.utils.SuggestionCreationUtil
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
-    private val noticeViewModel: NoticeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
 
     private var _binding: ActivitySearchBinding? = null
@@ -110,7 +110,7 @@ class SearchActivity : AppCompatActivity() {
     private fun searchNotices(query: String, adapter: NoticeAdapter) {
         adapter.submitData(lifecycle, PagingData.empty())
         lifecycleScope.launch {
-            noticeViewModel.searchNotices(query).collectLatest {
+            homeViewModel.searchNotices(query).collectLatest {
                 adapter.submitData(lifecycle, it)
             }
         }

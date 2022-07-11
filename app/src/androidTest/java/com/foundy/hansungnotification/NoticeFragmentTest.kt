@@ -18,8 +18,8 @@ import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.presentation.R
-import com.foundy.presentation.view.NoticeViewModel
-import com.foundy.presentation.view.notice.NoticeFragment
+import com.foundy.presentation.view.home.HomeViewModel
+import com.foundy.presentation.view.home.notice.NoticeFragment
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -51,7 +51,7 @@ class NoticeFragmentTest {
     )
 
     @BindValue
-    val viewModel = NoticeViewModel(
+    val viewModel = HomeViewModel(
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         AddFavoriteNoticeUseCase(fakeFavoriteRepository),
@@ -67,7 +67,7 @@ class NoticeFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().targetContext
 
         with(mockk<ViewModelProvider.Factory>()) {
-            every { create(NoticeViewModel::class.java) } answers { viewModel }
+            every { create(HomeViewModel::class.java) } answers { viewModel }
             every { fragmentFactory.instantiate(any(), any()) } answers {
                 NoticeFragment { this@with }
             }

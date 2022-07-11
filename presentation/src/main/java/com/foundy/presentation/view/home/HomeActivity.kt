@@ -1,4 +1,4 @@
-package com.foundy.presentation.view
+package com.foundy.presentation.view.home
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -14,7 +14,7 @@ import com.foundy.presentation.view.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding get() = requireNotNull(_binding)

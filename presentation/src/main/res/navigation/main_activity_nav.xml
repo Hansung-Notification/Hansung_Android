@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/noticeFragment"
-        android:name="com.foundy.presentation.view.notice.NoticeFragment"
+        android:name="com.foundy.presentation.view.home.notice.NoticeFragment"
         android:label="@string/notice"
         tools:layout="@layout/fragment_notice"/>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.foundy.presentation.view.favorite.FavoriteFragment"
+        android:name="com.foundy.presentation.view.home.favorite.FavoriteFragment"
         android:label="@string/favorite"
         tools:layout="@layout/fragment_favorite" />
 </navigation>

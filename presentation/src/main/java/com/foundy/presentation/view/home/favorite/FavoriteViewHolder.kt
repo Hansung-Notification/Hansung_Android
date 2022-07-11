@@ -1,4 +1,4 @@
-package com.foundy.presentation.view.favorite
+package com.foundy.presentation.view.home.favorite
 
 import android.view.View
 import android.widget.ToggleButton

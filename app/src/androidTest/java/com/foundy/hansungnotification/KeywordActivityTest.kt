@@ -22,7 +22,7 @@ import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.hansungnotification.fake.*
 import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.presentation.R
-import com.foundy.presentation.view.NoticeViewModel
+import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.view.keyword.KeywordActivity
 import com.foundy.presentation.view.keyword.KeywordViewModel
 import dagger.hilt.android.testing.BindValue
@@ -52,7 +52,7 @@ class KeywordActivityTest {
     private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
 
     @BindValue
-    val noticeViewModel = NoticeViewModel(
+    val homeViewModel = HomeViewModel(
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         AddFavoriteNoticeUseCase(fakeFavoriteRepository),

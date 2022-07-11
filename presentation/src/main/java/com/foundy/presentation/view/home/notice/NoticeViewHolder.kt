@@ -1,4 +1,4 @@
-package com.foundy.presentation.view.notice
+package com.foundy.presentation.view.home.notice
 
 import android.widget.ToggleButton
 import androidx.core.view.isVisible

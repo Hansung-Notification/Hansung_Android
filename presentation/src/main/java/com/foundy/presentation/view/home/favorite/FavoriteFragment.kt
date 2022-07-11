@@ -1,4 +1,4 @@
-package com.foundy.presentation.view.favorite
+package com.foundy.presentation.view.home.favorite
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.foundy.presentation.view.NoticeViewModel
+import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentFavoriteBinding
 import com.foundy.presentation.extension.addDividerDecoration
@@ -17,7 +17,7 @@ class FavoriteFragment(
     @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
 ) : Fragment(R.layout.fragment_favorite) {
 
-    private val viewModel: NoticeViewModel by activityViewModels(factory)
+    private val viewModel: HomeViewModel by activityViewModels(factory)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

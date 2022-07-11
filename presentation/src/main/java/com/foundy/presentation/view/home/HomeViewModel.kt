@@ -1,4 +1,4 @@
-package com.foundy.presentation.view
+package com.foundy.presentation.view.home
 
 import androidx.lifecycle.*
 import androidx.paging.PagingData
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NoticeViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     getNoticeListUseCase: GetNoticeListUseCase,
     private val readFavoriteListUseCase: ReadFavoriteListUseCase,
     private val addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
