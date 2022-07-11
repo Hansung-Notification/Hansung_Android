@@ -12,7 +12,6 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.databinding.ActivitySearchBinding
 import com.foundy.presentation.extension.addDividerDecoration
-import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.view.common.PagingLoadStateAdapter
 import com.foundy.presentation.view.home.notice.NoticeAdapter
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem
@@ -26,8 +25,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
-    private val homeViewModel: HomeViewModel by viewModels()
-    private val searchViewModel: SearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
 
     private var _binding: ActivitySearchBinding? = null
     private val binding: ActivitySearchBinding get() = requireNotNull(_binding)
@@ -61,14 +59,14 @@ class SearchActivity : AppCompatActivity() {
     private fun initSearchView(adapter: NoticeAdapter) = with(binding.searchView) {
         expand(true)
 
-        searchViewModel.recentQueries.observe(this@SearchActivity) {
+        viewModel.recentQueries.observe(this@SearchActivity) {
             val recentList = SuggestionCreationUtil.asRecentSearchSuggestions(it)
             setSuggestions(recentList, false)
         }
         setOnSearchConfirmedListener { searchView, query ->
             searchView.collapse()
             searchNotices(query, adapter)
-            searchViewModel.addOrUpdateRecent(query)
+            viewModel.addOrUpdateRecent(query)
         }
         setOnSuggestionChangeListener(object : OnSuggestionChangeListener {
             override fun onSuggestionPicked(suggestion: SuggestionItem?) {
@@ -78,13 +76,13 @@ class SearchActivity : AppCompatActivity() {
                     lifecycleScope.launch {
                         // 검색 항목을 누르자마자 순서가 변경되어 보기 안좋기 때문에 딜레이를 준다.
                         delay(400)
-                        searchViewModel.addOrUpdateRecent(it)
+                        viewModel.addOrUpdateRecent(it)
                     }
                 }
             }
 
             override fun onSuggestionRemoved(suggestion: SuggestionItem?) {
-                suggestion?.itemModel?.text?.let { searchViewModel.removeRecent(it) }
+                suggestion?.itemModel?.text?.let { viewModel.removeRecent(it) }
             }
         })
         setOnLeftBtnClickListener {
@@ -110,7 +108,7 @@ class SearchActivity : AppCompatActivity() {
     private fun searchNotices(query: String, adapter: NoticeAdapter) {
         adapter.submitData(lifecycle, PagingData.empty())
         lifecycleScope.launch {
-            homeViewModel.searchNotices(query).collectLatest {
+            viewModel.searchNotices(query).collectLatest {
                 adapter.submitData(lifecycle, it)
             }
         }

@@ -1,76 +1,36 @@
 package com.foundy.presentation.view.home
 
 import androidx.lifecycle.*
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.foundy.domain.model.Notice
 import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
-import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
-import com.foundy.presentation.model.NoticeUiState
+import com.foundy.presentation.view.common.FavoriteNoticeDelegate
+import com.foundy.presentation.view.common.ViewModelFavoriteNoticeDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     getNoticeListUseCase: GetNoticeListUseCase,
-    private val readFavoriteListUseCase: ReadFavoriteListUseCase,
-    private val addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
-    private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase,
-    private val searchNoticeListUseCase: SearchNoticeListUseCase
+    readFavoriteListUseCase: ReadFavoriteListUseCase,
+    addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
+    removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase
 ) : ViewModel() {
 
-    private val _favoriteList = MutableLiveData<List<NoticeUiState>>(emptyList())
-    val favoriteList: LiveData<List<NoticeUiState>> get() = _favoriteList
+    private val favoritesDelegate: FavoriteNoticeDelegate = ViewModelFavoriteNoticeDelegate(
+        readFavoriteListUseCase,
+        addFavoriteNoticeUseCase,
+        removeFavoriteNoticeUseCase,
+        viewModelScope
+    )
 
-    val noticeFlow = getNoticeListUseCase().cachedIn(viewModelScope).map {
-        it.map(::createNoticeUiState)
-    }
+    val favoritesState get() = favoritesDelegate.favoritesState
 
-    init {
-        initFavoriteList()
-    }
-
-    fun searchNotices(query: String): Flow<PagingData<NoticeUiState>> {
-        return searchNoticeListUseCase(query).cachedIn(viewModelScope).map {
-            it.map(::createNoticeUiState)
-        }
-    }
-
-    private fun createNoticeUiState(notice: Notice): NoticeUiState {
-        return NoticeUiState(
-            notice,
-            onClickFavorite = { if (it) addFavoriteItem(notice) else removeFavoriteItem(notice) },
-            isFavorite = {
-                favoriteList.value?.let { list ->
-                    list.firstOrNull { it.notice.url == notice.url } != null
-                } ?: false
-            }
-        )
-    }
-
-    private fun initFavoriteList() {
-        viewModelScope.launch {
-            readFavoriteListUseCase().collect { list ->
-                _favoriteList.postValue(list.map(::createNoticeUiState))
-            }
-        }
-    }
-
-    private fun addFavoriteItem(notice: Notice) {
-        viewModelScope.launch {
-            addFavoriteNoticeUseCase(notice)
-        }
-    }
-
-    private fun removeFavoriteItem(notice: Notice) {
-        viewModelScope.launch {
-            removeFavoriteNoticeUseCase(notice)
-        }
+    val noticeFlow = getNoticeListUseCase().cachedIn(viewModelScope).map { pagingData ->
+        pagingData.map { favoritesDelegate.createNoticeUiState(it) }
     }
 }

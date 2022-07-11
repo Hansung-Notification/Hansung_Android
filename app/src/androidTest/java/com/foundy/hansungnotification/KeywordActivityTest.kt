@@ -18,7 +18,6 @@ import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
-import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.hansungnotification.fake.*
 import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.presentation.R
@@ -56,8 +55,7 @@ class KeywordActivityTest {
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         AddFavoriteNoticeUseCase(fakeFavoriteRepository),
-        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository),
-        SearchNoticeListUseCase(fakeNoticeRepository)
+        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository)
     )
 
     @BindValue

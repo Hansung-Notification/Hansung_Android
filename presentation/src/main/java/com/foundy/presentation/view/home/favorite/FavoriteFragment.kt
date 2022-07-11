@@ -7,11 +7,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentFavoriteBinding
 import com.foundy.presentation.extension.addDividerDecoration
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class FavoriteFragment(
     @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
@@ -30,9 +33,11 @@ class FavoriteFragment(
             recyclerView.addDividerDecoration()
             recyclerView.layoutManager = LinearLayoutManager(context)
 
-            viewModel.favoriteList.observe(viewLifecycleOwner) {
-                emptyText.isVisible = it.isEmpty()
-                adapter.submitList(it)
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.favoritesState.collect {
+                    emptyText.isVisible = it.isEmpty()
+                    adapter.submitList(it)
+                }
             }
         }
     }

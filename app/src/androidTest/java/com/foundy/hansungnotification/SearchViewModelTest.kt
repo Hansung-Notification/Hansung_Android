@@ -1,10 +1,16 @@
 package com.foundy.hansungnotification
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
+import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
+import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
+import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.domain.usecase.query.AddRecentQueryUseCase
 import com.foundy.domain.usecase.query.GetRecentQueryListUseCase
 import com.foundy.domain.usecase.query.RemoveRecentQueryUseCase
 import com.foundy.domain.usecase.query.UpdateRecentQueryUseCase
+import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
+import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeQueryRepositoryImpl
 import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.hansungnotification.utils.observeForTesting
@@ -31,13 +37,19 @@ class SearchViewModelTest {
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private val fakeRepository = FakeQueryRepositoryImpl()
+    private val fakeQueryRepository = FakeQueryRepositoryImpl()
+    private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
+    private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
 
     private val searchViewModel = SearchViewModel(
-        GetRecentQueryListUseCase(fakeRepository),
-        AddRecentQueryUseCase(fakeRepository),
-        RemoveRecentQueryUseCase(fakeRepository),
-        UpdateRecentQueryUseCase(fakeRepository),
+        GetRecentQueryListUseCase(fakeQueryRepository),
+        AddRecentQueryUseCase(fakeQueryRepository),
+        RemoveRecentQueryUseCase(fakeQueryRepository),
+        UpdateRecentQueryUseCase(fakeQueryRepository),
+        SearchNoticeListUseCase(fakeNoticeRepository),
+        ReadFavoriteListUseCase(fakeFavoriteRepository),
+        AddFavoriteNoticeUseCase(fakeFavoriteRepository),
+        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository),
         dispatcher = testDispatcher
     )
 

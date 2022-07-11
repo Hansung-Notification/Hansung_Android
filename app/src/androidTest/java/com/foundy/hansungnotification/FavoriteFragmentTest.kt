@@ -15,7 +15,6 @@ import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
-import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
@@ -66,8 +65,7 @@ class FavoriteFragmentTest {
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         AddFavoriteNoticeUseCase(fakeFavoriteRepository),
-        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository),
-        SearchNoticeListUseCase(fakeNoticeRepository)
+        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository)
     )
 
     lateinit var context: Context
@@ -115,7 +113,7 @@ class FavoriteFragmentTest {
             val recyclerView = view as RecyclerView
             val expectedSize = mockNotices.size - 1
             assertEquals(expectedSize, recyclerView.adapter?.itemCount)
-            assertEquals(expectedSize, viewModel.favoriteList.value?.size)
+            assertEquals(expectedSize, viewModel.favoritesState.value.size)
         }
     }
 

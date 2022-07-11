@@ -1,6 +1,5 @@
 package com.foundy.hansungnotification.fake
 
-import android.util.Log
 import com.foundy.domain.model.Keyword
 import com.foundy.domain.repository.KeywordRepository
 import kotlinx.coroutines.flow.Flow
