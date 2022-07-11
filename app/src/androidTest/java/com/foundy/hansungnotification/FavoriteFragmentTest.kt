@@ -14,10 +14,12 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
+import com.foundy.domain.usecase.messaging.SubscribeAllDbKeywordsUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
+import com.foundy.hansungnotification.fake.FakeMessagingRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.hansungnotification.utils.waitForView
@@ -53,6 +55,7 @@ class FavoriteFragmentTest {
 
     private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
     private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
+    private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
 
     private val mockNotices = listOf(
         NoticeFactory.create(NoticeType.NORMAL),
@@ -65,7 +68,8 @@ class FavoriteFragmentTest {
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         AddFavoriteNoticeUseCase(fakeFavoriteRepository),
-        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository)
+        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository),
+        SubscribeAllDbKeywordsUseCase(fakeMessagingRepository)
     )
 
     lateinit var context: Context

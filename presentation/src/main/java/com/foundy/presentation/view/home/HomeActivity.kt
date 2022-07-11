@@ -2,6 +2,7 @@ package com.foundy.presentation.view.home
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
@@ -15,6 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
+
+    private val viewModel: HomeViewModel by viewModels()
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding get() = requireNotNull(_binding)
@@ -38,6 +41,8 @@ class HomeActivity : AppCompatActivity() {
             toolBar.setOnMenuItemClickListener(::onMenuItemClick)
             bottomNav.setupWithNavController(navController)
         }
+
+        viewModel.subScribeAllDbKeywords()
     }
 
     private fun onMenuItemClick(item: MenuItem): Boolean {
