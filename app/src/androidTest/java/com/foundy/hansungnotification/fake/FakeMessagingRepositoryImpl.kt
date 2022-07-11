@@ -4,7 +4,7 @@ import com.foundy.domain.repository.MessagingRepository
 
 class FakeMessagingRepositoryImpl : MessagingRepository {
 
-    override fun subscribeAllPreviousTopic() {
+    override fun subscribeAllDbKeywords() {
 
     }
 

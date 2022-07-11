@@ -86,7 +86,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun onCompleteSignIn(result: Result<Any>) {
         if (result.isSuccess) {
             try {
-                viewModel.subscribeAllPreviousTopic()
+                viewModel.subscribeAllDbKeywords()
             } catch (e: Exception) {
                 showSnackBar(getString(R.string.failed_to_subscribe_previous_keywords))
             } finally {
