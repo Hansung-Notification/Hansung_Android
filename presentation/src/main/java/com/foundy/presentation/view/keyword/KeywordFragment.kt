@@ -116,6 +116,7 @@ class KeywordFragment(
             keyword,
             onSuccess = {
                 addKeyword(keyword)
+                showSnackBar(getString(R.string.subscribed_keyword, keyword))
                 binding.textInput.setText("")
             },
             onFailure = { e ->
