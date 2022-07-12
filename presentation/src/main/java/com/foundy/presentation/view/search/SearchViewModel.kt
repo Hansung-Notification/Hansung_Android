@@ -29,8 +29,7 @@ class SearchViewModel @Inject constructor(
     private val updateRecentQueryUseCase: UpdateRecentQueryUseCase,
     private val searchNoticeListUseCase: SearchNoticeListUseCase,
     favoriteDelegateFactory: FavoriteViewModelDelegateFactory,
-    @Named("Main")
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+    @Named("Main") private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private val favoriteDelegate = favoriteDelegateFactory.create(viewModelScope, dispatcher)
