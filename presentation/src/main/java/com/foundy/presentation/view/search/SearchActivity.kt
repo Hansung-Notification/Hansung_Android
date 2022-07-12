@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,9 +61,13 @@ class SearchActivity : AppCompatActivity() {
     private fun initSearchView(adapter: NoticeAdapter) = with(binding.searchView) {
         expand(true)
 
-        viewModel.recentQueries.observe(this@SearchActivity) {
-            val recentList = SuggestionCreationUtil.asRecentSearchSuggestions(it)
-            setSuggestions(recentList, false)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.recentQueries.collect {
+                    val recentList = SuggestionCreationUtil.asRecentSearchSuggestions(it)
+                    setSuggestions(recentList, false)
+                }
+            }
         }
         setOnSearchConfirmedListener { searchView, query ->
             searchView.collapse()

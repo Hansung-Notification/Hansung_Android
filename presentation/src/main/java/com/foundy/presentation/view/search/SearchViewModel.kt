@@ -15,8 +15,7 @@ import com.foundy.presentation.view.common.FavoriteViewModelDelegateFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -34,12 +33,16 @@ class SearchViewModel @Inject constructor(
 
     private val favoriteDelegate = favoriteDelegateFactory.create(viewModelScope, dispatcher)
 
-    val recentQueries = getRecentQueryListUseCase().asLiveData().map { list ->
+    val recentQueries = getRecentQueryListUseCase().map { list ->
         list.map { it.content }
-    }
+    }.flowOn(dispatcher).stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        emptyList()
+    )
 
     fun addOrUpdateRecent(query: String) {
-        val hasQuery = recentQueries.value?.contains(query) == true
+        val hasQuery = recentQueries.value.contains(query)
         Query(content = query).let {
             viewModelScope.launch(dispatcher) {
                 if (hasQuery) {
