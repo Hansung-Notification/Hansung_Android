@@ -1,7 +1,5 @@
 package com.foundy.hansungnotification.fake
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.foundy.domain.repository.AuthRepository
 
 class FakeAuthRepositoryImpl(private var isSignedIn: Boolean = true) : AuthRepository {
@@ -14,7 +12,7 @@ class FakeAuthRepositoryImpl(private var isSignedIn: Boolean = true) : AuthRepos
         return isSignedIn
     }
 
-    override fun signInWith(idToken: String): LiveData<Result<Any>> {
-        return MutableLiveData()
+    override fun signInWith(idToken: String, onComplete: (result: Result<Any>) -> Unit) {
+
     }
 }

@@ -40,10 +40,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
                 try {
                     val account = task.getResult(ApiException::class.java)
-                    viewModel.signInWith(account.idToken!!).observe(
-                        viewLifecycleOwner,
-                        ::onCompleteSignIn
-                    )
+                    viewModel.signInWith(account.idToken!!, ::onCompleteSignIn)
                     Log.d(TAG, "Success google sign in: " + account.id)
                 } catch (e: ApiException) {
                     showSnackBar(getString(R.string.failed_to_sign_in))
