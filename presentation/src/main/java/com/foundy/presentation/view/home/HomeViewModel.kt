@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(
         pagingData.map { favoritesDelegate.createNoticeUiState(it) }
     }
 
-    fun subScribeAllDbKeywords() {
+    fun subscribeAllDbKeywords() {
         try {
             subscribeAllDbKeywordsUseCase()
         } catch (e: NotSignedInException) {

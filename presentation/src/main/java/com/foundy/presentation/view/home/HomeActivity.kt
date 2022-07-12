@@ -42,7 +42,7 @@ class HomeActivity : AppCompatActivity() {
             bottomNav.setupWithNavController(navController)
         }
 
-        viewModel.subScribeAllDbKeywords()
+        viewModel.subscribeAllDbKeywords()
     }
 
     private fun onMenuItemClick(item: MenuItem): Boolean {
