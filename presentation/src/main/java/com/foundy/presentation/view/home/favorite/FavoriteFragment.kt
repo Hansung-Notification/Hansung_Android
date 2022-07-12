@@ -6,8 +6,10 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.R
@@ -34,9 +36,11 @@ class FavoriteFragment(
             recyclerView.layoutManager = LinearLayoutManager(context)
 
             viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.favoritesState.collect {
-                    emptyText.isVisible = it.isEmpty()
-                    adapter.submitList(it)
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.favoritesState.collect {
+                        emptyText.isVisible = it.isEmpty()
+                        adapter.submitList(it)
+                    }
                 }
             }
         }

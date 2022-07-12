@@ -11,9 +11,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 @AssistedFactory
@@ -25,19 +23,20 @@ interface FavoriteViewModelDelegateFactory {
 }
 
 class FavoriteViewModelDelegate @AssistedInject constructor(
-    private val readFavoriteListUseCase: ReadFavoriteListUseCase,
+    readFavoriteListUseCase: ReadFavoriteListUseCase,
     private val addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
     private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase,
     @Assisted private val viewModelScope: CoroutineScope,
     @Assisted private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) {
 
-    private val _favoritesState = MutableStateFlow<List<NoticeUiState>>(emptyList())
-    val favoritesState: StateFlow<List<NoticeUiState>> = _favoritesState
-
-    init {
-        initFavoriteList()
-    }
+    val favoritesState = readFavoriteListUseCase().map { list ->
+        list.map(::createNoticeUiState)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        emptyList()
+    )
 
     /**
      * Favorite에 대한 상태를 가진 [NoticeUiState]를 [notice]로부터 생성한다.
@@ -55,18 +54,8 @@ class FavoriteViewModelDelegate @AssistedInject constructor(
                 }
             },
             isFavorite = {
-                favoritesState.value.let { list ->
-                    list.firstOrNull { it.notice.url == notice.url } != null
-                }
+                favoritesState.value.any { it.notice.url == notice.url }
             }
         )
-    }
-
-    private fun initFavoriteList() {
-        viewModelScope.launch(dispatcher) {
-            readFavoriteListUseCase().collect { list ->
-                _favoritesState.emit(list.map { createNoticeUiState(it) })
-            }
-        }
     }
 }

@@ -12,7 +12,9 @@ class LoginViewModel @Inject constructor(
     private val subscribeAllDbKeywordsUseCase: SubscribeAllDbKeywordsUseCase
 ) : ViewModel() {
 
-    fun signInWith(idToken: String) = signInWithUseCase(idToken)
+    fun signInWith(idToken: String, onComplete: (result: Result<Any>) -> Unit) {
+        signInWithUseCase(idToken, onComplete)
+    }
 
     fun subscribeAllDbKeywords() = subscribeAllDbKeywordsUseCase()
 }

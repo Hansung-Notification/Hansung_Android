@@ -12,8 +12,10 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.domain.exception.NoSearchResultException
 import com.foundy.domain.model.Keyword
@@ -26,6 +28,8 @@ import com.foundy.presentation.extension.setOnEditorActionListenerWithDebounce
 import com.foundy.presentation.utils.KeywordValidator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 class KeywordFragment(
@@ -77,21 +81,25 @@ class KeywordFragment(
             recyclerView.addDividerDecoration(horizontalPaddingDimen = R.dimen.keyword_divider_horizontal_padding)
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-            viewModel.keywordList.observe(viewLifecycleOwner) { result ->
-                listProgressBar.isVisible = false
-                if (result.isSuccess) {
-                    val keywords = result.getOrNull()!!
-                    adapter.submitList(keywords)
-                    if (keywords.size >= MAX_KEYWORD_COUNT) {
-                        disableTextInput(binding)
-                    } else {
-                        enableTextInput(binding)
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.keywordListState.collect { result ->
+                        listProgressBar.isVisible = false
+                        if (result.isSuccess) {
+                            val keywords = result.getOrNull()!!
+                            adapter.submitList(keywords)
+                            if (keywords.size >= MAX_KEYWORD_COUNT) {
+                                disableTextInput(binding)
+                            } else {
+                                enableTextInput(binding)
+                            }
+                        } else {
+                            errorMsg.isVisible = true
+                            textInputLayout.isVisible = false
+                            keywordHelpText.isVisible = false
+                            Log.e(TAG, "Failed to load keywords: ${result.exceptionOrNull()}")
+                        }
                     }
-                } else {
-                    errorMsg.isVisible = true
-                    textInputLayout.isVisible = false
-                    keywordHelpText.isVisible = false
-                    Log.e(TAG, "Failed to load keywords: ${result.exceptionOrNull()}")
                 }
             }
         }
