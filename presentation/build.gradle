@@ -21,7 +21,8 @@ dependencies {
     androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // Coroutine
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$life_cycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$life_cycle_version"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version"
 
     // fragment

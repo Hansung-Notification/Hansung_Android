@@ -14,6 +14,8 @@ import com.foundy.presentation.utils.KeywordValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -31,7 +33,11 @@ class KeywordViewModel @Inject constructor(
     @Named("Main") private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
-    val keywordList = readKeywordListUseCase().asLiveData()
+    val keywordListState: StateFlow<Result<List<Keyword>>> = readKeywordListUseCase().stateIn(
+        scope = viewModelScope,
+        started = WhileSubscribed(),
+        initialValue = Result.success(emptyList())
+    )
 
     fun addKeywordItem(keyword: Keyword) {
         addKeywordUseCase(keyword)
@@ -89,7 +95,7 @@ class KeywordViewModel @Inject constructor(
      * 유효성 검사에 실패한 경우 [KeywordValidator.KeywordInvalidException]를 상속한 예외를 던진다.
      */
     fun checkValid(keyword: String) {
-        KeywordValidator.check(keyword, keywordList.value?.getOrNull() ?: emptyList())
+        KeywordValidator.check(keyword, keywordListState.value.getOrNull() ?: emptyList())
     }
 
     private suspend fun checkKeywordHasSearchResult(keyword: String) {
