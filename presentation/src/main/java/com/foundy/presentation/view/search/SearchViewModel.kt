@@ -5,17 +5,13 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.foundy.domain.model.Query
-import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
-import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
-import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.domain.usecase.query.AddRecentQueryUseCase
 import com.foundy.domain.usecase.query.GetRecentQueryListUseCase
 import com.foundy.domain.usecase.query.RemoveRecentQueryUseCase
 import com.foundy.domain.usecase.query.UpdateRecentQueryUseCase
 import com.foundy.presentation.model.NoticeUiState
-import com.foundy.presentation.view.common.FavoriteNoticeDelegate
-import com.foundy.presentation.view.common.ViewModelFavoriteNoticeDelegate
+import com.foundy.presentation.view.common.FavoriteViewModelDelegateFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -32,20 +28,12 @@ class SearchViewModel @Inject constructor(
     private val removeRecentQueryUseCase: RemoveRecentQueryUseCase,
     private val updateRecentQueryUseCase: UpdateRecentQueryUseCase,
     private val searchNoticeListUseCase: SearchNoticeListUseCase,
-    readFavoriteListUseCase: ReadFavoriteListUseCase,
-    addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
-    removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase,
+    favoriteDelegateFactory: FavoriteViewModelDelegateFactory,
     @Named("Main")
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
-    private val favoriteDelegate: FavoriteNoticeDelegate = ViewModelFavoriteNoticeDelegate(
-        readFavoriteListUseCase,
-        addFavoriteNoticeUseCase,
-        removeFavoriteNoticeUseCase,
-        viewModelScope,
-        dispatcher
-    )
+    private val favoriteDelegate = favoriteDelegateFactory.create(viewModelScope, dispatcher)
 
     val recentQueries = getRecentQueryListUseCase().asLiveData().map { list ->
         list.map { it.content }

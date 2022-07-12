@@ -1,14 +1,12 @@
 package com.foundy.hansungnotification
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
-import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
-import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.domain.usecase.notice.SearchNoticeListUseCase
 import com.foundy.domain.usecase.query.AddRecentQueryUseCase
 import com.foundy.domain.usecase.query.GetRecentQueryListUseCase
 import com.foundy.domain.usecase.query.RemoveRecentQueryUseCase
 import com.foundy.domain.usecase.query.UpdateRecentQueryUseCase
+import com.foundy.hansungnotification.fake.FakeFavoriteViewModelDelegateFactory
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeQueryRepositoryImpl
@@ -47,9 +45,7 @@ class SearchViewModelTest {
         RemoveRecentQueryUseCase(fakeQueryRepository),
         UpdateRecentQueryUseCase(fakeQueryRepository),
         SearchNoticeListUseCase(fakeNoticeRepository),
-        ReadFavoriteListUseCase(fakeFavoriteRepository),
-        AddFavoriteNoticeUseCase(fakeFavoriteRepository),
-        RemoveFavoriteNoticeUseCase(fakeFavoriteRepository),
+        FakeFavoriteViewModelDelegateFactory(fakeFavoriteRepository),
         dispatcher = testDispatcher
     )
 

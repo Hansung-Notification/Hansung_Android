@@ -5,6 +5,9 @@ import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.presentation.model.NoticeUiState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,32 +16,33 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-interface FavoriteNoticeDelegate {
-
-    val favoritesState: StateFlow<List<NoticeUiState>>
-
-    /**
-     * Favorite에 대한 상태를 가진 [NoticeUiState]를 [notice]로부터 생성한다.
-     */
-    fun createNoticeUiState(notice: Notice): NoticeUiState
+@AssistedFactory
+interface FavoriteViewModelDelegateFactory {
+    fun create(
+        viewModelScope: CoroutineScope,
+        dispatcher: CoroutineDispatcher = Dispatchers.Main
+    ): FavoriteViewModelDelegate
 }
 
-class ViewModelFavoriteNoticeDelegate(
+class FavoriteViewModelDelegate @AssistedInject constructor(
     private val readFavoriteListUseCase: ReadFavoriteListUseCase,
     private val addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
     private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase,
-    private val viewModelScope: CoroutineScope,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
-) : FavoriteNoticeDelegate {
+    @Assisted private val viewModelScope: CoroutineScope,
+    @Assisted private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+) {
 
     private val _favoritesState = MutableStateFlow<List<NoticeUiState>>(emptyList())
-    override val favoritesState: StateFlow<List<NoticeUiState>> = _favoritesState
+    val favoritesState: StateFlow<List<NoticeUiState>> = _favoritesState
 
     init {
         initFavoriteList()
     }
 
-    override fun createNoticeUiState(notice: Notice): NoticeUiState {
+    /**
+     * Favorite에 대한 상태를 가진 [NoticeUiState]를 [notice]로부터 생성한다.
+     */
+    fun createNoticeUiState(notice: Notice): NoticeUiState {
         return NoticeUiState(
             notice,
             onClickFavorite = { isFavorite ->
