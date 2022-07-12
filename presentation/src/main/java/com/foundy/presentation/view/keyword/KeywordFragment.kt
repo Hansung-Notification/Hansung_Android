@@ -81,7 +81,7 @@ class KeywordFragment(
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             viewLifecycleOwner.lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.keywordListState.collect { result ->
                         listProgressBar.isVisible = false
                         if (result.isSuccess) {
