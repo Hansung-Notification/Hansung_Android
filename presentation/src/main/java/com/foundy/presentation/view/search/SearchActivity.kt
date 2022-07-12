@@ -21,6 +21,7 @@ import com.paulrybitskyi.persistentsearchview.listeners.OnSuggestionChangeListen
 import com.paulrybitskyi.persistentsearchview.utils.SuggestionCreationUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

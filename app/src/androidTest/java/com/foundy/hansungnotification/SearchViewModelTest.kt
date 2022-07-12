@@ -12,6 +12,7 @@ import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeQueryRepositoryImpl
 import com.foundy.presentation.view.search.SearchViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -49,7 +50,7 @@ class SearchViewModelTest {
 
         // Create an empty collector for the StateFlow
         val collectJob = launch(testDispatcher) {
-            searchViewModel.recentQueries.collect {}
+            searchViewModel.recentQueries.collect()
         }
         assertEquals(0, searchViewModel.recentQueries.value.size)
 

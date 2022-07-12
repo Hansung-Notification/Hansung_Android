@@ -28,6 +28,7 @@ import com.foundy.presentation.extension.setOnEditorActionListenerWithDebounce
 import com.foundy.presentation.utils.KeywordValidator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 

@@ -15,6 +15,7 @@ import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentFavoriteBinding
 import com.foundy.presentation.extension.addDividerDecoration
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class FavoriteFragment(

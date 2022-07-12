@@ -9,7 +9,7 @@ buildscript {
         hilt_version = "2.42"
         mockk_version = "1.12.3" // 1.12.4 is Not working!
         fragment_version = "1.4.1"
-        life_cycle_version = "2.5.0"
+        life_cycle_version = "2.4.1" // 2.5.0 is NOT working on tests!
     }
     dependencies {
         // hilt
