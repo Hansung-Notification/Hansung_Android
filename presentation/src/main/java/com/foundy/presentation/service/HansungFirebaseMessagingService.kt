@@ -12,8 +12,12 @@ import androidx.core.app.NotificationCompat
 import com.foundy.domain.model.Notice
 import com.foundy.presentation.R
 import com.foundy.presentation.view.webview.WebViewActivity
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.firebase.messaging.ktx.messaging
 
 class HansungFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -25,12 +29,42 @@ class HansungFirebaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "From: ${message.from}")
 
         if (message.data.isNotEmpty()) {
+            val keyword = message.data["keyword"].toString()
+
+            checkDatabaseHasKeyword(
+                keyword,
+                onHave = { sendNotification(message) },
+                onNothing = { unsubscribe(keyword) }
+            )
             Log.d(TAG, "Message data payload: ${message.data}")
-            sendNotification(message)
         }
 
         message.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
+        }
+    }
+
+    // 하나의 기기에서 키워드를 삭제한 후 다른 기기에서는 해당 키워드를 삭제할 수 없다. 따라서 메시지를 받은 후 DB에 키워드가
+    // 있는지 확인해야한다.
+    // https://github.com/jja08111/HansungNotification/issues/24#issuecomment-1182850572
+    private fun checkDatabaseHasKeyword(
+        keyword: String,
+        onHave: () -> Unit,
+        onNothing: () -> Unit
+    ) {
+        val uid = Firebase.auth.uid ?: return
+        Firebase.database.goOnline()
+        val userKeywordsReference = Firebase.database.reference
+            .child("users")
+            .child(uid)
+            .child("keywords")
+
+        userKeywordsReference.child(keyword).get().addOnCompleteListener {
+            if (it.isSuccessful && it.result.value != null) {
+                onHave()
+            } else {
+                onNothing()
+            }
         }
     }
 
@@ -50,7 +84,8 @@ class HansungFirebaseMessagingService : FirebaseMessagingService() {
         val intent = WebViewActivity.getIntent(this, notice).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
-        val pendingIntent = PendingIntent.getActivity(this,
+        val pendingIntent = PendingIntent.getActivity(
+            this,
             id,
             intent,
             PendingIntent.FLAG_IMMUTABLE
@@ -78,6 +113,11 @@ class HansungFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         notificationManager.notify(id, notificationBuilder.build())
+    }
+
+    private fun unsubscribe(keyword: String) {
+        Firebase.messaging.unsubscribeFromTopic(keyword)
+        Log.d(TAG, "Unsubscribe keyword: $keyword")
     }
 
     companion object {
