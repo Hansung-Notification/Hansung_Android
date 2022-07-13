@@ -33,6 +33,11 @@
 - Firebase(messaging, realtime-database, auth)
 - Espresso
 
+# 키워드 알림
+
+[위키 페이지](https://github.com/jja08111/HansungNotification/wiki/키워드-알림)에서 확인할 수 있습니다.
+
+
 # 한성대 웹 사이트 리뉴얼시 대응 방법
 
 - data 모듈 -> api 패키지 -> api 파일들의 URL을 수정한다.
