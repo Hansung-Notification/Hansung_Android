@@ -14,6 +14,7 @@ interface NoticeApi {
     @POST("bbs/hansung/143/artclList.do")
     suspend fun searchNoticeList(
         @Query("page") page: Int,
-        @FieldMap param: HashMap<String, Any>
+        @Field("srchWrd") query: String,
+        @Field("srchColumn") searchColumn: String = "sj"
     ): Response<ResponseBody>
 }

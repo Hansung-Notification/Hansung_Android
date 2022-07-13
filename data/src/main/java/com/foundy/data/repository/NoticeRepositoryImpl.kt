@@ -4,7 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.foundy.data.api.NoticeApi
-import com.foundy.data.constant.WebConstant
 import com.foundy.data.constant.WebConstant.START_PAGE
 import com.foundy.data.mapper.NoticeMapper
 import com.foundy.data.source.notice.NoticePagingSource
@@ -41,7 +40,7 @@ class NoticeRepositoryImpl @Inject constructor(
         return try {
             val response = noticeApi.searchNoticeList(
                 page = START_PAGE,
-                param = WebConstant.createSearchPostParameter(query)
+                query = query,
             )
             if (response.isSuccessful) {
                 val notices = NoticeMapper(response.body()!!).filter { !it.isHeader }

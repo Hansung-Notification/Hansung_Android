@@ -3,7 +3,6 @@ package com.foundy.data.source.notice
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.foundy.data.api.NoticeApi
-import com.foundy.data.constant.WebConstant
 import com.foundy.data.constant.WebConstant.START_PAGE
 import com.foundy.data.mapper.NoticeMapper
 import com.foundy.domain.model.Notice
@@ -21,7 +20,7 @@ class SearchingNoticePagingSource @Inject constructor(
         return try {
             val response = noticeApi.searchNoticeList(
                 page = page,
-                param = WebConstant.createSearchPostParameter(query)
+                query = query
             )
             val responseBody = response.body()
             if (response.isSuccessful && responseBody != null) {
