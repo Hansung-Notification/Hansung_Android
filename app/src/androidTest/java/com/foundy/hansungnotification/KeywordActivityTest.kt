@@ -8,6 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.auth.IsSignedInUseCase
+import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.messaging.SubscribeToUseCase
 import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
@@ -51,8 +52,9 @@ class KeywordActivityTest {
     @BindValue
     val homeViewModel = HomeViewModel(
         GetNoticeListUseCase(fakeNoticeRepository),
+        ReadFavoriteListUseCase(fakeFavoriteRepository),
         SubscribeAllDbKeywordsUseCase(fakeMessagingRepository),
-        FakeFavoriteViewModelDelegateFactory(fakeFavoriteRepository)
+        FakeNoticeUiStateCreatorFactory(fakeFavoriteRepository)
     )
 
     @BindValue

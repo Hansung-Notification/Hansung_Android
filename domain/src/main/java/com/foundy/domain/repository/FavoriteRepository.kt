@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface FavoriteRepository {
     fun getAll(): Flow<List<Notice>>
+    fun isFavorite(notice: Notice) : Boolean
     suspend fun add(notice: Notice)
     suspend fun remove(notice: Notice)
 }

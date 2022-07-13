@@ -11,11 +11,12 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
+import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.messaging.SubscribeAllDbKeywordsUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
-import com.foundy.hansungnotification.fake.FakeFavoriteViewModelDelegateFactory
+import com.foundy.hansungnotification.fake.FakeNoticeUiStateCreatorFactory
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeMessagingRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
@@ -64,8 +65,9 @@ class FavoriteFragmentTest {
     @BindValue
     val viewModel = HomeViewModel(
         GetNoticeListUseCase(fakeNoticeRepository),
+        ReadFavoriteListUseCase(fakeFavoriteRepository),
         SubscribeAllDbKeywordsUseCase(fakeMessagingRepository),
-        FakeFavoriteViewModelDelegateFactory(fakeFavoriteRepository)
+        FakeNoticeUiStateCreatorFactory(fakeFavoriteRepository)
     )
 
     lateinit var context: Context
@@ -90,8 +92,7 @@ class FavoriteFragmentTest {
             themeResId = R.style.Theme_HansungNotification
         )
 
-        fakeFavoriteRepository.setFakeList(mockNotices)
-        fakeFavoriteRepository.emitFake()
+        fakeFavoriteRepository.emit(mockNotices)
 
         waitForView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
             if (noViewFoundException != null) {
@@ -113,7 +114,6 @@ class FavoriteFragmentTest {
             val recyclerView = view as RecyclerView
             val expectedSize = mockNotices.size - 1
             assertEquals(expectedSize, recyclerView.adapter?.itemCount)
-            assertEquals(expectedSize, viewModel.favoritesState.value.size)
         }
     }
 

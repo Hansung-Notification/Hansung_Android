@@ -11,7 +11,7 @@ import com.foundy.domain.usecase.query.GetRecentQueryListUseCase
 import com.foundy.domain.usecase.query.RemoveRecentQueryUseCase
 import com.foundy.domain.usecase.query.UpdateRecentQueryUseCase
 import com.foundy.presentation.model.NoticeUiState
-import com.foundy.presentation.view.common.FavoriteViewModelDelegateFactory
+import com.foundy.presentation.view.common.NoticeUiStateCreatorFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -27,11 +27,11 @@ class SearchViewModel @Inject constructor(
     private val removeRecentQueryUseCase: RemoveRecentQueryUseCase,
     private val updateRecentQueryUseCase: UpdateRecentQueryUseCase,
     private val searchNoticeListUseCase: SearchNoticeListUseCase,
-    favoriteDelegateFactory: FavoriteViewModelDelegateFactory,
+    noticeUiStateCreatorFactory: NoticeUiStateCreatorFactory,
     @Named("Main") private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
-    private val favoriteDelegate = favoriteDelegateFactory.create(viewModelScope, dispatcher)
+    private val noticeUiStateCreator = noticeUiStateCreatorFactory.create(viewModelScope, dispatcher)
 
     val recentQueries = getRecentQueryListUseCase().map { list ->
         list.map { it.content }
@@ -62,7 +62,7 @@ class SearchViewModel @Inject constructor(
 
     fun searchNotices(query: String): Flow<PagingData<NoticeUiState>> {
         return searchNoticeListUseCase(query).cachedIn(viewModelScope).map { pagingData ->
-            pagingData.map { favoriteDelegate.createNoticeUiState(it) }
+            pagingData.map(noticeUiStateCreator::create)
         }
     }
 }
