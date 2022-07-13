@@ -4,8 +4,8 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk 32
-        versionCode 2
-        versionName "1.0.0-BETA2"
+        versionCode 3
+        versionName "1.0.0-BETA3"
 
         testInstrumentationRunner "com.foundy.hansungnotification.runner.MyTestRunner"
     }
