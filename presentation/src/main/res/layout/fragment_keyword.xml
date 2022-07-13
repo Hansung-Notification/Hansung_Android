@@ -17,18 +17,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/errorMsg"
-        style="@style/CenterHelpText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/failed_to_load"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/keyword_help_text"
         style="?attr/textAppearanceBodyMedium"
         android:alpha="0.7"

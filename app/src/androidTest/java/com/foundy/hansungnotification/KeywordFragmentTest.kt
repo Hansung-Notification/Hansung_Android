@@ -36,6 +36,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.not
 import org.junit.Assert.assertEquals
@@ -49,6 +50,8 @@ import org.junit.Test
 class KeywordFragmentTest {
 
     private val fragmentFactory: FragmentFactory = mockk()
+
+    private val dispatcher = UnconfinedTestDispatcher()
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
@@ -69,7 +72,8 @@ class KeywordFragmentTest {
         SubscribeToUseCase(fakeMessagingRepository),
         UnsubscribeFromUseCase(fakeMessagingRepository),
         IsSignedInUseCase(fakeAuthRepository),
-        HasSearchResultUseCase(fakeNoticeRepository)
+        HasSearchResultUseCase(fakeNoticeRepository),
+        dispatcher
     )
 
     private lateinit var context: Context
@@ -221,16 +225,6 @@ class KeywordFragmentTest {
                 isDisplayed()
             )
         )
-    }
-
-    @Test
-    fun disableErrorMessage_afterAddingKeywordSuccessfully() = runTest {
-        val keyword = Keyword("안녕")
-        inputTextToTextInputEditText(keyword.title)
-
-        pressSendKeyboardButton()
-
-        onView(withId(R.id.errorMsg)).check(matches(not(isDisplayed())))
     }
 
     @Test

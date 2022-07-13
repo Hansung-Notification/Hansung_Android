@@ -25,6 +25,7 @@ import com.foundy.presentation.extension.addDividerDecoration
 import com.foundy.presentation.extension.getProgressBarDrawable
 import com.foundy.presentation.extension.setEndIconOnClickListenerWithDebounce
 import com.foundy.presentation.extension.setOnEditorActionListenerWithDebounce
+import com.foundy.presentation.model.KeywordUiState
 import com.foundy.presentation.utils.KeywordValidator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -49,9 +50,18 @@ class KeywordFragment(
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentKeywordBinding.bind(view)
+        val adapter = KeywordAdapter(onClickDelete = ::removeKeyword, lifecycleScope)
 
         initTextInput(binding)
-        initRecyclerView(binding)
+        initRecyclerView(binding, adapter)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    updateUi(it, binding, adapter)
+                }
+            }
+        }
     }
 
     private fun initTextInput(binding: FragmentKeywordBinding) {
@@ -74,34 +84,32 @@ class KeywordFragment(
         }
     }
 
-    private fun initRecyclerView(binding: FragmentKeywordBinding) {
+    private fun initRecyclerView(binding: FragmentKeywordBinding, adapter: KeywordAdapter) {
         binding.apply {
-            val adapter = KeywordAdapter(onClickDelete = ::removeKeyword, lifecycleScope)
             recyclerView.adapter = adapter
             recyclerView.addDividerDecoration(horizontalPaddingDimen = R.dimen.keyword_divider_horizontal_padding)
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.keywordListState.collect { result ->
-                        listProgressBar.isVisible = false
-                        if (result.isSuccess) {
-                            val keywords = result.getOrNull()!!
-                            adapter.submitList(keywords)
-                            if (keywords.size >= MAX_KEYWORD_COUNT) {
-                                disableTextInput(binding)
-                            } else {
-                                enableTextInput(binding)
-                            }
-                        } else {
-                            errorMsg.isVisible = true
-                            textInputLayout.isVisible = false
-                            keywordHelpText.isVisible = false
-                            Log.e(TAG, "Failed to load keywords: ${result.exceptionOrNull()}")
-                        }
-                    }
-                }
-            }
+    private fun updateUi(
+        uiState: KeywordUiState,
+        binding: FragmentKeywordBinding,
+        adapter: KeywordAdapter
+    ) {
+        val keywords = uiState.keywordList
+        adapter.submitList(keywords)
+        if (keywords.size >= MAX_KEYWORD_COUNT) {
+            disableTextInput(binding)
+        } else {
+            enableTextInput(binding)
+        }
+
+        binding.listProgressBar.isVisible = uiState.isLoadingKeywords
+
+        if (uiState.error != null) {
+            showSnackBar(getString(R.string.failed_to_load))
+            Log.e(TAG, "Failed to load keywords: ${uiState.error.message}")
         }
     }
 

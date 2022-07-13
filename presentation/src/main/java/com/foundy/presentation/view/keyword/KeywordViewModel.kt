@@ -10,12 +10,12 @@ import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
+import com.foundy.presentation.model.KeywordUiState
 import com.foundy.presentation.utils.KeywordValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -33,11 +33,22 @@ class KeywordViewModel @Inject constructor(
     @Named("Main") private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
-    val keywordListState: StateFlow<Result<List<Keyword>>> = readKeywordListUseCase().stateIn(
-        scope = viewModelScope,
-        started = WhileSubscribed(),
-        initialValue = Result.success(emptyList())
-    )
+    private val _uiState = MutableStateFlow(KeywordUiState())
+    val uiState = _uiState.asStateFlow()
+
+    init {
+        viewModelScope.launch(dispatcher) {
+            readKeywordListUseCase().collect { result ->
+                _uiState.update {
+                    if (result.isSuccess) {
+                        it.copy(keywordList = result.getOrNull()!!, isLoadingKeywords = false)
+                    } else {
+                        it.copy(error = result.exceptionOrNull()!!, isLoadingKeywords = false)
+                    }
+                }
+            }
+        }
+    }
 
     fun addKeywordItem(keyword: Keyword) {
         addKeywordUseCase(keyword)
@@ -95,7 +106,7 @@ class KeywordViewModel @Inject constructor(
      * 유효성 검사에 실패한 경우 [KeywordValidator.KeywordInvalidException]를 상속한 예외를 던진다.
      */
     fun checkValid(keyword: String) {
-        KeywordValidator.check(keyword, keywordListState.value.getOrNull() ?: emptyList())
+        KeywordValidator.check(keyword, uiState.value.keywordList)
     }
 
     private suspend fun checkKeywordHasSearchResult(keyword: String) {
