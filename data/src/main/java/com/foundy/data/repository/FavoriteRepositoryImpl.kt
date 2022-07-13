@@ -3,15 +3,26 @@ package com.foundy.data.repository
 import com.foundy.data.source.favorite.FavoriteLocalDataSource
 import com.foundy.domain.model.Notice
 import com.foundy.domain.repository.FavoriteRepository
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class FavoriteRepositoryImpl @Inject constructor(
     private val favoriteLocalDataSource: FavoriteLocalDataSource
 ) : FavoriteRepository {
 
-    override fun getAll(): Flow<List<Notice>> {
-        return favoriteLocalDataSource.getAll()
+    private val favorites by lazy {
+        favoriteLocalDataSource.getAll().stateIn(
+            MainScope(),
+            SharingStarted.WhileSubscribed(5000),
+            emptyList()
+        )
+    }
+
+    override fun getAll(): Flow<List<Notice>> = favorites
+
+    override fun isFavorite(notice: Notice) : Boolean {
+        return favorites.value.any { it.url == notice.url }
     }
 
     override suspend fun add(notice: Notice) {

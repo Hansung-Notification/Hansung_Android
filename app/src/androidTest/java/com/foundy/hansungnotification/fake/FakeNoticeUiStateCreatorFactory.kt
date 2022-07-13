@@ -2,25 +2,29 @@ package com.foundy.hansungnotification.fake
 
 import com.foundy.domain.repository.FavoriteRepository
 import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
+import com.foundy.domain.usecase.favorite.IsFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
-import com.foundy.presentation.view.common.FavoriteViewModelDelegate
-import com.foundy.presentation.view.common.FavoriteViewModelDelegateFactory
+import com.foundy.presentation.view.common.NoticeUiStateCreator
+import com.foundy.presentation.view.common.NoticeUiStateCreatorFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 
-class FakeFavoriteViewModelDelegateFactory(
+class FakeNoticeUiStateCreatorFactory(
     private val favoriteRepository: FavoriteRepository
-) : FavoriteViewModelDelegateFactory {
+) : NoticeUiStateCreatorFactory {
 
     override fun create(
         viewModelScope: CoroutineScope,
-        dispatcher: CoroutineDispatcher
-    ) = FavoriteViewModelDelegate(
+        dispatcher: CoroutineDispatcher,
+        enableCollect: Boolean
+    ) = NoticeUiStateCreator(
         ReadFavoriteListUseCase(favoriteRepository),
         AddFavoriteNoticeUseCase(favoriteRepository),
         RemoveFavoriteNoticeUseCase(favoriteRepository),
+        IsFavoriteNoticeUseCase(favoriteRepository),
         viewModelScope,
-        dispatcher
+        dispatcher,
+        enableCollect = true,
     )
 }

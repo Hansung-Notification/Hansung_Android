@@ -2,6 +2,7 @@ package com.foundy.presentation.view.common
 
 import com.foundy.domain.model.Notice
 import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
+import com.foundy.domain.usecase.favorite.IsFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
 import com.foundy.presentation.model.NoticeUiState
@@ -11,37 +12,40 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AssistedFactory
-interface FavoriteViewModelDelegateFactory {
+interface NoticeUiStateCreatorFactory {
     fun create(
         viewModelScope: CoroutineScope,
-        dispatcher: CoroutineDispatcher = Dispatchers.Main
-    ): FavoriteViewModelDelegate
+        dispatcher: CoroutineDispatcher = Dispatchers.Main,
+        enableCollect: Boolean = true
+    ): NoticeUiStateCreator
 }
 
-class FavoriteViewModelDelegate @AssistedInject constructor(
+class NoticeUiStateCreator @AssistedInject constructor(
     readFavoriteListUseCase: ReadFavoriteListUseCase,
     private val addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
     private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase,
+    private val isFavoriteNoticeUseCase: IsFavoriteNoticeUseCase,
     @Assisted private val viewModelScope: CoroutineScope,
-    @Assisted private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+    @Assisted private val dispatcher: CoroutineDispatcher = Dispatchers.Main,
+    @Assisted enableCollect: Boolean
 ) {
 
-    val favoritesState = readFavoriteListUseCase().map { list ->
-        list.map(::createNoticeUiState)
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.Eagerly,
-        emptyList()
-    )
+    init {
+        if (enableCollect) {
+            viewModelScope.launch(dispatcher) {
+                readFavoriteListUseCase().collect()
+            }
+        }
+    }
 
     /**
      * Favorite에 대한 상태를 가진 [NoticeUiState]를 [notice]로부터 생성한다.
      */
-    fun createNoticeUiState(notice: Notice): NoticeUiState {
+    fun create(notice: Notice): NoticeUiState {
         return NoticeUiState(
             notice,
             onClickFavorite = { isFavorite ->
@@ -53,9 +57,7 @@ class FavoriteViewModelDelegate @AssistedInject constructor(
                     }
                 }
             },
-            isFavorite = {
-                favoritesState.value.any { it.notice.url == notice.url }
-            }
+            isFavorite = { isFavoriteNoticeUseCase(notice) }
         )
     }
 }
