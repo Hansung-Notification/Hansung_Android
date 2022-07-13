@@ -17,7 +17,7 @@ class FakeNoticeUiStateCreatorFactory(
     override fun create(
         viewModelScope: CoroutineScope,
         dispatcher: CoroutineDispatcher,
-        enableCollect: Boolean
+        triggerCollection: Boolean
     ) = NoticeUiStateCreator(
         ReadFavoriteListUseCase(favoriteRepository),
         AddFavoriteNoticeUseCase(favoriteRepository),
@@ -25,6 +25,6 @@ class FakeNoticeUiStateCreatorFactory(
         IsFavoriteNoticeUseCase(favoriteRepository),
         viewModelScope,
         dispatcher,
-        enableCollect = true,
+        triggerCollection = true,
     )
 }

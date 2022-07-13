@@ -20,7 +20,7 @@ interface NoticeUiStateCreatorFactory {
     fun create(
         viewModelScope: CoroutineScope,
         dispatcher: CoroutineDispatcher = Dispatchers.Main,
-        enableCollect: Boolean = true
+        triggerCollection: Boolean = true
     ): NoticeUiStateCreator
 }
 
@@ -31,11 +31,11 @@ class NoticeUiStateCreator @AssistedInject constructor(
     private val isFavoriteNoticeUseCase: IsFavoriteNoticeUseCase,
     @Assisted private val viewModelScope: CoroutineScope,
     @Assisted private val dispatcher: CoroutineDispatcher = Dispatchers.Main,
-    @Assisted enableCollect: Boolean
+    @Assisted triggerCollection: Boolean
 ) {
 
     init {
-        if (enableCollect) {
+        if (triggerCollection) {
             viewModelScope.launch(dispatcher) {
                 readFavoriteListUseCase().collect()
             }
