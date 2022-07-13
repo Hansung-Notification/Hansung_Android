@@ -6,30 +6,43 @@ import android.view.View
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentNoticeBinding
 import com.foundy.presentation.extension.addDividerDecoration
+import com.foundy.presentation.model.NoticeUiState
 import com.foundy.presentation.view.common.PagingLoadStateAdapter
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class NoticeFragment(
     @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
 ) : Fragment(R.layout.fragment_notice) {
 
-    private val viewModel: HomeViewModel by activityViewModels(factory)
+    private val viewModel: NoticeViewModel by activityViewModels(factory)
+
+    private val adapter = NoticeAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentNoticeBinding.bind(view)
-        val adapter = NoticeAdapter()
 
+        initRecyclerView(binding)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::updateUi)
+            }
+        }
+    }
+
+    private fun initRecyclerView(binding: FragmentNoticeBinding) {
         binding.apply {
             recyclerView.addDividerDecoration()
             recyclerView.adapter = adapter.withLoadStateFooter(
@@ -47,12 +60,10 @@ class NoticeFragment(
                 retryButton.isVisible = isError
                 errorMsg.isVisible = isError
             }
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.noticeFlow.collectLatest {
-                    adapter.submitData(viewLifecycleOwner.lifecycle, it)
-                }
-            }
         }
+    }
+
+    private fun updateUi(uiState: NoticeUiState) {
+        adapter.submitData(viewLifecycleOwner.lifecycle, uiState.noticeItemPagingData)
     }
 }
