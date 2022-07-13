@@ -240,7 +240,18 @@ class KeywordFragmentTest {
 
         pressSendKeyboardButton()
 
-        assertSnackBarHasText(context.getString(R.string.subscribed_keyword, keyword.title))
+        assertSnackBarHasText(context.getString(R.string.added_keyword, keyword.title))
+    }
+
+    @Test
+    fun showSnackBar_afterRemovingKeyword() = runTest {
+        val keyword = Keyword("안녕")
+        val list = listOf(keyword)
+        fakeKeywordRepository.setFakeList(list)
+
+        onView(withIndex(withId(R.id.delete_button), 0)).perform(click())
+
+        assertSnackBarHasText(context.getString(R.string.removed_keyword, keyword.title))
     }
 
     private fun inputTextToTextInputEditText(text: String) {

@@ -155,7 +155,6 @@ class KeywordFragment(
 
     private fun onSuccessSubmitKeyword(keyword: String, binding: FragmentKeywordBinding) {
         addKeyword(keyword)
-        showSnackBar(getString(R.string.subscribed_keyword, keyword))
         binding.textInput.text = null
     }
 
@@ -169,6 +168,7 @@ class KeywordFragment(
                 Log.e(TAG, "Failed to Subscribe $keyword: ${exception.stackTrace}")
             }
         }
+        showSnackBar(getString(R.string.added_keyword, keyword))
     }
 
     private fun removeKeyword(keyword: String) {
@@ -181,6 +181,7 @@ class KeywordFragment(
                 Log.e(TAG, "Failed to Unsubscribe $keyword: ${exception.stackTrace}")
             }
         }
+        showSnackBar(getString(R.string.removed_keyword, keyword))
     }
 
     private fun enableTextInput(binding: FragmentKeywordBinding) {
