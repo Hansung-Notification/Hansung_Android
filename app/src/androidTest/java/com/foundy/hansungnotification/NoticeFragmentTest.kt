@@ -12,7 +12,7 @@ import com.foundy.domain.usecase.messaging.SubscribeAllDbKeywordsUseCase
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
-import com.foundy.hansungnotification.fake.FakeNoticeUiStateCreatorFactory
+import com.foundy.hansungnotification.fake.FakeNoticeItemUiStateCreatorFactory
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeMessagingRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
@@ -56,7 +56,7 @@ class NoticeFragmentTest {
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         SubscribeAllDbKeywordsUseCase(fakeMessagingRepository),
-        FakeNoticeUiStateCreatorFactory(fakeFavoriteRepository)
+        FakeNoticeItemUiStateCreatorFactory(fakeFavoriteRepository)
     )
 
     lateinit var context: Context

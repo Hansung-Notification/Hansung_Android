@@ -54,7 +54,7 @@ class KeywordActivityTest {
         GetNoticeListUseCase(fakeNoticeRepository),
         ReadFavoriteListUseCase(fakeFavoriteRepository),
         SubscribeAllDbKeywordsUseCase(fakeMessagingRepository),
-        FakeNoticeUiStateCreatorFactory(fakeFavoriteRepository)
+        FakeNoticeItemUiStateCreatorFactory(fakeFavoriteRepository)
     )
 
     @BindValue

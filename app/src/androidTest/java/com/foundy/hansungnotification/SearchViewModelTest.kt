@@ -6,7 +6,7 @@ import com.foundy.domain.usecase.query.AddRecentQueryUseCase
 import com.foundy.domain.usecase.query.GetRecentQueryListUseCase
 import com.foundy.domain.usecase.query.RemoveRecentQueryUseCase
 import com.foundy.domain.usecase.query.UpdateRecentQueryUseCase
-import com.foundy.hansungnotification.fake.FakeNoticeUiStateCreatorFactory
+import com.foundy.hansungnotification.fake.FakeNoticeItemUiStateCreatorFactory
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeQueryRepositoryImpl
@@ -39,7 +39,7 @@ class SearchViewModelTest {
         RemoveRecentQueryUseCase(fakeQueryRepository),
         UpdateRecentQueryUseCase(fakeQueryRepository),
         SearchNoticeListUseCase(fakeNoticeRepository),
-        FakeNoticeUiStateCreatorFactory(fakeFavoriteRepository),
+        FakeNoticeItemUiStateCreatorFactory(fakeFavoriteRepository),
         dispatcher = testDispatcher
     )
 
