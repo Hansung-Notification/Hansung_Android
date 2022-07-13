@@ -43,7 +43,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             getRecentQueryListUseCase().map { list ->
                 list.map { it.content }
-            }.collectLatest { queries ->
+            }.collect { queries ->
                 _uiState.update { it.copy(recentQueries = queries) }
             }
         }
@@ -75,7 +75,7 @@ class SearchViewModel @Inject constructor(
         searchingJob = viewModelScope.launch(dispatcher) {
             searchNoticeListUseCase(query).cachedIn(viewModelScope).map { pagingData ->
                 pagingData.map(noticeUiStateCreator::create)
-            }.collect { pagingData ->
+            }.collectLatest { pagingData ->
                 _uiState.update {
                     it.copy(searchedNoticePagingData = pagingData)
                 }
