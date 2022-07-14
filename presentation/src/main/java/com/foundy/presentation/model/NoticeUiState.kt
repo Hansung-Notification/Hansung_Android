@@ -1,9 +1,7 @@
 package com.foundy.presentation.model
 
-import com.foundy.domain.model.Notice
+import androidx.paging.PagingData
 
 data class NoticeUiState(
-    val notice: Notice,
-    val onClickFavorite: (isFavorite: Boolean) -> Unit,
-    val isFavorite: () -> Boolean
+    val noticeItemPagingData: PagingData<NoticeItemUiState> = PagingData.empty()
 )

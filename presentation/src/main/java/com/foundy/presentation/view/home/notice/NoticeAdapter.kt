@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.foundy.presentation.databinding.ItemNoticeBinding
-import com.foundy.presentation.model.NoticeUiState
+import com.foundy.presentation.model.NoticeItemUiState
 
-class NoticeAdapter : PagingDataAdapter<NoticeUiState, NoticeViewHolder>(diffCallback) {
+class NoticeAdapter : PagingDataAdapter<NoticeItemUiState, NoticeViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -20,14 +20,14 @@ class NoticeAdapter : PagingDataAdapter<NoticeUiState, NoticeViewHolder>(diffCal
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<NoticeUiState>() {
-            override fun areItemsTheSame(oldItem: NoticeUiState, newItem: NoticeUiState): Boolean {
+        private val diffCallback = object : DiffUtil.ItemCallback<NoticeItemUiState>() {
+            override fun areItemsTheSame(oldItem: NoticeItemUiState, newItem: NoticeItemUiState): Boolean {
                 return oldItem.notice.url == newItem.notice.url
             }
 
             override fun areContentsTheSame(
-                oldItem: NoticeUiState,
-                newItem: NoticeUiState
+                oldItem: NoticeItemUiState,
+                newItem: NoticeItemUiState
             ): Boolean {
                 return oldItem.notice == newItem.notice
             }

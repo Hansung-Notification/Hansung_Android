@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.foundy.presentation.databinding.ItemNoticeBinding
-import com.foundy.presentation.model.NoticeUiState
+import com.foundy.presentation.model.NoticeItemUiState
 
-class FavoriteAdapter : ListAdapter<NoticeUiState, FavoriteViewHolder>(KeywordsComparator()) {
+class FavoriteAdapter : ListAdapter<NoticeItemUiState, FavoriteViewHolder>(KeywordsComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -20,12 +20,12 @@ class FavoriteAdapter : ListAdapter<NoticeUiState, FavoriteViewHolder>(KeywordsC
         holder.bind(current)
     }
 
-    class KeywordsComparator : DiffUtil.ItemCallback<NoticeUiState>() {
-        override fun areItemsTheSame(oldItem: NoticeUiState, newItem: NoticeUiState): Boolean {
+    class KeywordsComparator : DiffUtil.ItemCallback<NoticeItemUiState>() {
+        override fun areItemsTheSame(oldItem: NoticeItemUiState, newItem: NoticeItemUiState): Boolean {
             return oldItem.notice.url == newItem.notice.url
         }
 
-        override fun areContentsTheSame(oldItem: NoticeUiState, newItem: NoticeUiState): Boolean {
+        override fun areContentsTheSame(oldItem: NoticeItemUiState, newItem: NoticeItemUiState): Boolean {
             return oldItem.notice == newItem.notice
         }
     }

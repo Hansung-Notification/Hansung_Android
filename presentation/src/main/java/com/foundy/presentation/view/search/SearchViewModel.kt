@@ -1,7 +1,6 @@
 package com.foundy.presentation.view.search
 
 import androidx.lifecycle.*
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.foundy.domain.model.Query
@@ -10,11 +9,12 @@ import com.foundy.domain.usecase.query.AddRecentQueryUseCase
 import com.foundy.domain.usecase.query.GetRecentQueryListUseCase
 import com.foundy.domain.usecase.query.RemoveRecentQueryUseCase
 import com.foundy.domain.usecase.query.UpdateRecentQueryUseCase
-import com.foundy.presentation.model.NoticeUiState
-import com.foundy.presentation.view.common.NoticeUiStateCreatorFactory
+import com.foundy.presentation.model.SearchUiState
+import com.foundy.presentation.view.common.NoticeItemUiStateCreatorFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,22 +27,30 @@ class SearchViewModel @Inject constructor(
     private val removeRecentQueryUseCase: RemoveRecentQueryUseCase,
     private val updateRecentQueryUseCase: UpdateRecentQueryUseCase,
     private val searchNoticeListUseCase: SearchNoticeListUseCase,
-    noticeUiStateCreatorFactory: NoticeUiStateCreatorFactory,
+    noticeItemUiStateCreatorFactory: NoticeItemUiStateCreatorFactory,
     @Named("Main") private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
-    private val noticeUiStateCreator = noticeUiStateCreatorFactory.create(viewModelScope, dispatcher)
+    private val _uiState = MutableStateFlow(SearchUiState())
+    val uiState = _uiState.asStateFlow()
 
-    val recentQueries = getRecentQueryListUseCase().map { list ->
-        list.map { it.content }
-    }.flowOn(dispatcher).stateIn(
+    private val noticeUiStateCreator = noticeItemUiStateCreatorFactory.create(
         viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        emptyList()
+        dispatcher
     )
 
+    init {
+        viewModelScope.launch(dispatcher) {
+            getRecentQueryListUseCase().map { list ->
+                list.map { it.content }
+            }.collect { queries ->
+                _uiState.update { it.copy(recentQueries = queries) }
+            }
+        }
+    }
+
     fun addOrUpdateRecent(query: String) {
-        val hasQuery = recentQueries.value.contains(query)
+        val hasQuery = _uiState.value.recentQueries.contains(query)
         Query(content = query).let {
             viewModelScope.launch(dispatcher) {
                 if (hasQuery) {
@@ -60,9 +68,18 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun searchNotices(query: String): Flow<PagingData<NoticeUiState>> {
-        return searchNoticeListUseCase(query).cachedIn(viewModelScope).map { pagingData ->
-            pagingData.map(noticeUiStateCreator::create)
+    private var searchingJob: Job? = null
+
+    fun searchNotices(query: String) {
+        searchingJob?.cancel()
+        searchingJob = viewModelScope.launch(dispatcher) {
+            searchNoticeListUseCase(query).cachedIn(viewModelScope).map { pagingData ->
+                pagingData.map(noticeUiStateCreator::create)
+            }.collectLatest { pagingData ->
+                _uiState.update {
+                    it.copy(searchedNoticePagingData = pagingData)
+                }
+            }
         }
     }
 }

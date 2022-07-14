@@ -5,20 +5,20 @@ import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ItemNoticeBinding
-import com.foundy.presentation.model.NoticeUiState
+import com.foundy.presentation.model.NoticeItemUiState
 import com.foundy.presentation.view.webview.WebViewActivity
 
 class FavoriteViewHolder(
     private val binding: ItemNoticeBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(noticeUiState: NoticeUiState) {
+    fun bind(noticeItemUiState: NoticeItemUiState) {
         binding.apply {
-            val notice = noticeUiState.notice
+            val notice = noticeItemUiState.notice
             title.text = notice.title
             subtitle.text = root.context.getString(R.string.notice_subtitle, notice.date, notice.writer)
             newIcon.visibility = View.GONE
-            favButton.isChecked = noticeUiState.isFavorite()
+            favButton.isChecked = noticeItemUiState.isFavorite()
 
             noticeItem.setOnClickListener {
                 val intent = WebViewActivity.getIntent(root.context, notice)
@@ -26,7 +26,7 @@ class FavoriteViewHolder(
             }
             favButton.setOnClickListener {
                 val isChecked = (it as ToggleButton).isChecked
-                noticeUiState.onClickFavorite(isChecked)
+                noticeItemUiState.onClickFavorite(isChecked)
             }
         }
     }

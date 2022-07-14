@@ -5,7 +5,7 @@ import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.IsFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
-import com.foundy.presentation.model.NoticeUiState
+import com.foundy.presentation.model.NoticeItemUiState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -16,15 +16,15 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AssistedFactory
-interface NoticeUiStateCreatorFactory {
+interface NoticeItemUiStateCreatorFactory {
     fun create(
         viewModelScope: CoroutineScope,
         dispatcher: CoroutineDispatcher = Dispatchers.Main,
         triggerCollection: Boolean = true
-    ): NoticeUiStateCreator
+    ): NoticeItemUiStateCreator
 }
 
-class NoticeUiStateCreator @AssistedInject constructor(
+class NoticeItemUiStateCreator @AssistedInject constructor(
     readFavoriteListUseCase: ReadFavoriteListUseCase,
     private val addFavoriteNoticeUseCase: AddFavoriteNoticeUseCase,
     private val removeFavoriteNoticeUseCase: RemoveFavoriteNoticeUseCase,
@@ -43,10 +43,10 @@ class NoticeUiStateCreator @AssistedInject constructor(
     }
 
     /**
-     * Favorite에 대한 상태를 가진 [NoticeUiState]를 [notice]로부터 생성한다.
+     * Favorite에 대한 상태를 가진 [NoticeItemUiState]를 [notice]로부터 생성한다.
      */
-    fun create(notice: Notice): NoticeUiState {
-        return NoticeUiState(
+    fun create(notice: Notice): NoticeItemUiState {
+        return NoticeItemUiState(
             notice,
             onClickFavorite = { isFavorite ->
                 viewModelScope.launch(dispatcher) {

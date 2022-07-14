@@ -8,19 +8,15 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.auth.IsSignedInUseCase
-import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.messaging.SubscribeToUseCase
 import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
-import com.foundy.domain.usecase.messaging.SubscribeAllDbKeywordsUseCase
-import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
 import com.foundy.hansungnotification.fake.*
 import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.presentation.R
-import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.view.keyword.KeywordActivity
 import com.foundy.presentation.view.keyword.KeywordViewModel
 import dagger.hilt.android.testing.BindValue
@@ -47,15 +43,6 @@ class KeywordActivityTest {
     private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
     private val fakeAuthRepository = FakeAuthRepositoryImpl()
     private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
-    private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
-
-    @BindValue
-    val homeViewModel = HomeViewModel(
-        GetNoticeListUseCase(fakeNoticeRepository),
-        ReadFavoriteListUseCase(fakeFavoriteRepository),
-        SubscribeAllDbKeywordsUseCase(fakeMessagingRepository),
-        FakeNoticeUiStateCreatorFactory(fakeFavoriteRepository)
-    )
 
     @BindValue
     val keywordViewModel = KeywordViewModel(
@@ -67,6 +54,7 @@ class KeywordActivityTest {
         IsSignedInUseCase(fakeAuthRepository),
         HasSearchResultUseCase(fakeNoticeRepository)
     )
+
     lateinit var context: Context
 
     @Before

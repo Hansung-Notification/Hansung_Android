@@ -6,7 +6,7 @@ import com.foundy.domain.usecase.query.AddRecentQueryUseCase
 import com.foundy.domain.usecase.query.GetRecentQueryListUseCase
 import com.foundy.domain.usecase.query.RemoveRecentQueryUseCase
 import com.foundy.domain.usecase.query.UpdateRecentQueryUseCase
-import com.foundy.hansungnotification.fake.FakeNoticeUiStateCreatorFactory
+import com.foundy.hansungnotification.fake.FakeNoticeItemUiStateCreatorFactory
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeQueryRepositoryImpl
@@ -39,7 +39,7 @@ class SearchViewModelTest {
         RemoveRecentQueryUseCase(fakeQueryRepository),
         UpdateRecentQueryUseCase(fakeQueryRepository),
         SearchNoticeListUseCase(fakeNoticeRepository),
-        FakeNoticeUiStateCreatorFactory(fakeFavoriteRepository),
+        FakeNoticeItemUiStateCreatorFactory(fakeFavoriteRepository),
         dispatcher = testDispatcher
     )
 
@@ -50,18 +50,18 @@ class SearchViewModelTest {
 
         // Create an empty collector for the StateFlow
         val collectJob = launch(testDispatcher) {
-            searchViewModel.recentQueries.collect()
+            searchViewModel.uiState.collect()
         }
-        assertEquals(0, searchViewModel.recentQueries.value.size)
+        assertEquals(0, searchViewModel.uiState.value.recentQueries.size)
 
         searchViewModel.addOrUpdateRecent(query1)
-        assertEquals(1, searchViewModel.recentQueries.value.size)
+        assertEquals(1, searchViewModel.uiState.value.recentQueries.size)
 
         searchViewModel.addOrUpdateRecent(query1)
-        assertEquals(1, searchViewModel.recentQueries.value.size)
+        assertEquals(1, searchViewModel.uiState.value.recentQueries.size)
 
         searchViewModel.addOrUpdateRecent(query2)
-        assertEquals(2, searchViewModel.recentQueries.value.size)
+        assertEquals(2, searchViewModel.uiState.value.recentQueries.size)
 
         collectJob.cancel()
     }

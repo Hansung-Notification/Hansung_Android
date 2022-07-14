@@ -12,20 +12,16 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
-import com.foundy.domain.usecase.messaging.SubscribeAllDbKeywordsUseCase
-import com.foundy.domain.usecase.notice.GetNoticeListUseCase
 import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
-import com.foundy.hansungnotification.fake.FakeNoticeUiStateCreatorFactory
+import com.foundy.hansungnotification.fake.FakeNoticeItemUiStateCreatorFactory
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
-import com.foundy.hansungnotification.fake.FakeMessagingRepositoryImpl
-import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
-import com.foundy.presentation.view.home.HomeViewModel
 import com.foundy.presentation.view.home.favorite.FavoriteFragment
+import com.foundy.presentation.view.home.favorite.FavoriteViewModel
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -52,9 +48,7 @@ class FavoriteFragmentTest {
 
     private val fragmentFactory: FragmentFactory = mockk()
 
-    private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
     private val fakeFavoriteRepository = FakeFavoriteRepositoryImpl()
-    private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
 
     private val mockNotices = listOf(
         NoticeFactory.create(NoticeType.NORMAL),
@@ -63,11 +57,9 @@ class FavoriteFragmentTest {
     )
 
     @BindValue
-    val viewModel = HomeViewModel(
-        GetNoticeListUseCase(fakeNoticeRepository),
+    val viewModel = FavoriteViewModel(
         ReadFavoriteListUseCase(fakeFavoriteRepository),
-        SubscribeAllDbKeywordsUseCase(fakeMessagingRepository),
-        FakeNoticeUiStateCreatorFactory(fakeFavoriteRepository)
+        FakeNoticeItemUiStateCreatorFactory(fakeFavoriteRepository)
     )
 
     lateinit var context: Context
@@ -78,7 +70,7 @@ class FavoriteFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().targetContext
 
         with(mockk<ViewModelProvider.Factory>()) {
-            every { create(HomeViewModel::class.java) } answers { viewModel }
+            every { create(FavoriteViewModel::class.java) } answers { viewModel }
             every { fragmentFactory.instantiate(any(), any()) } answers {
                 FavoriteFragment { this@with }
             }

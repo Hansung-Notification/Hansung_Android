@@ -14,6 +14,8 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foundy.presentation.databinding.ActivitySearchBinding
 import com.foundy.presentation.extension.addDividerDecoration
+import com.foundy.presentation.model.NoticeItemUiState
+import com.foundy.presentation.model.SearchUiState
 import com.foundy.presentation.view.common.PagingLoadStateAdapter
 import com.foundy.presentation.view.home.notice.NoticeAdapter
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem
@@ -22,7 +24,6 @@ import com.paulrybitskyi.persistentsearchview.utils.SuggestionCreationUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -45,9 +46,18 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val adapter = NoticeAdapter()
+
         initSearchView(adapter)
         initRecyclerView(adapter)
         initNoSearchResultText(adapter)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    updateUi(it, adapter)
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -62,14 +72,6 @@ class SearchActivity : AppCompatActivity() {
     private fun initSearchView(adapter: NoticeAdapter) = with(binding.searchView) {
         expand(true)
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.recentQueries.collect {
-                    val recentList = SuggestionCreationUtil.asRecentSearchSuggestions(it)
-                    setSuggestions(recentList, false)
-                }
-            }
-        }
         setOnSearchConfirmedListener { searchView, query ->
             searchView.collapse()
             searchNotices(query, adapter)
@@ -107,17 +109,31 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initNoSearchResultText(adapter: NoticeAdapter) {
         adapter.addLoadStateListener { loadStates ->
-            val shouldShowNoSearchResultText = loadStates.refresh is LoadState.NotLoading && adapter.itemCount < 1
+            val shouldShowNoSearchResultText =
+                loadStates.refresh is LoadState.NotLoading && adapter.itemCount < 1
             binding.noSearchResultText.isVisible = shouldShowNoSearchResultText
         }
     }
 
+    private fun updateUi(uiState: SearchUiState, adapter: NoticeAdapter) {
+        updateSearchView(uiState.recentQueries)
+        updateRecyclerView(uiState.searchedNoticePagingData, adapter)
+    }
+
+    private fun updateSearchView(recentQueries: List<String>) = with(binding.searchView) {
+        val recentList = SuggestionCreationUtil.asRecentSearchSuggestions(recentQueries)
+        setSuggestions(recentList, false)
+    }
+
+    private fun updateRecyclerView(
+        pagingData: PagingData<NoticeItemUiState>,
+        adapter: NoticeAdapter
+    ) {
+        adapter.submitData(lifecycle, pagingData)
+    }
+
     private fun searchNotices(query: String, adapter: NoticeAdapter) {
         adapter.submitData(lifecycle, PagingData.empty())
-        lifecycleScope.launch {
-            viewModel.searchNotices(query).collectLatest {
-                adapter.submitData(lifecycle, it)
-            }
-        }
+        viewModel.searchNotices(query)
     }
 }

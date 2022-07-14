@@ -5,20 +5,20 @@ import com.foundy.domain.usecase.favorite.AddFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.IsFavoriteNoticeUseCase
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
 import com.foundy.domain.usecase.favorite.RemoveFavoriteNoticeUseCase
-import com.foundy.presentation.view.common.NoticeUiStateCreator
-import com.foundy.presentation.view.common.NoticeUiStateCreatorFactory
+import com.foundy.presentation.view.common.NoticeItemUiStateCreator
+import com.foundy.presentation.view.common.NoticeItemUiStateCreatorFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 
-class FakeNoticeUiStateCreatorFactory(
+class FakeNoticeItemUiStateCreatorFactory(
     private val favoriteRepository: FavoriteRepository
-) : NoticeUiStateCreatorFactory {
+) : NoticeItemUiStateCreatorFactory {
 
     override fun create(
         viewModelScope: CoroutineScope,
         dispatcher: CoroutineDispatcher,
         triggerCollection: Boolean
-    ) = NoticeUiStateCreator(
+    ) = NoticeItemUiStateCreator(
         ReadFavoriteListUseCase(favoriteRepository),
         AddFavoriteNoticeUseCase(favoriteRepository),
         RemoveFavoriteNoticeUseCase(favoriteRepository),
