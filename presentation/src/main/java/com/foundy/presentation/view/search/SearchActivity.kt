@@ -34,8 +34,6 @@ class SearchActivity : AppCompatActivity() {
     private var _binding: ActivitySearchBinding? = null
     private val binding: ActivitySearchBinding get() = requireNotNull(_binding)
 
-    private val adapter = NoticeAdapter()
-
     companion object {
         fun getIntent(context: Context): Intent {
             return Intent(context, SearchActivity::class.java)
@@ -47,13 +45,17 @@ class SearchActivity : AppCompatActivity() {
         _binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initSearchView()
-        initRecyclerView()
-        initNoSearchResultText()
+        val adapter = NoticeAdapter()
+
+        initSearchView(adapter)
+        initRecyclerView(adapter)
+        initNoSearchResultText(adapter)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect(::updateUi)
+                viewModel.uiState.collect {
+                    updateUi(it, adapter)
+                }
             }
         }
     }
@@ -67,19 +69,19 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun initSearchView() = with(binding.searchView) {
+    private fun initSearchView(adapter: NoticeAdapter) = with(binding.searchView) {
         expand(true)
 
         setOnSearchConfirmedListener { searchView, query ->
             searchView.collapse()
-            searchNotices(query)
+            searchNotices(query, adapter)
             viewModel.addOrUpdateRecent(query)
         }
         setOnSuggestionChangeListener(object : OnSuggestionChangeListener {
             override fun onSuggestionPicked(suggestion: SuggestionItem?) {
                 val query = suggestion?.itemModel?.text
                 query?.let {
-                    searchNotices(it)
+                    searchNotices(it, adapter)
                     lifecycleScope.launch {
                         // 검색 항목을 누르자마자 순서가 변경되어 보기 안좋기 때문에 딜레이를 준다.
                         delay(400)
@@ -97,15 +99,15 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun initRecyclerView() = with(binding.recyclerView) {
+    private fun initRecyclerView(adapter: NoticeAdapter) = with(binding.recyclerView) {
         this.addDividerDecoration()
-        this.adapter = this@SearchActivity.adapter.withLoadStateFooter(
-            PagingLoadStateAdapter { this@SearchActivity.adapter.retry() }
+        this.adapter = adapter.withLoadStateFooter(
+            PagingLoadStateAdapter { adapter.retry() }
         )
         layoutManager = LinearLayoutManager(context)
     }
 
-    private fun initNoSearchResultText() {
+    private fun initNoSearchResultText(adapter: NoticeAdapter) {
         adapter.addLoadStateListener { loadStates ->
             val shouldShowNoSearchResultText =
                 loadStates.refresh is LoadState.NotLoading && adapter.itemCount < 1
@@ -113,9 +115,9 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUi(uiState: SearchUiState) {
+    private fun updateUi(uiState: SearchUiState, adapter: NoticeAdapter) {
         updateSearchView(uiState.recentQueries)
-        updateRecyclerView(uiState.searchedNoticePagingData)
+        updateRecyclerView(uiState.searchedNoticePagingData, adapter)
     }
 
     private fun updateSearchView(recentQueries: List<String>) = with(binding.searchView) {
@@ -123,11 +125,14 @@ class SearchActivity : AppCompatActivity() {
         setSuggestions(recentList, false)
     }
 
-    private fun updateRecyclerView(pagingData: PagingData<NoticeItemUiState>) {
+    private fun updateRecyclerView(
+        pagingData: PagingData<NoticeItemUiState>,
+        adapter: NoticeAdapter
+    ) {
         adapter.submitData(lifecycle, pagingData)
     }
 
-    private fun searchNotices(query: String) {
+    private fun searchNotices(query: String, adapter: NoticeAdapter) {
         adapter.submitData(lifecycle, PagingData.empty())
         viewModel.searchNotices(query)
     }

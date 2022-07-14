@@ -26,23 +26,24 @@ class NoticeFragment(
 
     private val viewModel: NoticeViewModel by activityViewModels(factory)
 
-    private val adapter = NoticeAdapter()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentNoticeBinding.bind(view)
+        val adapter = NoticeAdapter()
 
-        initRecyclerView(binding)
+        initRecyclerView(binding, adapter)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect(::updateUi)
+                viewModel.uiState.collect {
+                    updateUi(it, adapter)
+                }
             }
         }
     }
 
-    private fun initRecyclerView(binding: FragmentNoticeBinding) {
+    private fun initRecyclerView(binding: FragmentNoticeBinding, adapter: NoticeAdapter) {
         binding.apply {
             recyclerView.addDividerDecoration()
             recyclerView.adapter = adapter.withLoadStateFooter(
@@ -63,7 +64,7 @@ class NoticeFragment(
         }
     }
 
-    private fun updateUi(uiState: NoticeUiState) {
+    private fun updateUi(uiState: NoticeUiState, adapter: NoticeAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.noticeItemPagingData)
     }
 }
