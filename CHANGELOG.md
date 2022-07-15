@@ -1,3 +1,8 @@
+# [v1.0.0](https://github.com/jja08111/HansungNotification/releases/tag/v1.0.0)
+- **앱 출시** 
+- POST 요청하는 API 코드 단순화
+- `UiState` 패턴 적극적으로 이용하도록 리팩토링
+
 # [v1.0.0-BETA3](https://github.com/jja08111/HansungNotification/releases/tag/v1.0.0-BETA3)
 - 키워드 생성, 삭제할 때 스낵바를 보이도록 수정
 - Favorite StateFlow를 기존 ViewModel에서 저장했으나 Repository로 이동하여 하나로 관리하도록 수정
