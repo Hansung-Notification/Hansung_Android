@@ -30,11 +30,7 @@ class KeywordRepositoryImpl : KeywordRepository {
         }
 
     override fun getAll(): Flow<Result<List<Keyword>>> = callbackFlow {
-        val reference = userKeywordsReference
-        if (reference == null) {
-            this@callbackFlow.trySendBlocking(Result.failure(NotSignedInException()))
-            return@callbackFlow
-        }
+        val reference = userKeywordsReference ?: throw NotSignedInException()
         val postListener = object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 this@callbackFlow.trySendBlocking(Result.failure(error.toException()))

@@ -3,7 +3,6 @@ package com.foundy.presentation.view.keyword
 import androidx.lifecycle.*
 import com.foundy.domain.exception.NoSearchResultException
 import com.foundy.domain.model.Keyword
-import com.foundy.domain.usecase.auth.IsSignedInUseCase
 import com.foundy.domain.usecase.messaging.SubscribeToUseCase
 import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
@@ -22,13 +21,12 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
-class KeywordViewModel @Inject constructor(
+class KeywordFragmentViewModel @Inject constructor(
     readKeywordListUseCase: ReadKeywordListUseCase,
     private val addKeywordUseCase: AddKeywordUseCase,
     private val removeKeywordUseCase: RemoveKeywordUseCase,
     private val subscribeToUseCase: SubscribeToUseCase,
     private val unsubscribeFromUseCase: UnsubscribeFromUseCase,
-    private val isSignedInUseCase: IsSignedInUseCase,
     private val hasSearchResultUseCase: HasSearchResultUseCase,
     @Named("Main") private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
@@ -65,8 +63,6 @@ class KeywordViewModel @Inject constructor(
     fun unsubscribeFrom(topic: String, onFailure: (Exception) -> Unit) {
         unsubscribeFromUseCase(topic, onFailure)
     }
-
-    fun isSignedIn() = isSignedInUseCase()
 
     /**
      * 키워드의 유효성 검사와 해당 키워드가 공지사항 검색결과에 존재하는지 확인한다.

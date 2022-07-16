@@ -11,14 +11,12 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.model.Keyword
-import com.foundy.domain.usecase.auth.IsSignedInUseCase
 import com.foundy.domain.usecase.messaging.SubscribeToUseCase
 import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
-import com.foundy.hansungnotification.fake.FakeAuthRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeMessagingRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
@@ -28,7 +26,7 @@ import com.foundy.presentation.R
 import com.foundy.presentation.utils.KeywordValidator
 import com.foundy.presentation.view.keyword.KeywordActivity
 import com.foundy.presentation.view.keyword.KeywordFragment
-import com.foundy.presentation.view.keyword.KeywordViewModel
+import com.foundy.presentation.view.keyword.KeywordFragmentViewModel
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -61,17 +59,15 @@ class KeywordFragmentTest {
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
-    private val fakeAuthRepository = FakeAuthRepositoryImpl()
     private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
 
     @BindValue
-    val keywordViewModel = KeywordViewModel(
+    val viewModel = KeywordFragmentViewModel(
         ReadKeywordListUseCase(fakeKeywordRepository),
         AddKeywordUseCase(fakeKeywordRepository),
         RemoveKeywordUseCase(fakeKeywordRepository),
         SubscribeToUseCase(fakeMessagingRepository),
         UnsubscribeFromUseCase(fakeMessagingRepository),
-        IsSignedInUseCase(fakeAuthRepository),
         HasSearchResultUseCase(fakeNoticeRepository),
         dispatcher
     )
@@ -84,7 +80,7 @@ class KeywordFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().targetContext
 
         with(mockk<ViewModelProvider.Factory>()) {
-            every { create(keywordViewModel::class.java) } answers { keywordViewModel }
+            every { create(KeywordFragmentViewModel::class.java) } answers { viewModel }
             every { fragmentFactory.instantiate(any(), any()) } answers {
                 KeywordFragment { this@with }
             }
