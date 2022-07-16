@@ -11,12 +11,14 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.model.Keyword
+import com.foundy.domain.usecase.auth.IsSignedInUseCase
 import com.foundy.domain.usecase.messaging.SubscribeToUseCase
 import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
+import com.foundy.hansungnotification.fake.FakeAuthRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeMessagingRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
@@ -25,6 +27,7 @@ import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
 import com.foundy.presentation.utils.KeywordValidator
 import com.foundy.presentation.view.keyword.KeywordActivity
+import com.foundy.presentation.view.keyword.KeywordActivityViewModel
 import com.foundy.presentation.view.keyword.KeywordFragment
 import com.foundy.presentation.view.keyword.KeywordFragmentViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -60,6 +63,7 @@ class KeywordFragmentTest {
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
     private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
+    private val fakeAuthRepository = FakeAuthRepositoryImpl()
 
     @BindValue
     val viewModel = KeywordFragmentViewModel(
@@ -70,6 +74,11 @@ class KeywordFragmentTest {
         UnsubscribeFromUseCase(fakeMessagingRepository),
         HasSearchResultUseCase(fakeNoticeRepository),
         dispatcher
+    )
+
+    @BindValue
+    val keywordActivityViewModel = KeywordActivityViewModel(
+        IsSignedInUseCase(fakeAuthRepository),
     )
 
     private lateinit var context: Context
