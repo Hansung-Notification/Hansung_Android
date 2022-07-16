@@ -8,17 +8,18 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.auth.IsSignedInUseCase
-import com.foundy.domain.usecase.messaging.SubscribeToUseCase
-import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
+import com.foundy.domain.usecase.messaging.SubscribeToUseCase
+import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
 import com.foundy.hansungnotification.fake.*
 import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.presentation.R
 import com.foundy.presentation.view.keyword.KeywordActivity
-import com.foundy.presentation.view.keyword.KeywordViewModel
+import com.foundy.presentation.view.keyword.KeywordActivityViewModel
+import com.foundy.presentation.view.keyword.KeywordFragmentViewModel
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -39,19 +40,23 @@ class KeywordActivityTest {
     @JvmField
     val retryRule = RetryTestRule()
 
+    private val fakeAuthRepository = FakeAuthRepositoryImpl()
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
-    private val fakeAuthRepository = FakeAuthRepositoryImpl()
     private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
 
     @BindValue
-    val keywordViewModel = KeywordViewModel(
+    val keywordActivityViewModel = KeywordActivityViewModel(
+        IsSignedInUseCase(fakeAuthRepository),
+    )
+
+    @BindValue
+    val keywordFragmentViewModel = KeywordFragmentViewModel(
         ReadKeywordListUseCase(fakeKeywordRepository),
         AddKeywordUseCase(fakeKeywordRepository),
         RemoveKeywordUseCase(fakeKeywordRepository),
         SubscribeToUseCase(fakeMessagingRepository),
         UnsubscribeFromUseCase(fakeMessagingRepository),
-        IsSignedInUseCase(fakeAuthRepository),
         HasSearchResultUseCase(fakeNoticeRepository)
     )
 

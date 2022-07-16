@@ -1,21 +1,24 @@
 package com.foundy.data.repository
 
 import android.util.Log
-import com.foundy.data.constant.FirebaseConstant.USERS
-import com.foundy.data.constant.FirebaseConstant.KEYWORDS
-import com.foundy.domain.exception.NotSignedInException
+import com.foundy.data.reference.DatabaseReferenceGetter
 import com.foundy.domain.repository.MessagingRepository
 import com.github.kimcore.inko.Inko.Companion.asEnglish
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ServerValue
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import javax.inject.Inject
+import javax.inject.Named
 
-class MessagingRepositoryImpl : MessagingRepository {
+class MessagingRepositoryImpl @Inject constructor(
+    @Named("keywords") private val keywordsReferenceGetter: DatabaseReferenceGetter,
+    @Named("userKeywords") private val userKeywordsReferenceGetter: DatabaseReferenceGetter
+) : MessagingRepository {
 
     /**
      * Firebase database에 저장되어 있는 키워드들을 구독한다.
+     *
+     * 반드시 로그인을 한 후에 호출하여야 한다.
      *
      * 앱을 제거하면 구독이 취소되기 때문에 앱 설치 후 재로그인시 이 함수를 호출해야 한다. 만약 재구독에 실패한다면 해당 키워드는
      * 삭제된다. 만약 이전 항목을 얻어오는 것 자체를 실패한다면 예외를 던진다.
@@ -24,10 +27,8 @@ class MessagingRepositoryImpl : MessagingRepository {
      * 구독은 해당 기기만 수행 되지만 DB는 모든 기기에서 동기화 된다. 이는 사용자에게 혼란을 야기할 수 있다.
      */
     override fun subscribeAllDbKeywords() {
-        val uid = Firebase.auth.uid ?: throw NotSignedInException()
-        val dbReference = Firebase.database.reference
-        val keywordReference = dbReference.child(KEYWORDS)
-        val userKeywordsReference = dbReference.child(USERS).child(uid).child(KEYWORDS)
+        val keywordReference = keywordsReferenceGetter()
+        val userKeywordsReference = userKeywordsReferenceGetter()
 
         userKeywordsReference.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {

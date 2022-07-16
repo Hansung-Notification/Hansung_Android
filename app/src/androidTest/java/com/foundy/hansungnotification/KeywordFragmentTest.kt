@@ -27,8 +27,9 @@ import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
 import com.foundy.presentation.utils.KeywordValidator
 import com.foundy.presentation.view.keyword.KeywordActivity
+import com.foundy.presentation.view.keyword.KeywordActivityViewModel
 import com.foundy.presentation.view.keyword.KeywordFragment
-import com.foundy.presentation.view.keyword.KeywordViewModel
+import com.foundy.presentation.view.keyword.KeywordFragmentViewModel
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -61,19 +62,23 @@ class KeywordFragmentTest {
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
-    private val fakeAuthRepository = FakeAuthRepositoryImpl()
     private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
+    private val fakeAuthRepository = FakeAuthRepositoryImpl()
 
     @BindValue
-    val keywordViewModel = KeywordViewModel(
+    val viewModel = KeywordFragmentViewModel(
         ReadKeywordListUseCase(fakeKeywordRepository),
         AddKeywordUseCase(fakeKeywordRepository),
         RemoveKeywordUseCase(fakeKeywordRepository),
         SubscribeToUseCase(fakeMessagingRepository),
         UnsubscribeFromUseCase(fakeMessagingRepository),
-        IsSignedInUseCase(fakeAuthRepository),
         HasSearchResultUseCase(fakeNoticeRepository),
         dispatcher
+    )
+
+    @BindValue
+    val keywordActivityViewModel = KeywordActivityViewModel(
+        IsSignedInUseCase(fakeAuthRepository),
     )
 
     private lateinit var context: Context
@@ -84,7 +89,7 @@ class KeywordFragmentTest {
         context = InstrumentationRegistry.getInstrumentation().targetContext
 
         with(mockk<ViewModelProvider.Factory>()) {
-            every { create(keywordViewModel::class.java) } answers { keywordViewModel }
+            every { create(KeywordFragmentViewModel::class.java) } answers { viewModel }
             every { fragmentFactory.instantiate(any(), any()) } answers {
                 KeywordFragment { this@with }
             }

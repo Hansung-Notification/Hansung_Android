@@ -1,19 +1,17 @@
 package com.foundy.hansungnotification
 
 import com.foundy.domain.exception.NoSearchResultException
-import com.foundy.domain.usecase.auth.IsSignedInUseCase
 import com.foundy.domain.usecase.messaging.SubscribeToUseCase
 import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
-import com.foundy.hansungnotification.fake.FakeAuthRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeMessagingRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.presentation.utils.KeywordValidator
-import com.foundy.presentation.view.keyword.KeywordViewModel
+import com.foundy.presentation.view.keyword.KeywordFragmentViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import okhttp3.MediaType
@@ -25,22 +23,20 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class KeywordViewModelTest {
+class KeywordFragmentViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private val fakeKeywordRepository = FakeKeywordRepositoryImpl()
     private val fakeMessagingRepository = FakeMessagingRepositoryImpl()
-    private val fakeAuthRepository = FakeAuthRepositoryImpl()
     private val fakeNoticeRepository = FakeNoticeRepositoryImpl()
 
-    private val viewModel = KeywordViewModel(
+    private val viewModel = KeywordFragmentViewModel(
         ReadKeywordListUseCase(fakeKeywordRepository),
         AddKeywordUseCase(fakeKeywordRepository),
         RemoveKeywordUseCase(fakeKeywordRepository),
         SubscribeToUseCase(fakeMessagingRepository),
         UnsubscribeFromUseCase(fakeMessagingRepository),
-        IsSignedInUseCase(fakeAuthRepository),
         HasSearchResultUseCase(fakeNoticeRepository),
         testDispatcher
     )

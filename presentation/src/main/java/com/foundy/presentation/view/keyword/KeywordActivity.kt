@@ -19,7 +19,7 @@ class KeywordActivity : AppCompatActivity() {
     private var _binding: ActivityKeywordBinding? = null
     private val binding: ActivityKeywordBinding get() = requireNotNull(_binding)
 
-    private val viewModel: KeywordViewModel by viewModels()
+    private val viewModel: KeywordActivityViewModel by viewModels()
 
     companion object {
         fun getIntent(context: Context): Intent {

@@ -37,7 +37,7 @@ class KeywordFragment(
     @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
 ) : Fragment(R.layout.fragment_keyword) {
 
-    private val viewModel: KeywordViewModel by activityViewModels(factory)
+    private val viewModel: KeywordFragmentViewModel by activityViewModels(factory)
 
     companion object {
 
