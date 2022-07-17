@@ -2,6 +2,8 @@
 - **앱 출시** 
 - POST 요청하는 API 코드 단순화
 - `UiState` 패턴 적극적으로 이용하도록 리팩토링
+- 잘못된 `callbackFlow`로 인한 앱 충돌 수정 ([#34](https://github.com/jja08111/HansungNotification/pull/34))
+- Database reference를 의존성 주입을 통해 이용하도록 수정
 
 # [v1.0.0-BETA3](https://github.com/jja08111/HansungNotification/releases/tag/v1.0.0-BETA3)
 - 키워드 생성, 삭제할 때 스낵바를 보이도록 수정
