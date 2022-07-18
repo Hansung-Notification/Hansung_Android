@@ -42,10 +42,7 @@
 
 # 한성대 웹 사이트 리뉴얼시 대응 방법
 
-- data 모듈 -> api 패키지 -> api 파일들의 URL을 수정한다.
-- data 모듈 -> mapper 패키지 -> 스크래퍼를 수정한다.
-- [HansungNotificationServer 레파지토리의 `scraper.py` 파일](https://github.com/jja08111/HansungNotificationServer/blob/main/src/scraper.py)을
-  수정한다.
+[위키 페이지](https://github.com/jja08111/HansungNotification/wiki/한성대-웹-사이트-리뉴얼-대응)에서 확인할 수 있습니다.
 
 # Thanks to
 
