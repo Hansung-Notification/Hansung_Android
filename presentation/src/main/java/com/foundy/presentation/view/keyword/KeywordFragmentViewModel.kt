@@ -9,8 +9,9 @@ import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
+import com.foundy.domain.exception.KeywordInvalidException
+import com.foundy.domain.usecase.keyword.ValidateKeywordUseCase
 import com.foundy.presentation.model.KeywordUiState
-import com.foundy.presentation.utils.KeywordValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,7 @@ class KeywordFragmentViewModel @Inject constructor(
     private val subscribeToUseCase: SubscribeToUseCase,
     private val unsubscribeFromUseCase: UnsubscribeFromUseCase,
     private val hasSearchResultUseCase: HasSearchResultUseCase,
+    private val validateKeywordUseCase: ValidateKeywordUseCase,
     @Named("Main") private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
@@ -99,10 +101,10 @@ class KeywordFragmentViewModel @Inject constructor(
     /**
      * 키워드 문자의 유효성을 검사한다.
      *
-     * 유효성 검사에 실패한 경우 [KeywordValidator.KeywordInvalidException]를 상속한 예외를 던진다.
+     * 유효성 검사에 실패한 경우 [KeywordInvalidException]를 상속한 예외를 던진다.
      */
     fun checkValid(keyword: String) {
-        KeywordValidator.check(keyword, uiState.value.keywordList)
+        validateKeywordUseCase(keyword, uiState.value.keywordList)
     }
 
     private suspend fun checkKeywordHasSearchResult(keyword: String) {

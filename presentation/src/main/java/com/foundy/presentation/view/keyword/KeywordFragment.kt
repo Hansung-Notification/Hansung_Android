@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.foundy.domain.exception.KeywordInvalidException
 import com.foundy.domain.exception.NoSearchResultException
 import com.foundy.domain.model.Keyword
 import com.foundy.presentation.R
@@ -26,7 +27,6 @@ import com.foundy.presentation.extension.getProgressBarDrawable
 import com.foundy.presentation.extension.setEndIconOnClickListenerWithDebounce
 import com.foundy.presentation.extension.setOnEditorActionListenerWithDebounce
 import com.foundy.presentation.model.KeywordUiState
-import com.foundy.presentation.utils.KeywordValidator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.flow.collect
@@ -125,7 +125,7 @@ class KeywordFragment(
             viewModel.checkValid(keyword)
 
             textInputLayout.error = null
-        } catch (e: KeywordValidator.KeywordInvalidException) {
+        } catch (e: KeywordInvalidException) {
             textInputLayout.error = e.message ?: getString(R.string.invalid_keyword)
         }
     }
@@ -139,7 +139,7 @@ class KeywordFragment(
             onSuccess = { onSuccessSubmitKeyword(keyword, binding) },
             onFailure = { e ->
                 when (e) {
-                    is KeywordValidator.KeywordInvalidException -> {
+                    is KeywordInvalidException -> {
                         showSnackBar(e.message ?: getString(R.string.invalid_keyword))
                     }
                     is NoSearchResultException -> {
