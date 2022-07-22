@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.notice.GetNoticeListUseCase
-import com.foundy.hansungnotification.factory.CreateNoticeWithStateUseCaseFactory
 import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
+import com.foundy.hansungnotification.fake.FakeNoticeItemUiStateCreatorFactory
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.utils.waitForView
@@ -50,7 +50,7 @@ class NoticeFragmentTest {
     @BindValue
     val viewModel = NoticeViewModel(
         GetNoticeListUseCase(fakeNoticeRepository),
-        CreateNoticeWithStateUseCaseFactory.create(fakeFavoriteRepository)
+        FakeNoticeItemUiStateCreatorFactory(fakeFavoriteRepository)
     )
 
     lateinit var context: Context

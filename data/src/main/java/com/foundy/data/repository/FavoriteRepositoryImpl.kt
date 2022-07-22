@@ -14,7 +14,7 @@ class FavoriteRepositoryImpl @Inject constructor(
     private val favorites by lazy {
         favoriteLocalDataSource.getAll().stateIn(
             MainScope(),
-            SharingStarted.Eagerly,
+            SharingStarted.WhileSubscribed(5000),
             emptyList()
         )
     }

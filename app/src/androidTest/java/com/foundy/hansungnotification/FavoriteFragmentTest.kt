@@ -12,9 +12,9 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.foundy.domain.usecase.favorite.ReadFavoriteListUseCase
-import com.foundy.hansungnotification.factory.CreateNoticeWithStateUseCaseFactory
 import com.foundy.hansungnotification.factory.NoticeFactory
 import com.foundy.hansungnotification.factory.NoticeType
+import com.foundy.hansungnotification.fake.FakeNoticeItemUiStateCreatorFactory
 import com.foundy.hansungnotification.fake.FakeFavoriteRepositoryImpl
 import com.foundy.hansungnotification.utils.RetryTestRule
 import com.foundy.hansungnotification.utils.waitForView
@@ -59,7 +59,7 @@ class FavoriteFragmentTest {
     @BindValue
     val viewModel = FavoriteViewModel(
         ReadFavoriteListUseCase(fakeFavoriteRepository),
-        CreateNoticeWithStateUseCaseFactory.create(fakeFavoriteRepository)
+        FakeNoticeItemUiStateCreatorFactory(fakeFavoriteRepository)
     )
 
     lateinit var context: Context
