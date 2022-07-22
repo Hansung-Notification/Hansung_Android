@@ -73,7 +73,7 @@ class KeywordFragmentViewModel @Inject constructor(
      * 최종적으로 [onFinally]가 호출된다.
      *
      * 예외에는 다음 경우가 존재한다.
-     * - [KeywordValidator.KeywordInvalidException]: 유효성 검사에 실패한 경우
+     * - [KeywordInvalidException]: 유효성 검사에 실패한 경우
      * - [NoSearchResultException]: 검색 결과가 없는 경우
      * - [HttpException]: 검색에 실패한 경우
      * - [Exception]: 그외에 경우
