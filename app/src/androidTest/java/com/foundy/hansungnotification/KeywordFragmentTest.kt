@@ -10,6 +10,9 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
+import com.foundy.domain.exception.AlreadyExistsException
+import com.foundy.domain.exception.InvalidCharacterException
+import com.foundy.domain.exception.MinLengthException
 import com.foundy.domain.model.Keyword
 import com.foundy.domain.usecase.auth.IsSignedInUseCase
 import com.foundy.domain.usecase.messaging.SubscribeToUseCase
@@ -17,6 +20,7 @@ import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
+import com.foundy.domain.usecase.keyword.ValidateKeywordUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
 import com.foundy.hansungnotification.fake.FakeAuthRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
@@ -25,7 +29,6 @@ import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
 import com.foundy.hansungnotification.utils.waitForView
 import com.foundy.hansungnotification.utils.withIndex
 import com.foundy.presentation.R
-import com.foundy.presentation.utils.KeywordValidator
 import com.foundy.presentation.view.keyword.KeywordActivity
 import com.foundy.presentation.view.keyword.KeywordActivityViewModel
 import com.foundy.presentation.view.keyword.KeywordFragment
@@ -73,6 +76,7 @@ class KeywordFragmentTest {
         SubscribeToUseCase(fakeMessagingRepository),
         UnsubscribeFromUseCase(fakeMessagingRepository),
         HasSearchResultUseCase(fakeNoticeRepository),
+        ValidateKeywordUseCase(),
         dispatcher
     )
 
@@ -124,7 +128,7 @@ class KeywordFragmentTest {
             assertEquals(textInput.text!!.toString(), text)
         }
 
-        assertSnackBarHasText(KeywordValidator.MinLengthException().message!!)
+        assertSnackBarHasText(MinLengthException().message!!)
     }
 
     @Test
@@ -176,7 +180,7 @@ class KeywordFragmentTest {
         inputTextToTextInputEditText(keyword.title)
         pressSendKeyboardButton()
 
-        assertSnackBarHasText(KeywordValidator.AlreadyExistsException().message!!)
+        assertSnackBarHasText(AlreadyExistsException().message!!)
     }
 
     @Test
@@ -212,7 +216,7 @@ class KeywordFragmentTest {
         inputTextToTextInputEditText(text)
 
         onView(withContentDescription(R.string.add_keyword)).check(matches(not(isDisplayed())))
-        onView(withText(KeywordValidator.InvalidCharacterException().message!!)).check(
+        onView(withText(InvalidCharacterException().message!!)).check(
             matches(
                 isDisplayed()
             )
@@ -225,7 +229,7 @@ class KeywordFragmentTest {
         inputTextToTextInputEditText(text)
 
         onView(withContentDescription(R.string.add_keyword)).check(matches(not(isDisplayed())))
-        onView(withText(KeywordValidator.InvalidCharacterException().message!!)).check(
+        onView(withText(InvalidCharacterException().message!!)).check(
             matches(
                 isDisplayed()
             )

@@ -11,6 +11,7 @@ import com.foundy.domain.usecase.auth.IsSignedInUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
+import com.foundy.domain.usecase.keyword.ValidateKeywordUseCase
 import com.foundy.domain.usecase.messaging.SubscribeToUseCase
 import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
@@ -57,7 +58,8 @@ class KeywordActivityTest {
         RemoveKeywordUseCase(fakeKeywordRepository),
         SubscribeToUseCase(fakeMessagingRepository),
         UnsubscribeFromUseCase(fakeMessagingRepository),
-        HasSearchResultUseCase(fakeNoticeRepository)
+        HasSearchResultUseCase(fakeNoticeRepository),
+        ValidateKeywordUseCase()
     )
 
     lateinit var context: Context

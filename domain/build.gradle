@@ -15,4 +15,7 @@ dependencies {
 
     // paging
     implementation "androidx.paging:paging-common-ktx:$paging"
+
+    // junit
+    testImplementation 'junit:junit:4.13.2'
 }

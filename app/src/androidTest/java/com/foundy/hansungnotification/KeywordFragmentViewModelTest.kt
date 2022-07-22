@@ -1,16 +1,17 @@
 package com.foundy.hansungnotification
 
+import com.foundy.domain.exception.KeywordInvalidException
 import com.foundy.domain.exception.NoSearchResultException
 import com.foundy.domain.usecase.messaging.SubscribeToUseCase
 import com.foundy.domain.usecase.messaging.UnsubscribeFromUseCase
 import com.foundy.domain.usecase.keyword.AddKeywordUseCase
 import com.foundy.domain.usecase.keyword.ReadKeywordListUseCase
 import com.foundy.domain.usecase.keyword.RemoveKeywordUseCase
+import com.foundy.domain.usecase.keyword.ValidateKeywordUseCase
 import com.foundy.domain.usecase.notice.HasSearchResultUseCase
 import com.foundy.hansungnotification.fake.FakeKeywordRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeMessagingRepositoryImpl
 import com.foundy.hansungnotification.fake.FakeNoticeRepositoryImpl
-import com.foundy.presentation.utils.KeywordValidator
 import com.foundy.presentation.view.keyword.KeywordFragmentViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -38,6 +39,7 @@ class KeywordFragmentViewModelTest {
         SubscribeToUseCase(fakeMessagingRepository),
         UnsubscribeFromUseCase(fakeMessagingRepository),
         HasSearchResultUseCase(fakeNoticeRepository),
+        ValidateKeywordUseCase(),
         testDispatcher
     )
 
@@ -54,7 +56,7 @@ class KeywordFragmentViewModelTest {
         )
 
         assertEquals(0, onSuccessCount)
-        assertTrue(exception is KeywordValidator.KeywordInvalidException)
+        assertTrue(exception is KeywordInvalidException)
     }
 
     @Test
