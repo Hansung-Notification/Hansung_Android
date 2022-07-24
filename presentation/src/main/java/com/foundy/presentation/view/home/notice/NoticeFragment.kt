@@ -3,11 +3,9 @@ package com.foundy.presentation.view.home.notice
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
@@ -17,14 +15,11 @@ import com.foundy.presentation.databinding.FragmentNoticeBinding
 import com.foundy.presentation.extension.addDividerDecoration
 import com.foundy.presentation.model.NoticeUiState
 import com.foundy.presentation.view.common.PagingLoadStateAdapter
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class NoticeFragment(
-    @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
-) : Fragment(R.layout.fragment_notice) {
+class NoticeFragment : Fragment(R.layout.fragment_notice) {
 
-    private val viewModel: NoticeViewModel by activityViewModels(factory)
+    private val viewModel: NoticeViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

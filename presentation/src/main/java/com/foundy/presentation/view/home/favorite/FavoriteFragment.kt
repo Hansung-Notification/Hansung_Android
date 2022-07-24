@@ -2,12 +2,10 @@ package com.foundy.presentation.view.home.favorite
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,14 +13,11 @@ import com.foundy.presentation.R
 import com.foundy.presentation.databinding.FragmentFavoriteBinding
 import com.foundy.presentation.extension.addDividerDecoration
 import com.foundy.presentation.model.FavoriteUiState
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class FavoriteFragment(
-    @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
-) : Fragment(R.layout.fragment_favorite) {
+class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
-    private val viewModel: FavoriteViewModel by activityViewModels(factory)
+    private val viewModel: FavoriteViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

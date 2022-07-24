@@ -58,6 +58,9 @@ dependencies {
     // jsoup
     implementation 'org.jsoup:jsoup:1.14.3'
 
+    // joda datetime
+    implementation "net.danlew:android.joda:$joda"
+
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

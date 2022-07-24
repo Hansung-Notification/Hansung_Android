@@ -39,4 +39,8 @@
     <string name="deny">거부</string>
     <string name="added_keyword">\"%s\" 추가됨</string>
     <string name="removed_keyword">\"%s\" 삭제됨</string>
+    <string name="cafeteria">학생식당</string>
+    <string name="failed_to_scrap">스크래핑에 실패했습니다. jja08111@gmail.com로 문의 부탁드립니다.</string>
+    <string name="daily_menu_date_pattern">M월 d일 E요일 식단</string>
+    <string name="there_is_no_menu_info">아직 등록된 식단 정보가 없습니다.</string>
 </resources>

@@ -31,7 +31,11 @@ class HomeActivity : AppCompatActivity() {
         val nhf = supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = nhf.navController
         val appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(R.id.noticeFragment, R.id.favoriteFragment),
+            topLevelDestinationIds = setOf(
+                R.id.noticeFragment,
+                R.id.favoriteFragment,
+                R.id.cafeteriaFragment
+            ),
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
 

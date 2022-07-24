@@ -3,6 +3,7 @@ package com.foundy.data.di
 import com.foundy.data.api.NoticeApi
 import com.foundy.data.reference.DatabaseReferenceGetter
 import com.foundy.data.repository.*
+import com.foundy.data.source.cafeteria.CafeteriaRemoteDataSource
 import com.foundy.data.source.favorite.FavoriteLocalDataSource
 import com.foundy.data.source.query.QueryLocalDataSource
 import com.foundy.domain.repository.*
@@ -56,5 +57,10 @@ class RepositoryModule {
     @Provides
     fun provideQueryRepository(queryLocalDataSource: QueryLocalDataSource): QueryRepository {
         return QueryRepositoryImpl(queryLocalDataSource)
+    }
+
+    @Provides
+    fun provideCafeteriaRepository(cafeteriaRemoteDataSource: CafeteriaRemoteDataSource): CafeteriaRepository {
+        return CafeteriaRepositoryImpl(cafeteriaRemoteDataSource)
     }
 }

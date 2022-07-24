@@ -15,4 +15,9 @@
         android:name="com.foundy.presentation.view.home.favorite.FavoriteFragment"
         android:label="@string/favorite"
         tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/cafeteriaFragment"
+        android:name="com.foundy.presentation.view.home.cafeteria.CafeteriaFragment"
+        android:label="@string/cafeteria"
+        tools:layout="@layout/fragment_cafeteria" />
 </navigation>

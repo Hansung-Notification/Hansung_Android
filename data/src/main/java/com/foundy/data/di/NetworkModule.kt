@@ -1,5 +1,6 @@
 package com.foundy.data.di
 
+import com.foundy.data.api.CafeteriaApi
 import com.foundy.data.api.NoticeApi
 import dagger.Module
 import dagger.Provides
@@ -44,5 +45,11 @@ class NetworkModule {
     @Singleton
     fun provideNoticeApiService(retrofit: Retrofit): NoticeApi {
         return retrofit.create(NoticeApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCafeteriaApiService(retrofit: Retrofit): CafeteriaApi {
+        return retrofit.create(CafeteriaApi::class.java)
     }
 }
