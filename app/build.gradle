@@ -8,17 +8,16 @@ plugins {
 android {
     def globalConfiguration = rootProject.extensions.getByName("ext")
 
-    compileSdk globalConfiguration.getAt("android_compile_sdk_version")
+    compileSdk globalConfiguration["android_compile_sdk_version"]
 
     defaultConfig {
-        minSdk globalConfiguration.getAt("android_min_sdk_version")
-        targetSdk globalConfiguration.getAt("android_target_sdk_version")
-        versionCode globalConfiguration.getAt("android_version_code")
-        versionName globalConfiguration.getAt("android_version_name")
+        minSdk globalConfiguration["android_min_sdk_version"]
+        targetSdk globalConfiguration["android_target_sdk_version"]
+        versionCode globalConfiguration["android_version_code"]
+        versionName globalConfiguration["android_version_name"]
 
         testInstrumentationRunner globalConfiguration.getAt("android_test_instrumentation_runner")
     }
-
     buildTypes {
         release {
             minifyEnabled true
