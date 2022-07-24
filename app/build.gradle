@@ -5,7 +5,42 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
-apply from: rootProject.file("android.gradle")
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdk globalConfiguration["android_compile_sdk_version"]
+
+    defaultConfig {
+        minSdk globalConfiguration["android_min_sdk_version"]
+        targetSdk globalConfiguration["android_target_sdk_version"]
+        versionCode globalConfiguration["android_version_code"]
+        versionName globalConfiguration["android_version_name"]
+
+        testInstrumentationRunner globalConfiguration.getAt("android_test_instrumentation_runner")
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    testOptions {
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging true
+            }
+        }
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    }
+}
+
 apply plugin: 'com.google.gms.google-services'
 
 dependencies {
