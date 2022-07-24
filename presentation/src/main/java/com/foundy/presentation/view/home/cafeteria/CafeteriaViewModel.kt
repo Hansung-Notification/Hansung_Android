@@ -10,6 +10,8 @@ import com.foundy.presentation.model.CafeteriaUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
+import org.joda.time.DateTimeConstants
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +21,13 @@ class CafeteriaViewModel @Inject constructor(
 
     var uiState: CafeteriaUiState by mutableStateOf(CafeteriaUiState.Loading)
         private set
+
+    private val now = DateTime.now()
+
+    /**
+     * [DateTimeConstants]의 요일이다.
+     */
+    val dayOfWeek get() = now.dayOfWeek
 
     private var job: Job? = null
 
