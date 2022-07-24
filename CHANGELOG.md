@@ -1,3 +1,8 @@
+# [v1.1.0](https://github.com/jja08111/HansungNotification/releases/tag/v1.1.0)
+- 학식 기능 추가 ([#38](https://github.com/jja08111/HansungNotification/pull/38))
+- build.gradle 리팩토링 ([#37](https://github.com/jja08111/HansungNotification/pull/37))
+- KeywordValidator를 ValidateKeywordUseCase로 리팩토링 ([#36](https://github.com/jja08111/HansungNotification/pull/36))
+
 # [v1.0.0](https://github.com/jja08111/HansungNotification/releases/tag/v1.0.0)
 - **앱 출시** 
 - POST 요청하는 API 코드 단순화
