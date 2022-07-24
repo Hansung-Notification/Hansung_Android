@@ -1,8 +1,6 @@
 package com.foundy.hansungnotification
 
 import android.content.Context
-import androidx.fragment.app.FragmentFactory
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -37,8 +35,6 @@ import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -52,8 +48,6 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class KeywordFragmentTest {
-
-    private val fragmentFactory: FragmentFactory = mockk()
 
     private val dispatcher = UnconfinedTestDispatcher()
 
@@ -91,13 +85,6 @@ class KeywordFragmentTest {
     fun setUp() {
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().targetContext
-
-        with(mockk<ViewModelProvider.Factory>()) {
-            every { create(KeywordFragmentViewModel::class.java) } answers { viewModel }
-            every { fragmentFactory.instantiate(any(), any()) } answers {
-                KeywordFragment { this@with }
-            }
-        }
     }
 
     @Test

@@ -6,14 +6,12 @@ import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,15 +27,12 @@ import com.foundy.presentation.extension.setOnEditorActionListenerWithDebounce
 import com.foundy.presentation.model.KeywordUiState
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class KeywordFragment(
-    @VisibleForTesting factory: (() -> ViewModelProvider.Factory)? = null
-) : Fragment(R.layout.fragment_keyword) {
+class KeywordFragment : Fragment(R.layout.fragment_keyword) {
 
-    private val viewModel: KeywordFragmentViewModel by activityViewModels(factory)
+    private val viewModel: KeywordFragmentViewModel by activityViewModels()
 
     companion object {
 
