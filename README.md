@@ -6,13 +6,13 @@
 
 # 스크린샷
 
-|공지사항|즐겨찾기|
-|------|---|
-|![system structure](./images/screenshots/notice.jpg)|![system structure](./images/screenshots/favorite.jpg)|
+|공지사항|즐겨찾기|학생식당|
+|------|---|------|
+|![notice](./images/screenshots/notice.jpg)|![favorite](./images/screenshots/favorite.jpg)|![cafeteria](./images/screenshots/cafeteria.jpg)|
 
 |검색|알림 키워드|
 |------|---|
-|![system structure](./images/screenshots/search.jpg)|![system structure](./images/screenshots/keyword.jpg)|
+|![search](./images/screenshots/search.jpg)|![keyword](./images/screenshots/keyword.jpg)|
 
 # 시스템 구조도
 
