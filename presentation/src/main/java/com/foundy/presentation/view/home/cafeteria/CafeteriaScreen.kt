@@ -2,6 +2,7 @@ package com.foundy.presentation.view.home.cafeteria
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material3.*
@@ -95,7 +96,7 @@ fun CafeteriaContent(data: CafeteriaData, dayOfWeek: Int) {
 
 @Composable
 fun DailyMenuContent(dailyMenu: DailyMenu) {
-    val scrollState = remember(dailyMenu.date) { ScrollState(0) }
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
