@@ -1,3 +1,6 @@
+# [v1.1.1](https://github.com/jja08111/HansungNotification/releases/tag/v1.1.1)
+- 웹뷰에서 파일 다운로드 시 파일 이름 끝에 세미 콜론 붙던 문제 수정 ([#41](https://github.com/jja08111/HansungNotification/pull/41))
+
 # [v1.1.0](https://github.com/jja08111/HansungNotification/releases/tag/v1.1.0)
 - 학식 기능 추가 ([#38](https://github.com/jja08111/HansungNotification/pull/38))
 - build.gradle 리팩토링 ([#37](https://github.com/jja08111/HansungNotification/pull/37))
