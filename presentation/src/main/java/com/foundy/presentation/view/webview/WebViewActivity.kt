@@ -153,10 +153,12 @@ class WebViewActivity : AppCompatActivity() {
         lifecycleScope.launch {
             if (requestPermission()) {
                 val downloadRequest = DownloadManager.Request(Uri.parse(url)).apply {
+                    val fileName = URLUtil.guessFileName(url, contentDisposition, mimeType)
+
                     setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     setDestinationInExternalPublicDir(
                         Environment.DIRECTORY_DOWNLOADS,
-                        URLUtil.guessFileName(url, contentDisposition, mimeType)
+                        fileName.removeSuffix(";")
                     )
                 }
                 val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
