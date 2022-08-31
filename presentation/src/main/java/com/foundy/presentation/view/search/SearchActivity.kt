@@ -23,7 +23,6 @@ import com.paulrybitskyi.persistentsearchview.listeners.OnSuggestionChangeListen
 import com.paulrybitskyi.persistentsearchview.utils.SuggestionCreationUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -49,7 +48,6 @@ class SearchActivity : AppCompatActivity() {
 
         initSearchView(adapter)
         initRecyclerView(adapter)
-        initNoSearchResultText(adapter)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -99,19 +97,21 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun initRecyclerView(adapter: NoticeAdapter) = with(binding.recyclerView) {
-        this.addDividerDecoration()
-        this.adapter = adapter.withLoadStateFooter(
+    private fun initRecyclerView(adapter: NoticeAdapter) = with(binding) {
+        recyclerView.addDividerDecoration()
+        recyclerView.adapter = adapter.withLoadStateFooter(
             PagingLoadStateAdapter { adapter.retry() }
         )
-        layoutManager = LinearLayoutManager(context)
-    }
+        recyclerView.layoutManager = LinearLayoutManager(this@SearchActivity)
 
-    private fun initNoSearchResultText(adapter: NoticeAdapter) {
+        binding.swipeRefreshLayout.setOnRefreshListener { adapter.refresh() }
+
         adapter.addLoadStateListener { loadStates ->
             val shouldShowNoSearchResultText =
                 loadStates.refresh is LoadState.NotLoading && adapter.itemCount < 1
+
             binding.noSearchResultText.isVisible = shouldShowNoSearchResultText
+            binding.swipeRefreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
         }
     }
 
