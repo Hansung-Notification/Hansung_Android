@@ -37,13 +37,14 @@ object CafeteriaMapper {
                 if (tableDataList.size < 2) continue
 
                 val groupName = tableDataList[0].text()
-                val menusAndPrices = tableDataList[1].text().split(" ")
+                val menuAndPriceNodes = tableDataList[1].textNodes()
                 val menus = mutableListOf<Menu>()
 
-                for (index: Int in (0..menusAndPrices.size - 2) step 2) {
+                for (index: Int in menuAndPriceNodes.indices) {
                     try {
-                        val name = menusAndPrices[index]
-                        val price = menusAndPrices[index + 1].replace(",", "").toInt()
+                        val menuAndPriceText = menuAndPriceNodes[index].text().filter { it != ',' }
+                        val name = menuAndPriceText.filter { !it.isDigit() && it != ' ' }
+                        val price = menuAndPriceText.filter { it.isDigit() }.toInt()
                         val menu = Menu(name, price)
                         menus.add(menu)
                     } catch (e: NumberFormatException) { // 식단이 없는 경우 변환에 실패한다.
