@@ -40,6 +40,8 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
 
     private fun initRecyclerView(binding: FragmentNoticeBinding, adapter: NoticeAdapter) {
         binding.apply {
+            swipeRefreshLayout.setOnRefreshListener { adapter.refresh() }
+
             recyclerView.addDividerDecoration()
             recyclerView.adapter = adapter.withLoadStateFooter(
                 PagingLoadStateAdapter { adapter.retry() }
@@ -52,7 +54,7 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
 
             adapter.addLoadStateListener { loadStates ->
                 val isError = loadStates.refresh is LoadState.Error
-                progressBar.isVisible = loadStates.refresh is LoadState.Loading
+                swipeRefreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
                 retryButton.isVisible = isError
                 errorMsg.isVisible = isError
             }
