@@ -1,3 +1,8 @@
+# [v1.1.2](https://github.com/jja08111/HansungNotification/releases/tag/v1.1.2)
+
+- 학식 정보 일부 누락되던 문제 수정 ([#44](https://github.com/jja08111/HansungNotification/pull/44))
+- 당겨서 새로고침 기능 추가 ([#45](https://github.com/jja08111/HansungNotification/pull/45))
+
 # [v1.1.1](https://github.com/jja08111/HansungNotification/releases/tag/v1.1.1)
 - 웹뷰에서 파일 다운로드 시 파일 이름 끝에 세미 콜론 붙던 문제 수정 ([#41](https://github.com/jja08111/HansungNotification/pull/41))
 

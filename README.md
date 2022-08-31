@@ -28,6 +28,7 @@
 - MVVM
 - Hilt
 - Paging
+- Compose
 - Room
 - Retrofit
 - Flow
