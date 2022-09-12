@@ -1,6 +1,5 @@
 package com.foundy.presentation.view.home.cafeteria
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,12 +10,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.foundy.domain.model.cafeteria.CafeteriaData
 import com.foundy.domain.model.cafeteria.DailyMenu
-import com.foundy.domain.model.cafeteria.Menu
 import com.foundy.domain.model.cafeteria.MenuGroup
 import com.foundy.presentation.R
 import com.foundy.presentation.model.CafeteriaUiState
@@ -96,11 +94,10 @@ fun CafeteriaContent(data: CafeteriaData, dayOfWeek: Int) {
 
 @Composable
 fun DailyMenuContent(dailyMenu: DailyMenu) {
-    val scrollState = rememberScrollState()
-
     Column(
         modifier = Modifier
-            .verticalScroll(scrollState)
+            .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp)
     ) {
         Text(
@@ -122,7 +119,11 @@ fun DailyMenuContent(dailyMenu: DailyMenu) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuGroupCard(menuGroup: MenuGroup) {
-    Card(Modifier.padding(bottom = 16.dp)) {
+    Card(
+        Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp)
+    ) {
         Column(Modifier.padding(20.dp)) {
             Text(
                 menuGroup.name,
@@ -131,55 +132,45 @@ fun MenuGroupCard(menuGroup: MenuGroup) {
                 ),
                 modifier = Modifier.padding(bottom = 16.dp)
             )
-            Column {
-                if (menuGroup.menus.isEmpty()) {
-                    Text(
-                        stringResource(R.string.there_is_no_menu_info),
-                        modifier = Modifier.padding(end = 8.dp),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6F)
-                    )
-                } else {
-                    for (menu in menuGroup.menus) {
-                        MenuContent(menu)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun MenuContent(menu: Menu) {
-    Row(
-        modifier = Modifier
-            .padding(vertical = 4.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            menu.name,
-            style = MaterialTheme.typography.titleMedium.copy(
-                color = MaterialTheme.colorScheme.onSurface
-            ),
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = 8.dp),
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1
-        )
-        Text(
-            "${menu.priceWithComma}원",
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7F)
+            Text(
+                menuGroup.content,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                ),
+                lineHeight = 32.sp,
+                letterSpacing = 0.8.sp
             )
-        )
+        }
     }
 }
 
 @Composable
 @Preview(showBackground = true)
 fun EmptyMenuGroupCardPreview() {
-    MenuGroupCard(MenuGroup("국&찌개", emptyList()))
+    MenuGroupCard(
+        MenuGroup(
+            "국&찌개",
+            """
+        치즈치킨카레동ⓣ 5,000 
+        에비카레동ⓣ 4,500 
+        소시지카레동ⓣ 4,500 
+        목살강된장비빔밥 ⓣ 4,800 
+        새우튀김알밥ⓣ 4,500 
+        매콤참치마요ⓣ 4,000 
+        참치마요ⓣ 3,800 
+        육회비빔밥 5,500 
+        제육덮밥ⓣ 4,300 
+
+
+
+        볶음밥&오므라이스&돈까스 
+
+        고구마돈까스 4,500 
+        소떡소떡 3,000 
+        오므라이스ⓣ 3,500 
+        함박오므라이스ⓣ 5,000 
+        치크치킨오므라이스ⓣ 5,500 
+    """.trimIndent()
+        )
+    )
 }

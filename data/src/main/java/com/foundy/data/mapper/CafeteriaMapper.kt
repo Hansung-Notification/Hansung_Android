@@ -1,9 +1,9 @@
 package com.foundy.data.mapper
 
+import androidx.core.text.parseAsHtml
 import com.foundy.domain.exception.ScrapingException
 import com.foundy.domain.model.cafeteria.CafeteriaData
 import com.foundy.domain.model.cafeteria.DailyMenu
-import com.foundy.domain.model.cafeteria.Menu
 import com.foundy.domain.model.cafeteria.MenuGroup
 import okhttp3.ResponseBody
 import org.joda.time.format.DateTimeFormat
@@ -37,22 +37,8 @@ object CafeteriaMapper {
                 if (tableDataList.size < 2) continue
 
                 val groupName = tableDataList[0].text()
-                val menuAndPriceNodes = tableDataList[1].textNodes()
-                val menus = mutableListOf<Menu>()
-
-                for (index: Int in menuAndPriceNodes.indices) {
-                    try {
-                        val menuAndPriceText = menuAndPriceNodes[index].text().filter { it != ',' }
-                        val name = menuAndPriceText.filter { !it.isDigit() && it != ' ' }
-                        val price = menuAndPriceText.filter { it.isDigit() }.toInt()
-                        val menu = Menu(name, price)
-                        menus.add(menu)
-                    } catch (e: NumberFormatException) { // 식단이 없는 경우 변환에 실패한다.
-                        break
-                    }
-                }
-
-                val menuGroups = listOf(MenuGroup(groupName, menus))
+                val content = tableDataList[1].html().parseAsHtml().toString()
+                val menuGroups = listOf(MenuGroup(name = groupName, content = content))
 
                 if (dateTime != null) { // 해당 날짜의 첫 번째 식단인 경우 새로 넣는다.
                     dailyMenus.add(DailyMenu(dateTime, menuGroups))
