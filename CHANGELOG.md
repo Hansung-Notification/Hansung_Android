@@ -1,3 +1,7 @@
+# [v1.1.3](https://github.com/jja08111/HansungNotification/releases/tag/v1.1.3)
+
+- 학식 정보 누락되지 않도록 cafeteria 모델 단순화
+
 # [v1.1.2](https://github.com/jja08111/HansungNotification/releases/tag/v1.1.2)
 
 - 학식 정보 일부 누락되던 문제 수정 ([#44](https://github.com/jja08111/HansungNotification/pull/44))
