@@ -48,6 +48,9 @@ dependencies {
     implementation project(":domain")
     implementation project(":presentation")
 
+    // easy permission
+    implementation 'com.sagar:coroutinespermission:2.0.3'
+
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"

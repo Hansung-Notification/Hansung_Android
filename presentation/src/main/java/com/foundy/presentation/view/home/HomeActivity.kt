@@ -1,18 +1,26 @@
 package com.foundy.presentation.view.home
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.eazypermissions.common.model.PermissionResult
+import com.eazypermissions.coroutinespermission.PermissionManager
 import com.foundy.presentation.R
 import com.foundy.presentation.databinding.ActivityMainBinding
 import com.foundy.presentation.view.keyword.KeywordActivity
 import com.foundy.presentation.view.search.SearchActivity
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -27,6 +35,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPostNotificationPermission()
+        }
 
         val nhf = supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = nhf.navController
@@ -71,5 +83,25 @@ class HomeActivity : AppCompatActivity() {
     private fun startKeywordActivity() {
         val intent = KeywordActivity.getIntent(this)
         startActivity(intent)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun requestPostNotificationPermission() {
+        lifecycleScope.launch {
+            val result = PermissionManager.requestPermissions(
+                this@HomeActivity,
+                1,
+                Manifest.permission.POST_NOTIFICATIONS,
+            )
+            if (result !is PermissionResult.PermissionGranted) {
+                showSnackBar(getString(R.string.please_grant_notification_permission))
+            }
+        }
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
+            anchorView = binding.bottomNav
+        }.show()
     }
 }
